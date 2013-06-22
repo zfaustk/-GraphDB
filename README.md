@@ -8,9 +8,9 @@ By kinghand crew
 Introduction
 ------------
 
-  <h3>KHGraphDB</h3> is an object-orientated graph data storage
+  <b>KHGraphDB</b> is an object-orientated graph data storage
   
-  <h3>KHGraphDB</h3> was entirely developed in C# and runs on Microsoft's .Net platform 
+  <b>KHGraphDB</b> was entirely developed in C# and runs on Microsoft's .Net platform 
   as well as on the open source reimplementation Mono.
   
 System
