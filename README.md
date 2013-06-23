@@ -16,8 +16,12 @@ Introduction
 System
 ------
 
-  >> structure
-      
+  > Structure : Elemental structure 
+  > > Interface : IDBObject IVertex IType IEdge IGraph
+  
+  > Algorithm :  Every algorithm classes inherit from class algorithm , whitch base on DBObject
+  > > Interface IAlgorithm    
+  
 Demo
 ----
 
