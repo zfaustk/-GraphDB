@@ -34,7 +34,7 @@ namespace KHGraphDB.Structure
         {
             get
             {
-                return _Attributes[theKey];
+                return _Attributes.ContainsKey(theKey)?_Attributes[theKey] : null;
             }
             set
             {
@@ -44,7 +44,9 @@ namespace KHGraphDB.Structure
 
         public bool RemoveAttribute(string theKey)
         {
-            return _Attributes.Remove(theKey);
+            if(_Attributes.ContainsKey(theKey))
+                return _Attributes.Remove(theKey);
+            return false;
         }
 
         #endregion

@@ -39,6 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithm\Algorithm.cs" />
+    <Compile Include="Algorithm\BreadthFirstSearch.cs" />
+    <Compile Include="Algorithm\IAlgorithm.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Structure\DBObject.cs" />
