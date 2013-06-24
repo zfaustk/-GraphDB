@@ -74,8 +74,6 @@ namespace KHGraphDB.Algorithm
 
             this.BeginAlgorithm(theGraph);
 
-            test = COLOR_ATTRIBUTE_KEY; //
-
             theSource[COLOR_ATTRIBUTE_KEY] = Color.RED;
             theSource[PREDECESSOR_ATTRIBUTE_KEY] = null;
             theTarget[COLOR_ATTRIBUTE_KEY] = Color.GREEN;
