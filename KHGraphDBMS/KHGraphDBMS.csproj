@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,6 +54,13 @@
     <Compile Include="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="KHCodeTextBox\CodeTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="KHCodeTextBox\CodeTextBox.Designer.cs">
+      <DependentUpon>CodeTextBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KHCodeTextBox\ColorConfig.cs" />
     <Compile Include="KHMenu\ColorConfig.cs" />
     <Compile Include="KHMenu\KH_Menu.cs">
       <SubType>Component</SubType>

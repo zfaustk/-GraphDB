@@ -101,6 +101,27 @@ namespace KHGraphDBMS
             this.Close();
         }
 
+        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        {
+            //int nSelectStart = richTextBox1.SelectionStart;
+            //int nSelectLength = richTextBox1.SelectionLength;
+            //int nIndex = 0;
+            //richTextBox1.Select(nIndex, richTextBox1.Text.Length);
+            //richTextBox1.SelectionColor = Color.White;
+            //while (nIndex < richTextBox1.Text.Length)
+            //{
+            //    nIndex = richTextBox1.Find("wings", nIndex, RichTextBoxFinds.WholeWord);
+            //    if (nIndex < 0)
+            //    {
+            //        break;
+            //    }
+            //    richTextBox1.Select(nIndex, 5);
+            //    richTextBox1.SelectionColor = Color.Red;
+            //    nIndex += 5;
+            //}
+            //richTextBox1.Select(nSelectStart, nSelectLength);
+        }
+
        
     }
 }
