@@ -60,7 +60,13 @@
     <Compile Include="KHCodeTextBox\CodeTextBox.Designer.cs">
       <DependentUpon>CodeTextBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="KHCodeTextBox\ColorConfig.cs" />
+    <Compile Include="KHCodeTextBox\CodeColorConfig.cs" />
+    <Compile Include="KHCodeTextBox\KHCodeTextArea.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="KHCodeTextBox\KHCodeTextArea.Designer.cs">
+      <DependentUpon>KHCodeTextArea.cs</DependentUpon>
+    </Compile>
     <Compile Include="KHMenu\ColorConfig.cs" />
     <Compile Include="KHMenu\KH_Menu.cs">
       <SubType>Component</SubType>
@@ -73,6 +79,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KHCodeTextBox\KHCodeTextArea.resx">
+      <DependentUpon>KHCodeTextArea.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

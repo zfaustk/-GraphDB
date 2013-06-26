@@ -194,6 +194,14 @@
         /DeDbAvFKdi6YAAAAABJRU5ErkJggg==
 </value>
   </data>
+  <data name="CodeText.Text" xml:space="preserve">
+    <value>create vertex {name:"peiming",game:"gal",age:"22"} , {name:"yidong",age:"22"}
+create edge peiming-[friend]-&gt;yidong , yidong-[friend, contact:"10"]-&gt;peiming
+
+Select v = vertex(name="peiming") 
+match v-[friend*]-&gt;n 
+return n As vertex</value>
+  </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAEAMDAAAAEAIACoJQAAFgAAACgAAAAwAAAAYAAAAAEAIAAAAAAAACQAAAAAAAAAAAAAAAAAAAAA

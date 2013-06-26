@@ -31,7 +31,14 @@ namespace KHGraphDBMS
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
+            KHGraphDBMS.KHCodeTextBox.CodeColorConfig codeColorConfig1 = new KHGraphDBMS.KHCodeTextBox.CodeColorConfig();
             this.panelMainMenu = new System.Windows.Forms.Panel();
+            this.pbLogo = new System.Windows.Forms.PictureBox();
+            this.lbTitle = new System.Windows.Forms.Label();
+            this.panelMain = new System.Windows.Forms.Panel();
+            this.panelCodeBox = new System.Windows.Forms.Panel();
+            this.textArea1 = new KHGraphDBMS.KHCodeTextBox.KHCodeTextArea();
+            this.CodeText = new KHGraphDBMS.KHCodeTextBox.CodeTextBox(this.components);
             this.MainMenu = new KHGraphDBMS.KHMenu.KH_Menu(this.components);
             this.文件FToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -43,14 +50,11 @@ namespace KHGraphDBMS
             this.视图VToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.项目PToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sQLPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pbLogo = new System.Windows.Forms.PictureBox();
-            this.lbTitle = new System.Windows.Forms.Label();
-            this.panelMain = new System.Windows.Forms.Panel();
-            this.richTextBox1 = new KHGraphDBMS.KHCodeTextBox.CodeTextBox(this.components);
             this.panelMainMenu.SuspendLayout();
-            this.MainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
             this.panelMain.SuspendLayout();
+            this.panelCodeBox.SuspendLayout();
+            this.MainMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelMainMenu
@@ -62,6 +66,91 @@ namespace KHGraphDBMS
             this.panelMainMenu.Name = "panelMainMenu";
             this.panelMainMenu.Size = new System.Drawing.Size(852, 23);
             this.panelMainMenu.TabIndex = 1;
+            // 
+            // pbLogo
+            // 
+            this.pbLogo.ErrorImage = null;
+            this.pbLogo.Image = ((System.Drawing.Image)(resources.GetObject("pbLogo.Image")));
+            this.pbLogo.Location = new System.Drawing.Point(4, 2);
+            this.pbLogo.Name = "pbLogo";
+            this.pbLogo.Size = new System.Drawing.Size(40, 30);
+            this.pbLogo.TabIndex = 2;
+            this.pbLogo.TabStop = false;
+            // 
+            // lbTitle
+            // 
+            this.lbTitle.AutoSize = true;
+            this.lbTitle.Font = new System.Drawing.Font("Menlo", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbTitle.ForeColor = System.Drawing.Color.DarkGray;
+            this.lbTitle.Location = new System.Drawing.Point(50, 10);
+            this.lbTitle.Name = "lbTitle";
+            this.lbTitle.Size = new System.Drawing.Size(217, 14);
+            this.lbTitle.TabIndex = 3;
+            this.lbTitle.Text = "NewDatabase - KHGraphDBManager";
+            // 
+            // panelMain
+            // 
+            this.panelMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelMain.Controls.Add(this.textArea1);
+            this.panelMain.Controls.Add(this.panelCodeBox);
+            this.panelMain.Controls.Add(this.panelMainMenu);
+            this.panelMain.Controls.Add(this.lbTitle);
+            this.panelMain.Controls.Add(this.pbLogo);
+            this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelMain.Location = new System.Drawing.Point(0, 0);
+            this.panelMain.Name = "panelMain";
+            this.panelMain.Size = new System.Drawing.Size(854, 489);
+            this.panelMain.TabIndex = 4;
+            // 
+            // panelCodeBox
+            // 
+            this.panelCodeBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(66)))));
+            this.panelCodeBox.Controls.Add(this.CodeText);
+            this.panelCodeBox.Location = new System.Drawing.Point(449, 10);
+            this.panelCodeBox.Name = "panelCodeBox";
+            this.panelCodeBox.Padding = new System.Windows.Forms.Padding(5);
+            this.panelCodeBox.Size = new System.Drawing.Size(392, 47);
+            this.panelCodeBox.TabIndex = 5;
+            // 
+            // textArea1
+            // 
+            this.textArea1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textArea1.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
+            this.textArea1.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(66)))));
+            this.textArea1.KeyWordColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(139)))), ((int)(((byte)(210)))));
+            this.textArea1.Location = new System.Drawing.Point(10, 63);
+            this.textArea1.Name = "textArea1";
+            this.textArea1.NormalWordColor = System.Drawing.Color.FromArgb(((int)(((byte)(211)))), ((int)(((byte)(225)))), ((int)(((byte)(222)))));
+            this.textArea1.PreserveWordColor = System.Drawing.Color.FromArgb(((int)(((byte)(133)))), ((int)(((byte)(153)))), ((int)(((byte)(16)))));
+            this.textArea1.ScrollColor = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(129)))), ((int)(((byte)(104)))));
+            this.textArea1.Size = new System.Drawing.Size(830, 413);
+            this.textArea1.StringColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(161)))), ((int)(((byte)(134)))));
+            this.textArea1.TabIndex = 6;
+            // 
+            // CodeText
+            // 
+            this.CodeText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
+            this.CodeText.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            codeColorConfig1.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
+            codeColorConfig1.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(66)))));
+            codeColorConfig1.KeyWordColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(139)))), ((int)(((byte)(210)))));
+            codeColorConfig1.NormalWordColor = System.Drawing.Color.FromArgb(((int)(((byte)(211)))), ((int)(((byte)(225)))), ((int)(((byte)(222)))));
+            codeColorConfig1.PreserveWordColor = System.Drawing.Color.FromArgb(((int)(((byte)(133)))), ((int)(((byte)(153)))), ((int)(((byte)(16)))));
+            codeColorConfig1.ScrollColor = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(129)))), ((int)(((byte)(104)))));
+            codeColorConfig1.StringColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(161)))), ((int)(((byte)(134)))));
+            this.CodeText.Colorconfig = codeColorConfig1;
+            this.CodeText.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.CodeText.Font = new System.Drawing.Font("Menlo", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CodeText.ForeColor = System.Drawing.SystemColors.Info;
+            this.CodeText.Location = new System.Drawing.Point(5, 5);
+            this.CodeText.Name = "CodeText";
+            this.CodeText.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Horizontal;
+            this.CodeText.Size = new System.Drawing.Size(382, 37);
+            this.CodeText.TabIndex = 4;
+            this.CodeText.Text = resources.GetString("CodeText.Text");
+            this.CodeText.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
             // 
             // MainMenu
             // 
@@ -145,54 +234,6 @@ namespace KHGraphDBMS
             this.sQLPToolStripMenuItem.Size = new System.Drawing.Size(61, 21);
             this.sQLPToolStripMenuItem.Text = "SQL(&Q)";
             // 
-            // pbLogo
-            // 
-            this.pbLogo.ErrorImage = null;
-            this.pbLogo.Image = ((System.Drawing.Image)(resources.GetObject("pbLogo.Image")));
-            this.pbLogo.Location = new System.Drawing.Point(4, 2);
-            this.pbLogo.Name = "pbLogo";
-            this.pbLogo.Size = new System.Drawing.Size(40, 30);
-            this.pbLogo.TabIndex = 2;
-            this.pbLogo.TabStop = false;
-            // 
-            // lbTitle
-            // 
-            this.lbTitle.AutoSize = true;
-            this.lbTitle.Font = new System.Drawing.Font("Menlo", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbTitle.ForeColor = System.Drawing.Color.DarkGray;
-            this.lbTitle.Location = new System.Drawing.Point(50, 10);
-            this.lbTitle.Name = "lbTitle";
-            this.lbTitle.Size = new System.Drawing.Size(217, 14);
-            this.lbTitle.TabIndex = 3;
-            this.lbTitle.Text = "NewDatabase - KHGraphDBManager";
-            // 
-            // panelMain
-            // 
-            this.panelMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelMain.Controls.Add(this.richTextBox1);
-            this.panelMain.Controls.Add(this.panelMainMenu);
-            this.panelMain.Controls.Add(this.lbTitle);
-            this.panelMain.Controls.Add(this.pbLogo);
-            this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelMain.Location = new System.Drawing.Point(0, 0);
-            this.panelMain.Name = "panelMain";
-            this.panelMain.Size = new System.Drawing.Size(854, 489);
-            this.panelMain.TabIndex = 4;
-            // 
-            // richTextBox1
-            // 
-            this.richTextBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBox1.Font = new System.Drawing.Font("Menlo", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBox1.ForeColor = System.Drawing.SystemColors.Info;
-            this.richTextBox1.Location = new System.Drawing.Point(12, 64);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Horizontal;
-            this.richTextBox1.Size = new System.Drawing.Size(829, 412);
-            this.richTextBox1.TabIndex = 4;
-            this.richTextBox1.Text = "aaa";
-            this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -211,11 +252,12 @@ namespace KHGraphDBMS
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.FormMain_MouseUp);
             this.panelMainMenu.ResumeLayout(false);
             this.panelMainMenu.PerformLayout();
-            this.MainMenu.ResumeLayout(false);
-            this.MainMenu.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).EndInit();
             this.panelMain.ResumeLayout(false);
             this.panelMain.PerformLayout();
+            this.panelCodeBox.ResumeLayout(false);
+            this.MainMenu.ResumeLayout(false);
+            this.MainMenu.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -223,7 +265,7 @@ namespace KHGraphDBMS
         #endregion
         private System.Windows.Forms.Panel panelMainMenu;
         private KHGraphDBMS.KHMenu.KH_Menu MainMenu;
-        private KHGraphDBMS.KHCodeTextBox.CodeTextBox richTextBox1;
+        private KHGraphDBMS.KHCodeTextBox.CodeTextBox CodeText;
 
         private System.Windows.Forms.ToolStripMenuItem 文件FToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 编辑EToolStripMenuItem;
@@ -238,6 +280,8 @@ namespace KHGraphDBMS
         private System.Windows.Forms.ToolStripMenuItem 项目PToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sQLPToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 退出ToolStripMenuItem;
+        private System.Windows.Forms.Panel panelCodeBox;
+        private KHCodeTextBox.KHCodeTextArea textArea1;
         
         
     }

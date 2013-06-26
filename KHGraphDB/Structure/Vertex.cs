@@ -165,8 +165,5 @@ namespace KHGraphDB.Structure
 
         #endregion
 
-
-
-        
     }
 }

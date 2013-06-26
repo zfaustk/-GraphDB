@@ -1,0 +1,6 @@
+create vertex {name:"peiming",game:"gal",age:"22"} , {name:"yidong",age:"22"}
+create edge peiming-[friend]->yidong , yidong-[friend, contact:"10"]->peiming
+
+Select v = vertex(name="peiming") 
+match v-[friend*]->n 
+return n As vertex
