@@ -34,8 +34,7 @@ namespace KHGraphDBMS.KHCodeTextBox
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            e.Graphics.DrawLine(new Pen(new SolidBrush(Colorconfig.BorderColor)), 0, 0, Width - 1, Height - 1);
-            e.Graphics.DrawRectangle(new Pen(new SolidBrush(Colorconfig.BorderColor)), 0, 0, Width - 1, Height - 1);
+
         }
 
         //重写OnTextChanged方法：
@@ -44,10 +43,10 @@ namespace KHGraphDBMS.KHCodeTextBox
             
             base.OnTextChanged(e);
             SendMessage(base.Handle, 0xB, 0, IntPtr.Zero);  //防止闪烁
-            int sIndex = this.SelectionStart;
+            int nIndex = this.GetCharIndexFromPosition(new Point(0, 0));
             int nSelectStart = this.SelectionStart;
             int nSelectLength = this.SelectionLength;
-            //while (sIndex < this.Text.Length)
+            #region//while (sIndex < this.Text.Length)
             //{
             //    int nIndex = 0;
             //    this.SelectAll();
@@ -75,6 +74,7 @@ namespace KHGraphDBMS.KHCodeTextBox
             //}
             //if (txtChangeNum > 1)
             //{
+            #endregion
                 this.SelectAll();
                 this.SelectionColor = Colorconfig.NormalWordColor;
                 foreach (string key in Colorconfig.Keyword.Keys)
@@ -88,10 +88,11 @@ namespace KHGraphDBMS.KHCodeTextBox
 
                 }
                 ChangeColorString(Colorconfig.StringColor);
-                this.Select(sIndex, 0);
-                this.SelectionColor = Colorconfig.NormalWordColor;
-            //}
-            //else
+                #region
+                //this.Select(sIndex>=0?sIndex:0, 0);
+                //this.SelectionColor = Colorconfig.NormalWordColor;
+                //}
+                //else
             //{
             //    int seIndex = sIndex;
             //    if (sIndex > 0 && !char.IsWhiteSpace(this.Text[sIndex])) { sIndex -- ;}
@@ -112,8 +113,13 @@ namespace KHGraphDBMS.KHCodeTextBox
             //    this.Select(sIndex, 0);
             //    this.SelectionColor = colorconfig.NormalWordColor;
             //}
-            SendMessage(base.Handle, 0xB, 1, IntPtr.Zero);
+                #endregion
+            
+            this.Select(nIndex, 0);
+            this.ScrollToCaret();
+            this.SelectionColor = Colorconfig.NormalWordColor;
             this.Select(nSelectStart, nSelectLength);
+            SendMessage(base.Handle, 0xB, 1, IntPtr.Zero);
             this.Refresh();
 
         }

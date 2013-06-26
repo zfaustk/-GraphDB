@@ -25,6 +25,8 @@ namespace KHGraphDBMS.KHCodeTextBox
         #region ScrollMove
         bool mouseDown = false;
         int mouseDownY = 0;
+        int scrollY = 0;
+        int lastLineNumber = 0;
         #endregion
 
         #region Attribute
@@ -106,26 +108,35 @@ namespace KHGraphDBMS.KHCodeTextBox
         {
             if (mouseDown)
             {
+                int tempTop = scroll.Top;
                 if ((scroll.Bottom < codeTextBox.Height + 5 && mouseDownY < e.Y)
                     ||
                     (scroll.Top > 5 && mouseDownY > e.Y)
                     )
-                scroll.Top += e.Y - mouseDownY;
-                if (scroll.Top <= 5) scroll.Top = 5;
-                else if (scroll.Bottom >= codeTextBox.Height + 5) scroll.Top= codeTextBox.Height + 5 - scroll.Height;
-                
-                
-                
-                SendMessage(base.Handle, 0xB, 0, IntPtr.Zero);  //防止闪烁
-                int lines = Convert.ToInt32(codeTextBox.Height / LineHeight);
-                int Select = codeTextBox.SelectionStart;
-                int a = Convert.ToInt32((codeTextBox.Lines.Length - lines) * (scroll.Top - 5) / (codeTextBox.Height - scroll.Height + 1) - 1);
-                int index = codeTextBox.GetFirstCharIndexFromLine(a>0?a:0);
-                if (index < 0) index = 0;
-                codeTextBox.Select(index, 0);
-                codeTextBox.ScrollToCaret();
-                SendMessage(base.Handle, 0xB, 1, IntPtr.Zero);
-                codeTextBox.Refresh();
+                    tempTop += e.Y - mouseDownY;
+                if (tempTop <= 5) tempTop = 5;
+                else if (tempTop + scroll.Height >= codeTextBox.Height + 5) tempTop = codeTextBox.Height + 5 - scroll.Height;
+                scroll.Top = tempTop;
+
+                if (scroll.Top - scrollY > 1 || scroll.Top - scrollY < -1)
+                {
+                    SendMessage(base.Handle, 0xB, 0, IntPtr.Zero);  //防止闪烁
+
+                    int lines = Convert.ToInt32(codeTextBox.Height / LineHeight);
+                    int Select = codeTextBox.SelectionStart;
+                    int heightDistance = codeTextBox.Height - scroll.Height;
+                    if (heightDistance <= 0) heightDistance = 1;
+                    int scrollTop = scroll.Top - 5;
+                    int a = Convert.ToInt32((codeTextBox.Lines.Length - lines) * (scrollTop) / (heightDistance) - 0.1);
+                    int index = codeTextBox.GetFirstCharIndexFromLine(a > 0 ? a : 0);
+                    if (index < 0) index = 0;
+                    codeTextBox.Select(index, 0);
+                    codeTextBox.ScrollToCaret();
+                    SendMessage(base.Handle, 0xB, 1, IntPtr.Zero);
+                    codeTextBox.Refresh();
+                    
+                    scrollY = scroll.Top;
+                }
                 //codeTextBox.Select(Select, 0);
             }
 
@@ -140,7 +151,11 @@ namespace KHGraphDBMS.KHCodeTextBox
 
         private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
+            int Select = codeTextBox.SelectionStart;
             ResetScrollHeight();
+            if (codeTextBox.Lines.Length != lastLineNumber) ResetScrollPosition();
+
+            lastLineNumber = codeTextBox.Lines.Length;
         }
 
         private void KHCodeTextArea_Load(object sender, EventArgs e)
@@ -151,6 +166,7 @@ namespace KHGraphDBMS.KHCodeTextBox
         private void codeTextBox_Resize(object sender, EventArgs e)
         {
             ResetScrollHeight();
+            ResetScrollPosition();
         }
 
         private void ResetScrollHeight()
@@ -158,14 +174,17 @@ namespace KHGraphDBMS.KHCodeTextBox
             int lines = Convert.ToInt32(codeTextBox.Height / LineHeight);
             int addLine = codeTextBox.Lines.Length - lines;
             addLine = addLine >= 0 ? addLine : 0;
-            scroll.Height = Convert.ToInt32(codeTextBox.Height * (1.0 -  addLine / (40.0 + addLine)));
+            scroll.Height = Convert.ToInt32(codeTextBox.Height * (1.0 -  addLine / (40.0 + addLine)));  
+        }
 
+        private void ResetScrollPosition()
+        {
+            int lines = Convert.ToInt32(codeTextBox.Height / LineHeight);
             int Select = codeTextBox.SelectionStart;
             int linenow = codeTextBox.GetLineFromCharIndex(Select);
             int lchange = codeTextBox.Lines.Length - lines;
             int lnowchange = linenow - lines;
-            scroll.Top = 5 + ((lnowchange>0?lnowchange:0) * (codeTextBox.Height - scroll.Height)) / ((lchange<1)?1:lchange);
-
+            scroll.Top = 5 + ((lnowchange > 0 ? lnowchange : 0) * (codeTextBox.Height - scroll.Height)) / ((lchange < 1) ? 1 : lchange);
         }
 
         public float LineHeight { get { return codeTextBox.CreateGraphics().MeasureString("test", codeTextBox.Font).Height; } }

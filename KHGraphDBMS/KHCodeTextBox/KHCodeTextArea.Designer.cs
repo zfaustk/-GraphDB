@@ -39,8 +39,8 @@
             // panelBack
             // 
             this.panelBack.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(66)))));
-            this.panelBack.Controls.Add(this.scroll);
             this.panelBack.Controls.Add(this.codeTextBox);
+            this.panelBack.Controls.Add(this.scroll);
             this.panelBack.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelBack.Location = new System.Drawing.Point(0, 0);
             this.panelBack.Name = "panelBack";
@@ -53,7 +53,7 @@
             this.scroll.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(129)))), ((int)(((byte)(104)))));
             this.scroll.Location = new System.Drawing.Point(0, 5);
             this.scroll.Name = "scroll";
-            this.scroll.Size = new System.Drawing.Size(8, 53);
+            this.scroll.Size = new System.Drawing.Size(632, 53);
             this.scroll.TabIndex = 1;
             this.scroll.MouseDown += new System.Windows.Forms.MouseEventHandler(this.scroll_MouseDown);
             this.scroll.MouseMove += new System.Windows.Forms.MouseEventHandler(this.scroll_MouseMove);
