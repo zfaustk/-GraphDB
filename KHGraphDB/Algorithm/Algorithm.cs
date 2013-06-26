@@ -8,6 +8,7 @@ using KHGraphDB.Structure;
 
 namespace KHGraphDB.Algorithm
 {
+
     public class Algorithm : DBObject
     {
 

@@ -16,6 +16,8 @@ namespace KHGraphDB.Structure
 
         protected IDictionary<string, object> _Attributes;
 
+        protected IDictionary<string, object> _AlgorithmObj;
+
         #endregion
 
         #region IDBObject
@@ -34,7 +36,7 @@ namespace KHGraphDB.Structure
         {
             get
             {
-                return _Attributes.ContainsKey(theKey)?_Attributes[theKey] : null;
+                return _Attributes.ContainsKey(theKey)? _Attributes[theKey] : null;
             }
             set
             {
@@ -63,6 +65,7 @@ namespace KHGraphDB.Structure
             _khID = Guid.NewGuid().ToString();
 
             _Attributes = (attributes == null) ? new Dictionary<string, object>() : attributes;
+            _AlgorithmObj = new Dictionary<string, object>();
         }
 
         #endregion
@@ -107,9 +110,34 @@ namespace KHGraphDB.Structure
 
         #endregion
 
+        #region AlgorithmObj
 
+        public void SetAlgorithmObj(string Key, object value)
+        {
+            _AlgorithmObj[Key] = value;
+        }
+
+        public object GetAlgorithmObj(string Key)
+        {
+            return _AlgorithmObj.ContainsKey(Key) ? _AlgorithmObj[Key] : null;
+        }
+
+        public bool RemoveAlgorithmObj(string Key)
+        {
+            if (_AlgorithmObj.ContainsKey(Key))
+                return _AlgorithmObj.Remove(Key);
+            return false;
+        }
+
+        public IDictionary<string, object> AlgorithmObjs
+        {
+            get { return _AlgorithmObj; }
+        }
+
+        #endregion
 
 
         
+
     }
 }

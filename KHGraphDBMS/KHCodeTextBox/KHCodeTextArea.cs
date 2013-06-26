@@ -30,7 +30,8 @@ namespace KHGraphDBMS.KHCodeTextBox
         #endregion
 
         #region Attribute
-        public override String Text { get { return codeTextBox.Text; } set { codeTextBox.Text = value; } }
+        public override string Text { get { return codeTextBox.Text; } set { codeTextBox.Text = value; } }
+        public string CodeText { get { return codeTextBox.Text; } set { codeTextBox.Text = value; } }
         public override Font Font { get { return codeTextBox.Font; } set { codeTextBox.Font = value; } }
         public override System.Drawing.Color ForeColor { get { return codeTextBox.ForeColor; } set { codeTextBox.ForeColor = value; } }
         /// <summary>  

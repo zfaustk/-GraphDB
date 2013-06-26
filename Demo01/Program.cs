@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using KHGraphDB.Structure;
 
 using KHGraphDB.Algorithm;
+using System.Windows.Forms;
 
 namespace Demo01
 {
@@ -71,6 +72,7 @@ namespace Demo01
             Console.WriteLine(yidong.ToString());
             Console.WriteLine(weidong.ToString());
 
+            Console.WriteLine(weidong["Name"]);
 
             Console.WriteLine("+++");
             BreadthFirstSearch bfs01 = new BreadthFirstSearch();
@@ -102,6 +104,13 @@ namespace Demo01
 
             Console.ReadKey(true);
 
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Form1 form = new Form1();
+            form.AddGraph(graph);
+            Application.Run(form);
+
+            
 
         }
     }
