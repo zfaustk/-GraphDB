@@ -89,6 +89,15 @@ namespace Demo01
                 Console.WriteLine(v["Name"]);
             }
 
+            BreadthFirstSearch bfs03 = new BreadthFirstSearch();
+            path = bfs03.Search(graph, weidong, peiming);
+
+            if(null != path )
+            foreach (var v in path)
+            {
+                Console.WriteLine(v["Name"]);
+            }
+
 
 
             Console.ReadKey(true);

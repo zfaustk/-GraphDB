@@ -8,7 +8,7 @@ using KHGraphDB.Structure.Interface;
 
 namespace KHGraphDB.Algorithm
 {
-    public class BreadthFirstSearch : Algorithm
+    public class BreadthFirstSearch : Algorithm , IAlgorithm
     {
         protected enum Color
         {

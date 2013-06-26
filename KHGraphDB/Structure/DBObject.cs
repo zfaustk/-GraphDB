@@ -89,7 +89,7 @@ namespace KHGraphDB.Structure
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.AppendFormat("DBObject - UUID:{0} Type:{1}", _khID, this.GetType().Name);
+            sb.AppendFormat("DBObject - KHID:{0} Type:{1}", _khID, this.GetType().Name);
 
             //list all attributes
             if (_Attributes.Count > 0)
