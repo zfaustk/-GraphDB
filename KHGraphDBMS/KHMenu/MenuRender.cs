@@ -90,7 +90,7 @@ namespace KHGraphDBMS.KHMenu
         /// <param name="e"></param>  
         protected override void OnRenderSeparator(ToolStripSeparatorRenderEventArgs e)
         {
-            e.Graphics.DrawLine(new Pen(colorconfig.SeparatorColor), 0, 2, e.Item.Width, 2);
+            e.Graphics.DrawLine(new Pen(colorconfig.SeparatorColor), 3, 1, e.Item.Width-3, 1);
         }
         /// <summary>  
         /// 渲染边框  

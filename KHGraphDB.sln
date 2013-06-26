@@ -9,6 +9,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo01", "Demo01\Demo01.csp
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KHGraphDBMS", "KHGraphDBMS\KHGraphDBMS.csproj", "{9968C37F-A77B-4AA3-B1FA-0F9159E47EAF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6A5FB37C-0502-444C-BDF7-C5C6954DA70D} = {6A5FB37C-0502-444C-BDF7-C5C6954DA70D}
+		{5BABADC1-AAA1-42EE-B438-9863E35C754F} = {5BABADC1-AAA1-42EE-B438-9863E35C754F}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KH_GraphControls", "KH_GraphControls\KH_GraphControls.csproj", "{5BABADC1-AAA1-42EE-B438-9863E35C754F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6A5FB37C-0502-444C-BDF7-C5C6954DA70D} = {6A5FB37C-0502-444C-BDF7-C5C6954DA70D}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,6 +37,10 @@ Global
 		{9968C37F-A77B-4AA3-B1FA-0F9159E47EAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9968C37F-A77B-4AA3-B1FA-0F9159E47EAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9968C37F-A77B-4AA3-B1FA-0F9159E47EAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BABADC1-AAA1-42EE-B438-9863E35C754F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BABADC1-AAA1-42EE-B438-9863E35C754F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BABADC1-AAA1-42EE-B438-9863E35C754F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BABADC1-AAA1-42EE-B438-9863E35C754F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

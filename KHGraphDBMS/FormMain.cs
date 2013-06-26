@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using KHGraphDB.Structure;
 using KHGraphDBMS.KHMenu;
 
 
@@ -42,6 +43,53 @@ namespace KHGraphDBMS
             pbLogo.MouseDown += FormMain_MouseDown;
             pbLogo.MouseUp += FormMain_MouseUp;
             pbLogo.MouseMove += FormMain_MouseMove;
+
+            #region Graph test
+
+            Graph graph = new Graph();
+
+            KHGraphDB.Structure.Type student = new KHGraphDB.Structure.Type(new Dictionary<string, object>(){
+                {"Name","Student"},
+            });
+
+            Vertex peiming = new Vertex(new Dictionary<string, object>(){
+                {"Name","Peiming"},
+                {"Age","22"},
+                {"Game","Gal"}
+            });
+
+            Vertex weidong = new Vertex(new Dictionary<string, object>(){
+                {"Name","Weidong"},
+                {"Age","22"}
+            });
+
+            Vertex yidong = new Vertex(new Dictionary<string, object>(){
+                {"Name","Yidong"},
+                {"Age","21"}
+            });
+
+            graph.AddType(student);
+
+            graph.AddVertex(peiming, student);
+            graph.AddVertex(yidong, student);
+            graph.AddVertex(weidong, student);
+
+            Edge friendPY = new Edge(peiming, yidong, new Dictionary<string, object>(){
+                {"relationship","friend"},
+            });
+
+            Edge friendYW = new Edge(yidong, weidong, new Dictionary<string, object>(){
+                {"relationship","friend"},
+            });
+
+            graph.AddEdge(friendPY);
+            graph.AddEdge(friendYW);
+
+            panelGraph.Graph = graph;
+
+            #endregion
+
+
         }
 
         protected override void OnPaint(PaintEventArgs e)

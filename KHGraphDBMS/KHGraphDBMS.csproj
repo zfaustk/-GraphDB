@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>KHGraphDBMS</RootNamespace>
     <AssemblyName>KHGraphDBMS</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,6 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>ICON_KHGRAPHDB_Small.ico</ApplicationIcon>
@@ -110,6 +112,19 @@
   <ItemGroup>
     <Content Include="ICON_KHGRAPHDB_Small.ico" />
     <Content Include="ICON_KHGRAPHDB_Small_small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KHGraphDB\KHGraphDB.csproj">
+      <Project>{6a5fb37c-0502-444c-bdf7-c5c6954da70d}</Project>
+      <Name>KHGraphDB</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KH_GraphControls\KH_GraphControls.csproj">
+      <Project>{5babadc1-aaa1-42ee-b438-9863e35c754f}</Project>
+      <Name>KH_GraphControls</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
