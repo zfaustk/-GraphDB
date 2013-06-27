@@ -32,16 +32,13 @@ namespace KHGraphDBMS
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             KHGraphDB.Structure.Graph graph1 = new KHGraphDB.Structure.Graph();
-            KHGraphDBMS.KHCodeTextBox.CodeColorConfig codeColorConfig1 = new KHGraphDBMS.KHCodeTextBox.CodeColorConfig();
             this.panelMainMenu = new System.Windows.Forms.Panel();
             this.pbLogo = new System.Windows.Forms.PictureBox();
             this.lbTitle = new System.Windows.Forms.Label();
             this.panelMain = new System.Windows.Forms.Panel();
             this.panelGraph = new KH_GraphControls.GraphPanel.GraphPanel();
-            this.panelCodeBox = new System.Windows.Forms.Panel();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.textArea1 = new KHGraphDBMS.KHCodeTextBox.KHCodeTextArea();
-            this.CodeText = new KHGraphDBMS.KHCodeTextBox.CodeTextBox(this.components);
             this.MainMenu = new KHGraphDBMS.KHMenu.KH_Menu(this.components);
             this.文件FToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,7 +53,6 @@ namespace KHGraphDBMS
             this.panelMainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
             this.panelMain.SuspendLayout();
-            this.panelCodeBox.SuspendLayout();
             this.MainMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -96,7 +92,6 @@ namespace KHGraphDBMS
             this.panelMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelMain.Controls.Add(this.panelGraph);
             this.panelMain.Controls.Add(this.textArea1);
-            this.panelMain.Controls.Add(this.panelCodeBox);
             this.panelMain.Controls.Add(this.panelMainMenu);
             this.panelMain.Controls.Add(this.lbTitle);
             this.panelMain.Controls.Add(this.pbLogo);
@@ -108,29 +103,21 @@ namespace KHGraphDBMS
             // 
             // panelGraph
             // 
-            this.panelGraph.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.panelGraph.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelGraph.AttrFont = new System.Drawing.Font("Microsoft Sans Serif", 8F);
+            this.panelGraph.FocusElement = null;
             this.panelGraph.Graph = graph1;
             this.panelGraph.Location = new System.Drawing.Point(539, 63);
             this.panelGraph.Name = "panelGraph";
             this.panelGraph.Size = new System.Drawing.Size(341, 468);
             this.panelGraph.TabIndex = 7;
             // 
-            // panelCodeBox
-            // 
-            this.panelCodeBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(66)))));
-            this.panelCodeBox.Controls.Add(this.CodeText);
-            this.panelCodeBox.Location = new System.Drawing.Point(539, 3);
-            this.panelCodeBox.Name = "panelCodeBox";
-            this.panelCodeBox.Padding = new System.Windows.Forms.Padding(5);
-            this.panelCodeBox.Size = new System.Drawing.Size(341, 35);
-            this.panelCodeBox.TabIndex = 5;
-            // 
             // textArea1
             // 
-            this.textArea1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textArea1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.textArea1.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
             this.textArea1.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(66)))));
             this.textArea1.CodeText = resources.GetString("textArea1.CodeText");
@@ -143,31 +130,6 @@ namespace KHGraphDBMS
             this.textArea1.Size = new System.Drawing.Size(523, 468);
             this.textArea1.StringColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(161)))), ((int)(((byte)(134)))));
             this.textArea1.TabIndex = 6;
-            // 
-            // CodeText
-            // 
-            this.CodeText.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.CodeText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
-            this.CodeText.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            codeColorConfig1.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
-            codeColorConfig1.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(66)))));
-            codeColorConfig1.KeyWordColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(139)))), ((int)(((byte)(210)))));
-            codeColorConfig1.NormalWordColor = System.Drawing.Color.FromArgb(((int)(((byte)(211)))), ((int)(((byte)(225)))), ((int)(((byte)(222)))));
-            codeColorConfig1.PreserveWordColor = System.Drawing.Color.FromArgb(((int)(((byte)(133)))), ((int)(((byte)(153)))), ((int)(((byte)(16)))));
-            codeColorConfig1.ScrollColor = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(129)))), ((int)(((byte)(104)))));
-            codeColorConfig1.StringColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(161)))), ((int)(((byte)(134)))));
-            this.CodeText.Colorconfig = codeColorConfig1;
-            this.CodeText.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CodeText.ForeColor = System.Drawing.SystemColors.Info;
-            this.CodeText.Location = new System.Drawing.Point(5, 5);
-            this.CodeText.Name = "CodeText";
-            this.CodeText.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Horizontal;
-            this.CodeText.Size = new System.Drawing.Size(331, 25);
-            this.CodeText.TabIndex = 4;
-            this.CodeText.Text = resources.GetString("CodeText.Text");
-            this.CodeText.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
             // 
             // MainMenu
             // 
@@ -272,7 +234,6 @@ namespace KHGraphDBMS
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).EndInit();
             this.panelMain.ResumeLayout(false);
             this.panelMain.PerformLayout();
-            this.panelCodeBox.ResumeLayout(false);
             this.MainMenu.ResumeLayout(false);
             this.MainMenu.PerformLayout();
             this.ResumeLayout(false);
@@ -283,7 +244,6 @@ namespace KHGraphDBMS
 
         private System.Windows.Forms.Panel panelMainMenu;
         private KHGraphDBMS.KHMenu.KH_Menu MainMenu;
-        private KHGraphDBMS.KHCodeTextBox.CodeTextBox CodeText;
 
         private System.Windows.Forms.ToolStripMenuItem 文件FToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 编辑EToolStripMenuItem;
@@ -298,7 +258,6 @@ namespace KHGraphDBMS
         private System.Windows.Forms.ToolStripMenuItem 项目PToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sQLPToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 退出ToolStripMenuItem;
-        private System.Windows.Forms.Panel panelCodeBox;
         private KHCodeTextBox.KHCodeTextArea textArea1;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private KH_GraphControls.GraphPanel.GraphPanel panelGraph;

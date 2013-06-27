@@ -136,8 +136,18 @@ namespace KHGraphDB.Structure
 
         #endregion
 
+        #region Other
+        public string AttributesToString()
+        {
+            String s = "";
+            foreach (var key in _Attributes.Keys)
+            {
+                s += key + " : " + _Attributes[key].ToString() + "\n";
+            }
+            return s;
+        }
+        #endregion
 
-        
 
     }
 }

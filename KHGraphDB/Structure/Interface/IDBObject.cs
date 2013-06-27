@@ -51,6 +51,7 @@ namespace KHGraphDB.Structure.Interface
         /// <param name="Key">the key of the element to remove</param>
         bool RemoveAlgorithmObj(string Key);
 
+        string AttributesToString();
         #endregion
     }
 }

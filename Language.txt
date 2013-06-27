@@ -4,3 +4,36 @@ create edge peiming-[friend]->yidong , yidong-[friend, contact:"10"]->peiming
 Select v = vertex(name="peiming") 
 match v-[friend*]->n 
 return n As vertex
+
+Create Vertex , Edge , Type 
+Delete Vertex , Edge , Type 
+Edit Vertex , Edge , Type 
+
+SELECT *
+FROM TableName1，TableName2
+WHERE Condition
+
+Select v from Type
+Where v.Name = "peiming"
+return v as Vertex
+
+create vertex 
+	{name:"peiming",game:"gal",age:"22"} , 
+	{name:"yidong",type(name="student"){"10001000","yidong",22}},
+create edge peiming-[friend]->yidong , yidong-[friend, contact:10]->peiming
+
+Select v = vertex(name="peiming")
+match v -[ friend* ]-> n and type(name="student").contain(n) and n.age = 22
+return n As vertex
+
+Select v = vertex(name="peiming")
+match v -[ contact>10 ]-> n and n.type="student" and n.age = 22
+return n As vertex
+
+return vertex(name="peiming")       		//搜索结果集
+return vertex(name="peiming").Count       	//搜索结果集方法
+return vertex(name="peiming").Max(age)       	//搜索结果集方法
+return vertex(name="peiming").Sort(age)       	//搜索结果集方法
+Select v = vertex(name="peiming")
+match v.age					//返回有年龄的记录
+return n As vertex

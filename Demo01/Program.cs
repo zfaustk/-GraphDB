@@ -56,11 +56,16 @@ namespace Demo01
                 {"relationship","friend"},
             });
 
+            Edge friendYP = new Edge(yidong, peiming, new Dictionary<string, object>(){
+                {"relationship","friend"},
+            });
+
             Edge friendYW = new Edge(yidong, weidong, new Dictionary<string, object>(){
                 {"relationship","friend"},
             });
 
             graph.AddEdge(friendPY);
+            graph.AddEdge(friendYP);
             graph.AddEdge(friendYW);
 
             Console.WriteLine(peiming.InDegree);
