@@ -177,6 +177,11 @@ namespace KHGraphDBMS
             //richTextBox1.Select(nSelectStart, nSelectLength);
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            grammar.Exert(textArea1.CodeText);
+        }
+
        
     }
 }

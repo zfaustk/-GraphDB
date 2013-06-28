@@ -48,6 +48,14 @@ namespace KHGraphDBMS.Grammar
             });
         }
 
+        public void Exert(string str)
+        {
+            IVertex v = gHelper.AddVertex(new Dictionary<string, object>()
+            {
+                {"name","OKok"} , {"age",20}
+            });
+            
+        }
         
     }
 }
