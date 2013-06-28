@@ -306,6 +306,7 @@ namespace KHGraphDB.Structure
             {
                 if (_Types.Add(theType))
                 {
+                    theType.Graph = this;
                     OnAddType(this, theType);
                     return true;
                 }
@@ -471,11 +472,6 @@ namespace KHGraphDB.Structure
         #endregion
 
         #endregion
-
-
-
-        
-
 
 
 

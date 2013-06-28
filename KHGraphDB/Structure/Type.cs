@@ -122,5 +122,13 @@ namespace KHGraphDB.Structure
 
             return nonRemovedVertices;
         }
+
+        #region override
+        public override string AttributesToString()
+        {
+            string s = base.AttributesToString();
+            return s;
+        }
+        #endregion
     }
 }

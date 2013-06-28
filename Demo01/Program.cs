@@ -16,22 +16,22 @@ namespace Demo01
         {
             Graph graph = new Graph();
 
-            KHGraphDB.Structure.Type student = new KHGraphDB.Structure.Type(new Dictionary<string, object>(){
+            KHGraphDB.Structure.Type student = new KHGraphDB.Structure.Type(new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase){
                 {"Name","Student"},
             });
 
-            Vertex peiming = new Vertex(new Dictionary<string, object>(){
+            Vertex peiming = new Vertex(new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase){
                 {"Name","Peiming"},
                 {"Age","22"},
                 {"Game","Gal"}
             });
 
-            Vertex weidong = new Vertex(new Dictionary<string, object>(){
+            Vertex weidong = new Vertex(new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase){
                 {"Name","Weidong"},
                 {"Age","22"}
             });
 
-            Vertex yidong = new Vertex(new Dictionary<string, object>(){
+            Vertex yidong = new Vertex(new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase){
                 {"Name","Yidong"},
                 {"Age","21"}
             });
@@ -40,7 +40,7 @@ namespace Demo01
 
             graph.AddVertex(peiming, student);
             graph.AddVertex(yidong, student);
-            graph.AddVertex(weidong, student);
+            graph.AddVertex(weidong);
 
             Console.WriteLine(peiming.ToString());
             Console.WriteLine(yidong.ToString());
@@ -57,7 +57,7 @@ namespace Demo01
             });
 
             Edge friendYP = new Edge(yidong, peiming, new Dictionary<string, object>(){
-                {"relationship","friend"},
+                {"relationship",null},
             });
 
             Edge friendYW = new Edge(yidong, weidong, new Dictionary<string, object>(){
@@ -72,6 +72,8 @@ namespace Demo01
             Console.WriteLine(peiming.OutDegree);
             Console.WriteLine(yidong.InDegree);
             Console.WriteLine(yidong.OutDegree);
+            Console.WriteLine(weidong.InDegree);
+            Console.WriteLine(weidong.OutDegree);
 
             Console.WriteLine(peiming.ToString());
             Console.WriteLine(yidong.ToString());
