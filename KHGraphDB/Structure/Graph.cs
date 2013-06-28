@@ -62,6 +62,16 @@ namespace KHGraphDB.Structure
             _EdgeCount = 0;
             _TypeCount = 0;
 
+            //Vertex vRoot = new Vertex(new Dictionary<string, object>() {
+            //    {"root",true},{"Name","root"}
+            //});
+            //this.AddVertex(vRoot);
+
+            //KHGraphDB.Structure.Type tUn = new KHGraphDB.Structure.Type(new Dictionary<string, object>() { 
+            //    {"Name","UnTyped"}
+            //});
+            //this.AddType(tUn);
+
             _IsDirected = true;
         }
         #endregion
@@ -296,6 +306,7 @@ namespace KHGraphDB.Structure
             {
                 if (_Types.Add(theType))
                 {
+                    theType.Graph = this;
                     OnAddType(this, theType);
                     return true;
                 }
@@ -461,11 +472,6 @@ namespace KHGraphDB.Structure
         #endregion
 
         #endregion
-
-
-
-        
-
 
 
 

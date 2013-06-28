@@ -165,5 +165,24 @@ namespace KHGraphDB.Structure
 
         #endregion
 
+        #region override
+        public override string AttributesToString()
+        {
+            string s = base.AttributesToString();
+            if (this.Type == null)
+                s += "Type : null \n";
+            else{
+                if (Type["name"] != null)
+                    s += "Type :" + Type["name"].ToString() + " \n";
+                else
+                    s += "Type :" + Type.KHID + " \n";
+            }
+            s += "InDegree : " + InDegree + " \n";
+            s += "OutDegree : " + OutDegree + " \n";
+            return s;
+        }
+
+        #endregion
+
     }
 }

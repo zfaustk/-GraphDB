@@ -45,11 +45,9 @@ namespace KHGraphDB.Structure.Interface
 
         #endregion
 
+        #region Methods
 
-
-#region Methods
-
-    #region Type
+        #region Type
 
         #region Add
 
@@ -74,9 +72,9 @@ namespace KHGraphDB.Structure.Interface
 
         #endregion
 
-    #endregion
+        #endregion
 
-    #region Vertices
+        #region Vertices
 
         #region Add
 
@@ -119,9 +117,9 @@ namespace KHGraphDB.Structure.Interface
 
         #endregion
 
-    #endregion
+        #endregion
 
-    #region Edges
+        #region Edges
 
         #region Add
 
@@ -143,9 +141,9 @@ namespace KHGraphDB.Structure.Interface
 
         #endregion
 
-    #endregion
+        #endregion
 
-#endregion
+        #endregion
 
     }
 }

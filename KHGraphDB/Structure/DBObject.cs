@@ -9,6 +9,10 @@ namespace KHGraphDB.Structure
 {
     public class DBObject : IDBObject
     {
+        #region EventHandler
+        public delegate void GraphEventHandler(object sender, object v);
+        #endregion
+
 
         #region private members
 
@@ -36,18 +40,21 @@ namespace KHGraphDB.Structure
         {
             get
             {
-                return _Attributes.ContainsKey(theKey)? _Attributes[theKey] : null;
+                string key = theKey.Trim().ToLower();
+                return _Attributes.ContainsKey(key)? _Attributes[key] : null;
             }
             set
             {
-                _Attributes[theKey] = value;
+                string key = theKey.Trim().ToLower();
+                _Attributes[key] = value;
             }
         }
 
         public bool RemoveAttribute(string theKey)
         {
-            if(_Attributes.ContainsKey(theKey))
-                return _Attributes.Remove(theKey);
+            string key = theKey.Trim().ToLower();
+            if(_Attributes.ContainsKey(key))
+                return _Attributes.Remove(key);
             return false;
         }
 
@@ -63,8 +70,7 @@ namespace KHGraphDB.Structure
         protected void InitDBObject(IDictionary<string, object> attributes)
         {
             _khID = Guid.NewGuid().ToString();
-
-            _Attributes = (attributes == null) ? new Dictionary<string, object>() : attributes;
+            _Attributes = (attributes == null) ? new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase) : attributes;
             _AlgorithmObj = new Dictionary<string, object>();
         }
 
@@ -136,8 +142,21 @@ namespace KHGraphDB.Structure
 
         #endregion
 
+        #region Other
+        public virtual string AttributesToString()
+        {
+            String s = "";
+            foreach (var key in _Attributes.Keys)
+            {
+                if (_Attributes[key] != null)
+                    s += key + " : " + _Attributes[key].ToString() + " \n";
+                else
+                    s += key + "* \n";
+            }
+            return s;
+        }
+        #endregion
 
-        
 
     }
 }
