@@ -35,11 +35,15 @@ namespace KHGraphDB.Structure
         #region Constructors
 
         public Vertex()
-            : this(null)
-        {
-        }
+            : this(null, null) { }
+
+        public Vertex(string ID)
+            : this(ID, null) { }
 
         public Vertex(IDictionary<string, object> theAttributes)
+            : this(null, theAttributes) { }
+
+        public Vertex(string ID,IDictionary<string, object> theAttributes)
         {
             InitDBObject(theAttributes);
             InitVertex();

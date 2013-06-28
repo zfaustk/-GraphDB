@@ -46,9 +46,23 @@ namespace KHGraphDB.Structure
 
         #region constructors
 
-        public Graph()
+        public Graph() : this(null,null){}
+
+        public Graph(string ID)
         {
-            InitDBObject();
+            InitDBObject(ID);
+            InitGraph();
+        }
+
+        public Graph(IDictionary<string, object> theAttributes)
+        {
+            InitDBObject(theAttributes);
+            InitGraph();
+        }
+
+        public Graph(string ID, IDictionary<string, object> theAttributes)
+        {
+            InitDBObject(ID, theAttributes);
             InitGraph();
         }
 
@@ -209,6 +223,7 @@ namespace KHGraphDB.Structure
 
         public bool RemoveVertex(IVertex theVertex)
         {
+            if (theVertex == null) return false;
             if (_Vertices.Contains(theVertex))
             {
                 List<IEdge> removeEdges = null;

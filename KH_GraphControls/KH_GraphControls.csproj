@@ -53,6 +53,7 @@
       <DependentUpon>GraphPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="GraphPanel\PanelColorConfig.cs" />
+    <Compile Include="GraphPanel\Render.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

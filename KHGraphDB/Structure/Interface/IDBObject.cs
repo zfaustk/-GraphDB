@@ -51,7 +51,16 @@ namespace KHGraphDB.Structure.Interface
         /// <param name="Key">the key of the element to remove</param>
         bool RemoveAlgorithmObj(string Key);
 
+        /// <summary>
+        /// Get string of attributes 
+        /// </summary>
         string AttributesToString();
         #endregion
+
+        #region EventHandler
+        event ObjectAttributeGhangeEventHandler OnAttributeGhange;
+        #endregion
     }
+
+    public delegate void ObjectAttributeGhangeEventHandler(IDBObject sender);
 }

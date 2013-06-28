@@ -24,7 +24,7 @@ namespace KH_GraphControls.GraphPanel
 
         #region 私有
 
-        private PanelColorConfig panelColorConfilg = new PanelColorConfig();
+        private PanelColorConfig panelColorConfig = new PanelColorConfig();
         private Graph _graph = new Graph();
         private Font _font = new Font("Melon", 10);
         private Font _Attrfont = new Font("Melon", 8);
@@ -35,7 +35,7 @@ namespace KH_GraphControls.GraphPanel
         private string _KH_PANE_BOUNDS = "_KH_PANE_BOUNDS";
         #endregion
 
-        public Font Font
+        public override Font Font
         {
             get { return _font; }
             set { _font = value; }
@@ -68,7 +68,7 @@ namespace KH_GraphControls.GraphPanel
             Parallel.ForEach<IVertex>(Graph.Vertices, v =>
             {
                 PointF location = new PointF(Random.Next(2, Width - 20), Random.Next(0, Height - 20));
-                int radio = Random.Next(4, 12);
+                int radio = Random.Next(7, 12);
                 RectangleF bound = new RectangleF(location.X - radio, location.Y - radio, radio * 2, radio*2);
                 v.SetAlgorithmObj(_KH_PANE_LOCATION, location);
                 v.SetAlgorithmObj(_KH_PANE_BOUNDS, bound);
@@ -78,7 +78,8 @@ namespace KH_GraphControls.GraphPanel
                 v.SetAlgorithmObj(Flags.State.Hover.ToString(), false);
                 v.SetAlgorithmObj(Flags.State.DraggedOver.ToString(), false);
                 v.SetAlgorithmObj(Flags.State.Dragging.ToString(), false);
-            
+                v.SetAlgorithmObj(Flags.State.HighLight.ToString(), false);
+                v.OnAttributeGhange += OnAttributeChange;
             });
 
             Parallel.ForEach<IEdge>(Graph.Edges, e =>
@@ -89,6 +90,8 @@ namespace KH_GraphControls.GraphPanel
                 e.SetAlgorithmObj(Flags.State.Hover.ToString(), false);
                 e.SetAlgorithmObj(Flags.State.DraggedOver.ToString(), false);
                 e.SetAlgorithmObj(Flags.State.Dragging.ToString(), false);
+                e.SetAlgorithmObj(Flags.State.HighLight.ToString(), false);
+                e.OnAttributeGhange += OnAttributeChange;
             });
             
             graph.OnAddVertex += OnAddVertex;
@@ -112,7 +115,7 @@ namespace KH_GraphControls.GraphPanel
             inverse_transformation.TransformPoints(points);
             location = new Point((int)points[0].X, (int)points[0].Y);
 
-            int radio = Random.Next(3, 15);
+            int radio = Random.Next(6, 12);
             RectangleF bound = new RectangleF(location.X - radio, location.Y - radio, radio * 2, radio * 2);
             vertex.SetAlgorithmObj(_KH_PANE_LOCATION, location);
             vertex.SetAlgorithmObj(_KH_PANE_BOUNDS, bound);
@@ -122,7 +125,8 @@ namespace KH_GraphControls.GraphPanel
             vertex.SetAlgorithmObj(Flags.State.Hover.ToString(), false);
             vertex.SetAlgorithmObj(Flags.State.DraggedOver.ToString(), false);
             vertex.SetAlgorithmObj(Flags.State.Dragging.ToString(), false);
-
+            vertex.SetAlgorithmObj(Flags.State.HighLight.ToString(), false);
+            vertex.OnAttributeGhange += OnAttributeChange;
             this.Refresh();
         }
         private void OnAddEdge(object sender, IEdge edge)
@@ -134,6 +138,8 @@ namespace KH_GraphControls.GraphPanel
             edge.SetAlgorithmObj(Flags.State.Hover.ToString(), false);
             edge.SetAlgorithmObj(Flags.State.DraggedOver.ToString(), false);
             edge.SetAlgorithmObj(Flags.State.Dragging.ToString(), false);
+            edge.SetAlgorithmObj(Flags.State.HighLight.ToString(), false);
+            edge.OnAttributeGhange += OnAttributeChange;
             this.Refresh();
         }
         private void OnAddType(object sender, IType type)
@@ -151,6 +157,10 @@ namespace KH_GraphControls.GraphPanel
         private void OnRemoveType(object sender, IType type)
         {
             this.Refresh();
+        }
+        private void OnAttributeChange(IDBObject sender)
+        {
+            HighLightOnce = sender;
         }
         #endregion
 
@@ -622,6 +632,48 @@ namespace KH_GraphControls.GraphPanel
         }
         #endregion
 
+        #region HighLight
+        public IEnumerable<IDBObject> HighLightList
+        {
+            get { return _HighLightList; }
+            set {
+                if (_HighLightList != null)
+                {
+                    foreach (var obj in _HighLightList)
+                        obj.SetAlgorithmObj(Flags.State.HighLight.ToString(), false);
+                }
+                _HighLightList = value;
+                if(_HighLightList != null)
+                    foreach (var obj in _HighLightList)
+                        obj.SetAlgorithmObj(Flags.State.HighLight.ToString(), true);
+                this.Refresh();
+            }
+        }
+        private IEnumerable<IDBObject> _HighLightList = null;
+
+        public IDBObject HighLightOnce
+        {
+            set
+            {
+                if (value == null) return;
+                if (new Vertex().GetType().Equals(value.GetType()))
+                {
+                    Vertex v = (Vertex)value;
+                    v.SetAlgorithmObj(Flags.State.HighLight.ToString(), true);
+                    this.Refresh();
+                    v.SetAlgorithmObj(Flags.State.HighLight.ToString(), false);
+                }
+                else if (new Edge(new Vertex(), new Vertex()).GetType().Equals(value.GetType()))
+                {
+                    Edge e = (Edge)value;
+                    e.SetAlgorithmObj(Flags.State.HighLight.ToString(), true);
+                    this.Refresh();
+                    e.SetAlgorithmObj(Flags.State.HighLight.ToString(), false);
+                }
+            }
+        }
+        #endregion
+
         #region OnPaint
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -630,7 +682,7 @@ namespace KH_GraphControls.GraphPanel
             if (e.Graphics == null)
                 return;
 
-            e.Graphics.Clear(panelColorConfilg.BackGroundColor);
+            e.Graphics.Clear(panelColorConfig.BackGroundColor);
 
             if (this._graph.VertexCount == 0)
                 return;
@@ -653,9 +705,8 @@ namespace KH_GraphControls.GraphPanel
                 var ps = (PointF)edge.Source.AlgorithmObjs[_KH_PANE_LOCATION];
                 var pt = (PointF)edge.Target.AlgorithmObjs[_KH_PANE_LOCATION];
                 var hover = (bool)edge.GetAlgorithmObj(Flags.State.Hover.ToString());
-                e.Graphics.DrawLine(new Pen(new SolidBrush(panelColorConfilg.EdgeColor)),ps,pt);
-                e.Graphics.FillEllipse(new SolidBrush(panelColorConfilg.EdgePointColor), (pt.X + ps.X) / 2 - 2, (pt.Y + ps.Y) / 2 - 2, 4, 4);
-                e.Graphics.FillEllipse(new SolidBrush(hover ? panelColorConfilg.HoverColor : panelColorConfilg.EdgePointColor), (pt.X * 2 + 3 * ps.X) / 5 - 4, (pt.Y * 2 + ps.Y * 3) / 5 - 4, 8, 8);
+                var highlight = (bool)edge.GetAlgorithmObj(Flags.State.HighLight.ToString());
+                Render.DrawEdge(e.Graphics, edge, ps, pt, highlight);
                 if (hover) hoverEdge = edge;
             }
 
@@ -664,8 +715,9 @@ namespace KH_GraphControls.GraphPanel
                 var p = (PointF)v.AlgorithmObjs[_KH_PANE_LOCATION];
                 var rect = (RectangleF)v.AlgorithmObjs[_KH_PANE_BOUNDS];
                 var hover = (bool)v.GetAlgorithmObj(Flags.State.Hover.ToString());
-                e.Graphics.FillEllipse(new SolidBrush(hover ? panelColorConfilg.HoverColor : panelColorConfilg.VertexColor), rect);
-                e.Graphics.DrawString((string)v["Name"], Font, new SolidBrush(Color.Black), p);
+                var highlight = (bool)v.GetAlgorithmObj(Flags.State.HighLight.ToString());
+                Render.DrawVertex(e.Graphics, v, Font, p, rect, highlight);
+                
                 if (hover) hoverVertex = v;
             }
 
@@ -674,52 +726,17 @@ namespace KH_GraphControls.GraphPanel
         }
 
         protected void OnPaint_DrawVertexInfo(Graphics g,IVertex v)
-        {
-
-            String s = v.AttributesToString();
-            SizeF size = g.MeasureString(s,AttrFont);
+        {      
             PointF location = (PointF)v.GetAlgorithmObj(_KH_PANE_LOCATION);
-            RectangleF rect = new RectangleF(location, size);
-            GraphicsPath roundedRect = new GraphicsPath();
-            int cornerRadius = 5;
-            roundedRect.AddArc(rect.X, rect.Y, cornerRadius * 2, cornerRadius * 2, 180, 90);
-            roundedRect.AddLine(rect.X + cornerRadius, rect.Y, rect.Right - cornerRadius * 2, rect.Y);
-            roundedRect.AddArc(rect.X + rect.Width - cornerRadius * 2, rect.Y, cornerRadius * 2, cornerRadius * 2, 270, 90);
-            roundedRect.AddLine(rect.Right, rect.Y + cornerRadius * 2, rect.Right, rect.Y + rect.Height - cornerRadius * 2);
-            roundedRect.AddArc(rect.X + rect.Width - cornerRadius * 2, rect.Y + rect.Height - cornerRadius * 2, cornerRadius * 2, cornerRadius * 2, 0, 90);
-            roundedRect.AddLine(rect.Right - cornerRadius * 2, rect.Bottom, rect.X + cornerRadius * 2, rect.Bottom);
-            roundedRect.AddArc(rect.X, rect.Bottom - cornerRadius * 2, cornerRadius * 2, cornerRadius * 2, 90, 90);
-            roundedRect.AddLine(rect.X, rect.Bottom - cornerRadius * 2, rect.X, rect.Y + cornerRadius * 2);
-            roundedRect.CloseFigure();
-            g.DrawPath(new Pen(panelColorConfilg.BorderColor,2), roundedRect);
-            g.FillPath(new SolidBrush(panelColorConfilg.AttrColor), roundedRect);
-            g.DrawString(s, AttrFont, new SolidBrush(panelColorConfilg.TextColor), rect);
+            RectangleF rect = (RectangleF)v.GetAlgorithmObj(_KH_PANE_BOUNDS);
+            Render.DrawVertexSelected(g, v, _Attrfont, location, rect);
         }
 
         protected void OnPaint_DrawEdgeInfo(Graphics g, IEdge e)
         {
             var ps = (PointF)e.Source.GetAlgorithmObj(_KH_PANE_LOCATION);
             var pt = (PointF)e.Target.GetAlgorithmObj(_KH_PANE_LOCATION);
-            String s = e.AttributesToString();
-            SizeF size = g.MeasureString(s, AttrFont);
-            PointF location = new PointF((pt.X * 2 + 3 * ps.X) / 5 - 4, (pt.Y * 2 + ps.Y * 3) / 5 - 4);
-            RectangleF rect = new RectangleF(location, size);
-            GraphicsPath roundedRect = new GraphicsPath();
-            int cornerRadius = 5;
-            roundedRect.AddArc(rect.X, rect.Y, cornerRadius * 2, cornerRadius * 2, 180, 90);
-            roundedRect.AddLine(rect.X + cornerRadius, rect.Y, rect.Right - cornerRadius * 2, rect.Y);
-            roundedRect.AddArc(rect.X + rect.Width - cornerRadius * 2, rect.Y, cornerRadius * 2, cornerRadius * 2, 270, 90);
-            roundedRect.AddLine(rect.Right, rect.Y + cornerRadius * 2, rect.Right, rect.Y + rect.Height - cornerRadius * 2);
-            roundedRect.AddArc(rect.X + rect.Width - cornerRadius * 2, rect.Y + rect.Height - cornerRadius * 2, cornerRadius * 2, cornerRadius * 2, 0, 90);
-            roundedRect.AddLine(rect.Right - cornerRadius * 2, rect.Bottom, rect.X + cornerRadius * 2, rect.Bottom);
-            roundedRect.AddArc(rect.X, rect.Bottom - cornerRadius * 2, cornerRadius * 2, cornerRadius * 2, 90, 90);
-            roundedRect.AddLine(rect.X, rect.Bottom - cornerRadius * 2, rect.X, rect.Y + cornerRadius * 2);
-            roundedRect.CloseFigure();
-            g.DrawLine(new Pen(new SolidBrush(panelColorConfilg.HoverColor)), ps, pt);
-            g.FillEllipse(new SolidBrush(panelColorConfilg.HoverColor), (pt.X + ps.X) / 2 - 2, (pt.Y + ps.Y) / 2 - 2, 4, 4);
-            g.DrawPath(new Pen(panelColorConfilg.BorderColor, 2), roundedRect);
-            g.FillPath(new SolidBrush(panelColorConfilg.AttrColor), roundedRect);
-            g.DrawString(s, AttrFont, new SolidBrush(panelColorConfilg.TextColor), rect);
+            Render.DrawEdgeSelected(g, e, _Attrfont, ps, pt);
         }
         
         #endregion

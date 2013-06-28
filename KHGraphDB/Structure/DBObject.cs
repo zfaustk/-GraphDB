@@ -10,7 +10,8 @@ namespace KHGraphDB.Structure
     public class DBObject : IDBObject
     {
         #region EventHandler
-        public delegate void GraphEventHandler(object sender, object v);
+        public event ObjectAttributeGhangeEventHandler OnAttributeGhange = new ObjectAttributeGhangeEventHandler(AttributeGhange);
+        private static void AttributeGhange(IDBObject sender) { ; }
         #endregion
 
 
@@ -40,21 +41,24 @@ namespace KHGraphDB.Structure
         {
             get
             {
-                string key = theKey.Trim().ToLower();
-                return _Attributes.ContainsKey(key)? _Attributes[key] : null;
+                if (theKey == null) return null;
+                return _Attributes.ContainsKey(theKey)? _Attributes[theKey] : null;
             }
             set
             {
-                string key = theKey.Trim().ToLower();
-                _Attributes[key] = value;
+                if (theKey == null) return;
+                _Attributes[theKey] = value;
+                OnAttributeGhange(this);
             }
         }
 
         public bool RemoveAttribute(string theKey)
         {
-            string key = theKey.Trim().ToLower();
-            if(_Attributes.ContainsKey(key))
-                return _Attributes.Remove(key);
+
+            if(_Attributes.ContainsKey(theKey)){
+                OnAttributeGhange(this);
+                return _Attributes.Remove(theKey);
+            }
             return false;
         }
 
@@ -64,15 +68,29 @@ namespace KHGraphDB.Structure
 
         protected void InitDBObject()
         {
-            InitDBObject(null);
+            InitDBObject(null,null);
+        }
+
+        protected void InitDBObject(string ID)
+        {
+            InitDBObject(ID, null);
         }
 
         protected void InitDBObject(IDictionary<string, object> attributes)
         {
-            _khID = Guid.NewGuid().ToString();
-            _Attributes = (attributes == null) ? new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase) : attributes;
+            InitDBObject(null, attributes);
+        }
+
+        protected void InitDBObject(string ID,IDictionary<string, object> attributes)
+        {
+            _khID = (ID == null)? Guid.NewGuid().ToString() : ID;
+            _Attributes = (attributes == null) ?
+                new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase) :
+                new Dictionary<string, object>(attributes,StringComparer.OrdinalIgnoreCase);
             _AlgorithmObj = new Dictionary<string, object>();
         }
+
+
 
         #endregion
 
@@ -158,5 +176,8 @@ namespace KHGraphDB.Structure
         #endregion
 
 
+
+
+        
     }
 }

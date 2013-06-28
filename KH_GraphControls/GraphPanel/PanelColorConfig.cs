@@ -89,5 +89,15 @@ namespace KH_GraphControls.GraphPanel
             get { return this._AttrColor; }
             set { this._AttrColor = value; }
         }
+
+        private Color _HighLightColor = Color.FromArgb(55, 182, 124);
+        /// <summary>  
+        /// 高亮颜色 
+        /// </summary>  
+        public Color HighLightColor
+        {
+            get { return this._HighLightColor; }
+            set { this._HighLightColor = value; }
+        }
     }
 }

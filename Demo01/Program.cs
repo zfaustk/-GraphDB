@@ -16,22 +16,22 @@ namespace Demo01
         {
             Graph graph = new Graph();
 
-            KHGraphDB.Structure.Type student = new KHGraphDB.Structure.Type(new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase){
+            KHGraphDB.Structure.Type student = new KHGraphDB.Structure.Type(new Dictionary<string, object>(){
                 {"Name","Student"},
             });
 
-            Vertex peiming = new Vertex(new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase){
+            Vertex peiming = new Vertex(new Dictionary<string, object>(){
                 {"Name","Peiming"},
                 {"Age","22"},
                 {"Game","Gal"}
             });
 
-            Vertex weidong = new Vertex(new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase){
+            Vertex weidong = new Vertex(new Dictionary<string, object>(){
                 {"Name","Weidong"},
                 {"Age","22"}
             });
 
-            Vertex yidong = new Vertex(new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase){
+            Vertex yidong = new Vertex(new Dictionary<string, object>(){
                 {"Name","Yidong"},
                 {"Age","21"}
             });
@@ -50,17 +50,17 @@ namespace Demo01
             Console.WriteLine(yidong.IncomingEdges.Count());
             Console.WriteLine(weidong.IncomingEdges.Count());
 
-            
 
-            Edge friendPY = new Edge(peiming, yidong, new Dictionary<string, object>(){
+
+            Edge friendPY = new Edge(peiming, yidong, new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase){
                 {"relationship","friend"},
             });
 
-            Edge friendYP = new Edge(yidong, peiming, new Dictionary<string, object>(){
+            Edge friendYP = new Edge(yidong, peiming, new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase){
                 {"relationship",null},
             });
 
-            Edge friendYW = new Edge(yidong, weidong, new Dictionary<string, object>(){
+            Edge friendYW = new Edge(yidong, weidong, new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase){
                 {"relationship","friend"},
             });
 
@@ -80,7 +80,6 @@ namespace Demo01
             Console.WriteLine(weidong.ToString());
 
             Console.WriteLine(weidong["Name"]);
-
             Console.WriteLine("+++");
             BreadthFirstSearch bfs01 = new BreadthFirstSearch();
             var path = bfs01.Search(graph, peiming, weidong);

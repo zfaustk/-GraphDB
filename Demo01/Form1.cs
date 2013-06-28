@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using KHGraphDB.Algorithm;
+using KHGraphDB.Helper;
 using KHGraphDB.Structure;
 using KHGraphDB.Structure.Interface;
 
@@ -19,21 +21,48 @@ namespace Demo01
             InitializeComponent();
         }
 
+        private GraphHelper vHelper;
+
         public void AddGraph(Graph g)
         {
             this.panel1.Graph = g;
+            vHelper = new GraphHelper(g);
         }
 
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Vertex aa = new Vertex(new Dictionary<string, object>(){
+            IVertex aa = vHelper.AddVertex(null, new Dictionary<string, object>(){
                     {"Name",textBox1.Text}
                 });
-            IVertex v = panel1.Graph.Vertices.SingleOrDefault(m =>"Peiming".Equals(m["Name"]) );
-            this.panel1.Graph.AddVertex(aa);
-            IEdge ee = new Edge(v,aa);
-            panel1.Graph.AddEdge(ee);
+            //new Vertex(new Dictionary<string, object>(){
+            //        {"Name",textBox1.Text}
+            //    });
+            IEnumerable<IVertex> vs = vHelper.Select("name", "Peiming");
+                //panel1.Graph.Vertices.SingleOrDefault(m =>"Peiming".Equals(m["Name"]) );
+            IEdge ee;
+            foreach(var v in vs){
+                ee = new Edge(v,aa);
+                panel1.Graph.AddEdge(ee);
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if(string.IsNullOrEmpty(textBox2.Text))return;
+
+            IVertex v = panel1.Graph.Vertices.SingleOrDefault(m => "Peiming".Equals(m["Name"]));
+            v[textBox2.Text] = "Add";
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            BreadthFirstSearch bfs = new BreadthFirstSearch();
+            IVertex v = panel1.Graph.Vertices.SingleOrDefault(m => "Peiming".Equals(m["name"]));
+            IVertex vw = panel1.Graph.Vertices.SingleOrDefault(m => "Weidong".Equals(m["Name"]));
+            if (panel1.HighLightList == null)
+                panel1.HighLightList = bfs.Search(panel1.Graph, v, vw);
+            else panel1.HighLightList = null;
         }
     }
 }

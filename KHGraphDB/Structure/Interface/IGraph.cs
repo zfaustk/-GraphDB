@@ -80,10 +80,16 @@ namespace KHGraphDB.Structure.Interface
 
         IVertex AddVertex(IDictionary<string, object> Attributes);
 
+        IVertex AddVertex(IDictionary<string, object> attributes, IType theType);
+
         bool AddVertex(IVertex theVertex);
+
+        bool AddVertex(IVertex theVertex, IType theType);
 
         /// <returns>The vertices which were not added</returns>
         IEnumerable<IVertex> AddVertices(IEnumerable<IVertex> Vertices);
+
+        IEnumerable<IVertex> AddVertices(IEnumerable<IVertex> vertices, IType theType);
 
         #endregion
 

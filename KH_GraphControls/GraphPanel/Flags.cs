@@ -16,6 +16,7 @@ namespace KH_GraphControls.GraphPanel
             Hover       =   0x02,	// We're hovering over this element
             DraggedOver =   0x04,	// We're dragging over this element
             Dragging    =   0x08,	// We're dragging (or dragging from) this element
+            HighLight   =   0x10,	// We're hovering over this element
         }
     }
 }
