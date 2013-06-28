@@ -11,6 +11,7 @@ using KHGraphDB.Structure.Interface;
 using KHGraphDB.Structure;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
+using KHGraphDB.Helper;
 
 namespace KH_GraphControls.GraphPanel
 {
@@ -33,6 +34,7 @@ namespace KH_GraphControls.GraphPanel
         private string _KH_PANE_LOCATION = "_KH_PANE_LOCATION";
         private string _KH_PANE_DEPTH = "_KH_PANE_DEPTH";
         private string _KH_PANE_BOUNDS = "_KH_PANE_BOUNDS";
+        private GraphHelper ghelper;
         #endregion
 
         public override Font Font
@@ -100,6 +102,8 @@ namespace KH_GraphControls.GraphPanel
             graph.OnRemoveVertex += OnRemoveVertex;
             graph.OnRemoveEdge += OnRemoveEdge;
             graph.OnRemoveType += OnRemoveType;
+
+            ghelper = new GraphHelper(_graph);
 
             this.Refresh();
 
@@ -721,7 +725,7 @@ namespace KH_GraphControls.GraphPanel
                 if (hover) hoverVertex = v;
             }
 
-            if (hoverEdge != null) OnPaint_DrawEdgeInfo(e.Graphics, hoverEdge);
+            if (hoverEdge != null) OnPaint_DrawEdgesInfo(e.Graphics, hoverEdge, ghelper.SelectParallelEdges(hoverEdge));
             if (hoverVertex != null) OnPaint_DrawVertexInfo(e.Graphics, hoverVertex);
         }
 
@@ -737,6 +741,16 @@ namespace KH_GraphControls.GraphPanel
             var ps = (PointF)e.Source.GetAlgorithmObj(_KH_PANE_LOCATION);
             var pt = (PointF)e.Target.GetAlgorithmObj(_KH_PANE_LOCATION);
             Render.DrawEdgeSelected(g, e, _Attrfont, ps, pt);
+        }
+
+        protected void OnPaint_DrawEdgesInfo(Graphics g, IEdge e, IEnumerable<IEdge> es)
+        {
+            var ps = (PointF)e.Source.GetAlgorithmObj(_KH_PANE_LOCATION);
+            var pt = (PointF)e.Target.GetAlgorithmObj(_KH_PANE_LOCATION);
+            if(es.Count()>=2)
+                Render.DrawParallelEdgeSelected(g, e, es,_Attrfont, ps, pt);
+            else
+                Render.DrawEdgeSelected(g, e, _Attrfont, ps, pt);
         }
         
         #endregion

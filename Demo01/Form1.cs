@@ -35,15 +35,16 @@ namespace Demo01
             IVertex aa = vHelper.AddVertex(null, new Dictionary<string, object>(){
                     {"Name",textBox1.Text}
                 });
-            //new Vertex(new Dictionary<string, object>(){
-            //        {"Name",textBox1.Text}
-            //    });
-            IEnumerable<IVertex> vs = vHelper.Select("name", "Peiming");
-                //panel1.Graph.Vertices.SingleOrDefault(m =>"Peiming".Equals(m["Name"]) );
-            IEdge ee;
+
+            IEnumerable<IVertex> vs = vHelper.SelectVerteics("name", "Peiming", "student");
+
             foreach(var v in vs){
-                ee = new Edge(v,aa);
-                panel1.Graph.AddEdge(ee);
+                vHelper.AddEdge(v, aa, new Dictionary<string, object>(){
+                    {"name","add"}
+                });
+                vHelper.AddEdge(v, aa, new Dictionary<string, object>(){
+                    {"name","add2"}
+                });
             }
         }
 

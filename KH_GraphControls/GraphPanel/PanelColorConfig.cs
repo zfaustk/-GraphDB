@@ -90,6 +90,16 @@ namespace KH_GraphControls.GraphPanel
             set { this._AttrColor = value; }
         }
 
+        private Color _BorderSliptColor = Color.FromArgb(82, 82, 98);
+        /// <summary>  
+        /// 属性分界线颜色
+        /// </summary>  
+        public Color BorderSliptColor
+        {
+            get { return this._BorderSliptColor; }
+            set { this._BorderSliptColor = value; }
+        }
+
         private Color _HighLightColor = Color.FromArgb(55, 182, 124);
         /// <summary>  
         /// 高亮颜色 
@@ -99,5 +109,7 @@ namespace KH_GraphControls.GraphPanel
             get { return this._HighLightColor; }
             set { this._HighLightColor = value; }
         }
+
+        
     }
 }
