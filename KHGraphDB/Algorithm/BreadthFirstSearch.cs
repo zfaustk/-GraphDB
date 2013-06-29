@@ -10,6 +10,7 @@ namespace KHGraphDB.Algorithm
 {
     public class BreadthFirstSearch : Algorithm , IAlgorithm
     {
+        #region Construct
         protected enum Color
         {
             GREEN, RED, WHITE
@@ -28,6 +29,10 @@ namespace KHGraphDB.Algorithm
         /// </summary>
         protected String PREDECESSOR_ATTRIBUTE_KEY;
 
+        #endregion
+
+        #region IAlgorithm
+
         public void BeginAlgorithm(IGraph theGraph)
         {
             COLOR_ATTRIBUTE_KEY         = KHID + "__color";
@@ -42,8 +47,6 @@ namespace KHGraphDB.Algorithm
             });
         }
 
-
-
         public void EndAlgorithm(IGraph theGraph)
         {
             Parallel.ForEach<IVertex>(theGraph.Vertices, v =>
@@ -54,6 +57,9 @@ namespace KHGraphDB.Algorithm
             });
         }
 
+        #endregion
+
+        #region Search
 
         public List<IVertex> Search(IGraph theGraph, IVertex theSource, IVertex theTarget, Func<IVertex, bool> theMatchingFunc = null)
         {
@@ -170,12 +176,7 @@ namespace KHGraphDB.Algorithm
             return null;
         }
 
-
-
-
-
-
-
+        #endregion
 
     }
 }
