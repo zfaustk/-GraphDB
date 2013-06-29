@@ -57,6 +57,7 @@
     <Compile Include="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="Grammar\Grammar.cs" />
     <Compile Include="KHCodeTextBox\CodeTextBox.cs">
       <SubType>Component</SubType>
     </Compile>

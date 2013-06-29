@@ -177,9 +177,17 @@ namespace KHGraphDB.Structure
 
         public bool AddVertex(IVertex theVertex, IType theType)
         {
+            if (theVertex == null) return false;
+
+            IVertex v = Vertices.SingleOrDefault(m => m.KHID == theVertex.KHID);
+            if (v != null && v != theVertex) return false;
+
+
             if (_Vertices.Contains(theVertex))
             {
-                return false;
+                if (theType != null)
+                    theType.AddVertex(theVertex);
+                return true;
             }
 
             if (_Vertices.Add(theVertex))
@@ -317,14 +325,19 @@ namespace KHGraphDB.Structure
         public bool AddType(IType theType)
         {
             if (theType == null) return false;
-            if (!_Types.Contains(theType))
+
+            IType t = Types.SingleOrDefault(m => m.KHID == theType.KHID);
+            if (t != null && t != theType) return false;
+
+            if(_Types.Contains(theType))return true;
+
+
+            if (_Types.Add(theType))
             {
-                if (_Types.Add(theType))
-                {
-                    theType.Graph = this;
-                    OnAddType(this, theType);
-                    return true;
-                }
+                theType.Graph = this;
+                OnAddType(this, theType);
+                return true;
+
             }
             return false;
         }
@@ -394,6 +407,11 @@ namespace KHGraphDB.Structure
 
         public bool AddEdge(IEdge theEdge)
         {
+            if (theEdge == null) return false;
+
+            IEdge e = Edges.SingleOrDefault(m => m.KHID == theEdge.KHID);
+            if (e != null && e != theEdge ) return false;
+
             if (!_Edges.Contains(theEdge)
                 && _Vertices.Contains(theEdge.Source)
                 && _Vertices.Contains(theEdge.Target))
@@ -407,23 +425,25 @@ namespace KHGraphDB.Structure
                 {
                     // use the same edge as incoming edge for target vertex
                     added = target.AddIncomingEdge(theEdge);
-                }
-
-                if (added)
-                {
-                    if (_Edges.Add(theEdge))
+                    if (added)
                     {
-                        theEdge.Graph = this;
-                        _EdgeCount++;
-                        OnAddEdge(this, theEdge);
-                        return true;
+                        if (_Edges.Add(theEdge))
+                        {
+                            theEdge.Graph = this;
+                            _EdgeCount++;
+                            OnAddEdge(this, theEdge);
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        source.RemoveOutgoingEdge(theEdge);
                     }
                 }
-
                 return false;
             }
 
-            return false;
+            return true;
         }
 
         public IEnumerable<IEdge> AddEdges(IEnumerable<IEdge> theEdges)

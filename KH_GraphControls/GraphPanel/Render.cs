@@ -24,8 +24,8 @@ namespace KH_GraphControls.GraphPanel
         static Pen penEdge = new Pen(brushEdge);
         static Pen penHighLight = new Pen(brushHighLight);
         static Pen penHover = new Pen(brushHover);
-        static Pen penAttrBorder = new Pen(panelColorConfig.BorderColor,3);
-
+        static Pen penAttrBorder = new Pen(panelColorConfig.BorderColor,2);
+        static Pen penAttrBorderSlipt = new Pen(panelColorConfig.BorderSliptColor, 1);
 
         /// <summary>
         /// Draw a Vertex
@@ -61,8 +61,45 @@ namespace KH_GraphControls.GraphPanel
             g.DrawLine(penHover, ps, pt);
             g.FillEllipse(brushHover, (pt.X + ps.X) / 2 - 2, (pt.Y + ps.Y) / 2 - 2, 4, 4);
 
-            g.DrawPath(penAttrBorder, roundedRect);
             g.FillPath(brushAttrPanel, roundedRect);
+            g.DrawPath(penAttrBorder, roundedRect);
+            g.DrawString(s, f, brushText, rect);
+        }
+
+        public static void DrawParallelEdgeSelected(Graphics g, IEdge e, IEnumerable<IEdge> es, Font f, PointF pSource, PointF pTarget, int Radius = 5)
+        {
+            var ps = pSource;
+            var pt = pTarget;
+            String s = "";
+            List<float> Heights = new List<float>();
+            foreach (var et in es)
+            {
+                string str = et.AttributesToString();
+                s += str;
+                Heights.Add(g.MeasureString(str, f).Height);
+            }
+
+            SizeF size = g.MeasureString(s, f);
+            PointF location = new PointF((pt.X * 2 + 3 * ps.X) / 5 - 4, (pt.Y * 2 + ps.Y * 3) / 5 - 4);
+            RectangleF rect = new RectangleF(location, size);
+            GraphicsPath roundedRect = GetRoundedRect(rect, Radius);
+
+            g.DrawLine(penHover, ps, pt);
+            g.FillEllipse(brushHover, (pt.X + ps.X) / 2 - 2, (pt.Y + ps.Y) / 2 - 2, 4, 4);
+
+            float hM = -1;
+            
+            
+            g.FillPath(brushAttrPanel, roundedRect);
+            
+            foreach (var h in Heights)
+            {
+                hM += h;
+                g.DrawLine(penAttrBorderSlipt, location.X + Radius, location.Y + hM, location.X + size.Width - Radius, location.Y + hM);
+            }
+
+            g.DrawPath(penAttrBorder, roundedRect);
+
             g.DrawString(s, f, brushText, rect);
         }
 
@@ -75,8 +112,8 @@ namespace KH_GraphControls.GraphPanel
 
             g.FillEllipse(brushHover, r);
 
-            g.DrawPath(penAttrBorder, roundedRect);
             g.FillPath(brushAttrPanel, roundedRect);
+            g.DrawPath(penAttrBorder, roundedRect);
             g.DrawString(s, f, brushText, rect);
         }
 

@@ -26,6 +26,12 @@ namespace KHGraphDBMS
 
         #endregion
 
+        #region Prop
+        Graph graph = new Graph();
+        Grammar.Grammar grammar;
+
+        #endregion
+
         public FormMain()
         {
             InitializeComponent();
@@ -46,7 +52,8 @@ namespace KHGraphDBMS
 
             #region Graph test
 
-            Graph graph = new Graph();
+            graph = new Graph();
+            grammar = new Grammar.Grammar(graph);
 
             KHGraphDB.Structure.Type student = new KHGraphDB.Structure.Type(new Dictionary<string, object>(){
                 {"Name","Student"},
@@ -168,6 +175,11 @@ namespace KHGraphDBMS
             //    nIndex += 5;
             //}
             //richTextBox1.Select(nSelectStart, nSelectLength);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            grammar.Exert(textArea1.CodeText);
         }
 
        
