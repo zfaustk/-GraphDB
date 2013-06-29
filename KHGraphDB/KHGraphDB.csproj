@@ -47,6 +47,9 @@
     <Compile Include="Algorithm\IAlgorithm.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="Helper\GraphHelper.cs" />
+    <Compile Include="Helper\GraphReader.cs" />
+    <Compile Include="Helper\GraphWriter.cs" />
+    <Compile Include="Helper\IGraphHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Structure\DBObject.cs" />
     <Compile Include="Structure\Edge.cs" />

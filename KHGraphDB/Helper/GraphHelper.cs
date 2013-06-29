@@ -4,12 +4,13 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KHGraphDB.Algorithm;
 using KHGraphDB.Structure;
 using KHGraphDB.Structure.Interface;
 
 namespace KHGraphDB.Helper
 {
-    public class GraphHelper
+    public class GraphHelper : KHGraphDB.Helper.IGraphHelper 
     {
         /// <summary>
         /// 获取和设置相关联的图
@@ -185,6 +186,118 @@ namespace KHGraphDB.Helper
         }
 
         #endregion
+
+        #endregion
+
+        #region Type
+
+        #region Add
+
+        public IType AddType(IType t)
+        {
+            if (Graph.AddType(t))
+                return t;
+            return null;
+        }
+
+        public IType AddType(string Name)
+        {
+            return AddType(null, Name);
+        }
+
+        public IType AddType(string ID, string Name, IDictionary<string, object> theAttributes = null)
+        {
+            if (SelectSingleType("name", Name) != null) return null;
+            if (theAttributes == null)
+            {
+                IType t = new KHGraphDB.Structure.Type(ID, new Dictionary<string, object>(){
+                    {"name",Name}
+                });
+                return AddType(t);
+            }
+            else
+            {
+                theAttributes["name"] = Name;
+                IType t = new KHGraphDB.Structure.Type(ID, theAttributes);
+                return AddType(t);
+            }
+        }
+
+        #endregion
+
+        #region Remove
+        public bool RemoveType(string ID)
+        {
+            IType t = Graph.Types.SingleOrDefault(m => m.KHID == ID);
+            return RemoveType(t);
+        }
+
+        public bool RemoveType(IType t)
+        {
+            return Graph.RemoveType(t);
+        }
+        #endregion
+
+        #region select
+
+        public IType SelectSingleType(string ID)
+        {
+            return Graph.Types.SingleOrDefault(m => m.KHID == ID);
+        }
+
+        public IType SelectSingleType(string key, object value)
+        {
+            return Graph.Types.SingleOrDefault(m => m[key] == value);
+        }
+
+        public IType SelectSingleTypeName(string Name)
+        {
+            return Graph.Types.SingleOrDefault(m => Name.Equals(m["name"]));
+        }
+
+        public IEnumerable<IType> SelectTypes(string key, object value, string orderbyKey = null, IEnumerable<IType> types = null)
+        {
+            return from t in (types == null) ? Graph.Types : types
+                   where t[key] == value
+                   orderby (orderbyKey == null) ? null : t[orderbyKey]
+                   select t;
+        }
+
+
+        #endregion
+
+        #endregion
+
+        #region Algorithm
+
+        BreadthFirstSearch bfs = new BreadthFirstSearch();
+
+        public IEnumerable<IVertex> FindPathVertex(IVertex vSource, IVertex vTarget)
+        {
+            return bfs.Search(Graph, vSource, vTarget);
+        }
+
+        public IEnumerable<IVertex> FindPathVertexAttrExist(IVertex vSource, IVertex vTarget, string AttrKey)
+        {
+            Func<IVertex, bool> exist = v => v.Attributes.Keys.Contains(AttrKey);
+            return FindPathVertexAdapt(vSource, vTarget, exist);
+        }
+
+        public IEnumerable<IVertex> FindPathVertexAttrExist(IVertex vSource, IVertex vTarget, string AttrKey, object value)
+        {
+            Func<IVertex, bool> exist = v => v[AttrKey] == value;
+            return FindPathVertexAdapt(vSource, vTarget, exist);
+        }
+
+        public IEnumerable<IVertex> FindPathVertexAdapt(IVertex vSource, IVertex vTarget, Func<IVertex, bool> Adapter)
+        {
+            return bfs.Search(Graph, vSource, vTarget, Adapter);
+        }
+
+        public IEnumerable<IDBObject> FindPath(IVertex vSource, IVertex vTarget)
+        {
+            return bfs.Search(Graph, vSource, vTarget);
+        }
 
         #endregion
 
