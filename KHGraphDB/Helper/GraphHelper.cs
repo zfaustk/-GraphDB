@@ -294,6 +294,11 @@ namespace KHGraphDB.Helper
             return bfs.Search(Graph, vSource, vTarget, Adapter);
         }
 
+        public IEnumerable<IDBObject> FindPath(IVertex vSource, IVertex vTarget)
+        {
+            return bfs.Search(Graph, vSource, vTarget);
+        }
+
         #endregion
 
     }
