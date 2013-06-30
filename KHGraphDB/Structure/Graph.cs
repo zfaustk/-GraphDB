@@ -24,7 +24,6 @@ namespace KHGraphDB.Structure
         public static void GraphEdgeEvent(object sender, IEdge v) { ; }
         public static void GraphTypeEvent(object sender, IType v) { ; }
         #endregion
-        
 
         #region private members
 
@@ -331,6 +330,7 @@ namespace KHGraphDB.Structure
 
             if(_Types.Contains(theType))return true;
 
+            if (String.IsNullOrEmpty(theType.Name)) return false;
 
             if (_Types.Add(theType))
             {
@@ -342,9 +342,10 @@ namespace KHGraphDB.Structure
             return false;
         }
 
-        public IType AddType(IDictionary<string, object> attributes)
+        public IType AddType(string Name , IDictionary<string, object> attributes)
         {
             Type t = new Type(attributes);
+            t.Name = Name;
             return AddType(t) ? t : null ;
         }
 
@@ -431,7 +432,9 @@ namespace KHGraphDB.Structure
                         {
                             theEdge.Graph = this;
                             _EdgeCount++;
+
                             OnAddEdge(this, theEdge);
+
                             return true;
                         }
                     }

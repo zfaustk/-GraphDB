@@ -35,6 +35,8 @@ namespace KH_GraphControls.GraphPanel
         private string _KH_PANE_DEPTH = "_KH_PANE_DEPTH";
         private string _KH_PANE_BOUNDS = "_KH_PANE_BOUNDS";
         private GraphHelper ghelper;
+
+        private bool NeedRefresh = false;
         #endregion
 
         public override Font Font
@@ -81,7 +83,7 @@ namespace KH_GraphControls.GraphPanel
                 v.SetAlgorithmObj(Flags.State.DraggedOver.ToString(), false);
                 v.SetAlgorithmObj(Flags.State.Dragging.ToString(), false);
                 v.SetAlgorithmObj(Flags.State.HighLight.ToString(), false);
-                v.OnAttributeGhange += OnAttributeChange;
+                v.OnAttributeChange += OnAttributeChange;
             });
 
             Parallel.ForEach<IEdge>(Graph.Edges, e =>
@@ -93,7 +95,7 @@ namespace KH_GraphControls.GraphPanel
                 e.SetAlgorithmObj(Flags.State.DraggedOver.ToString(), false);
                 e.SetAlgorithmObj(Flags.State.Dragging.ToString(), false);
                 e.SetAlgorithmObj(Flags.State.HighLight.ToString(), false);
-                e.OnAttributeGhange += OnAttributeChange;
+                e.OnAttributeChange += OnAttributeChange;
             });
             
             graph.OnAddVertex += OnAddVertex;
@@ -105,9 +107,24 @@ namespace KH_GraphControls.GraphPanel
 
             ghelper = new GraphHelper(_graph);
 
+            System.Timers.Timer t = new System.Timers.Timer(1000);//实例化Timer
+            t.Elapsed += new System.Timers.ElapsedEventHandler(theoutRefresh);//到达时间的时候执行事件；
+            t.AutoReset = true;//设置是执行一次（false）还是一直执行(true)；
+            t.Enabled = true;//是否执行System.Timers.Timer.Elapsed事件；
+
             this.Refresh();
 
         }
+
+        #region 定时器
+
+        public void theoutRefresh(object source, System.Timers.ElapsedEventArgs e)
+        {
+            if(NeedRefresh)
+                this.Refresh();
+        }
+
+        #endregion
 
 
         #region Grapg Delegate
@@ -130,8 +147,9 @@ namespace KH_GraphControls.GraphPanel
             vertex.SetAlgorithmObj(Flags.State.DraggedOver.ToString(), false);
             vertex.SetAlgorithmObj(Flags.State.Dragging.ToString(), false);
             vertex.SetAlgorithmObj(Flags.State.HighLight.ToString(), false);
-            vertex.OnAttributeGhange += OnAttributeChange;
-            this.Refresh();
+            vertex.OnAttributeChange += OnAttributeChange;
+            NeedRefresh = true;
+            //this.Refresh();
         }
         private void OnAddEdge(object sender, IEdge edge)
         {
@@ -143,8 +161,9 @@ namespace KH_GraphControls.GraphPanel
             edge.SetAlgorithmObj(Flags.State.DraggedOver.ToString(), false);
             edge.SetAlgorithmObj(Flags.State.Dragging.ToString(), false);
             edge.SetAlgorithmObj(Flags.State.HighLight.ToString(), false);
-            edge.OnAttributeGhange += OnAttributeChange;
-            this.Refresh();
+            edge.OnAttributeChange += OnAttributeChange;
+            NeedRefresh = true;
+            //this.Refresh();
         }
         private void OnAddType(object sender, IType type)
         {
@@ -685,48 +704,51 @@ namespace KH_GraphControls.GraphPanel
 
             if (e.Graphics == null)
                 return;
-
-            e.Graphics.Clear(panelColorConfig.BackGroundColor);
-
-            if (this._graph.VertexCount == 0)
-                return;
-
-            UpdateMatrices();
-            e.Graphics.PageUnit = GraphicsUnit.Pixel;
-            e.Graphics.CompositingQuality = CompositingQuality.GammaCorrected;
-            e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
-            e.Graphics.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
-            e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-
-            IVertex hoverVertex = null;
-            IEdge hoverEdge = null;
-
-            e.Graphics.Transform = transformation;
-
-            foreach (Edge edge in Graph.Edges)
+            try
             {
-                var ps = (PointF)edge.Source.AlgorithmObjs[_KH_PANE_LOCATION];
-                var pt = (PointF)edge.Target.AlgorithmObjs[_KH_PANE_LOCATION];
-                var hover = (bool)edge.GetAlgorithmObj(Flags.State.Hover.ToString());
-                var highlight = (bool)edge.GetAlgorithmObj(Flags.State.HighLight.ToString());
-                Render.DrawEdge(e.Graphics, edge, ps, pt, highlight);
-                if (hover) hoverEdge = edge;
-            }
+                e.Graphics.Clear(panelColorConfig.BackGroundColor);
 
-            foreach (Vertex v in Graph.Vertices)
-            {
-                var p = (PointF)v.AlgorithmObjs[_KH_PANE_LOCATION];
-                var rect = (RectangleF)v.AlgorithmObjs[_KH_PANE_BOUNDS];
-                var hover = (bool)v.GetAlgorithmObj(Flags.State.Hover.ToString());
-                var highlight = (bool)v.GetAlgorithmObj(Flags.State.HighLight.ToString());
-                Render.DrawVertex(e.Graphics, v, Font, p, rect, highlight);
-                
-                if (hover) hoverVertex = v;
-            }
+                if (this._graph.VertexCount == 0)
+                    return;
 
-            if (hoverEdge != null) OnPaint_DrawEdgesInfo(e.Graphics, hoverEdge, ghelper.SelectParallelEdges(hoverEdge));
-            if (hoverVertex != null) OnPaint_DrawVertexInfo(e.Graphics, hoverVertex);
+                UpdateMatrices();
+                e.Graphics.PageUnit = GraphicsUnit.Pixel;
+                e.Graphics.CompositingQuality = CompositingQuality.GammaCorrected;
+                e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
+                e.Graphics.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
+                e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
+                IVertex hoverVertex = null;
+                IEdge hoverEdge = null;
+
+                e.Graphics.Transform = transformation;
+
+                foreach (Edge edge in Graph.Edges)
+                {
+                    var ps = (PointF)edge.Source.AlgorithmObjs[_KH_PANE_LOCATION];
+                    var pt = (PointF)edge.Target.AlgorithmObjs[_KH_PANE_LOCATION];
+                    var hover = (bool)edge.GetAlgorithmObj(Flags.State.Hover.ToString());
+                    var highlight = (bool)edge.GetAlgorithmObj(Flags.State.HighLight.ToString());
+                    Render.DrawEdge(e.Graphics, edge, ps, pt, highlight);
+                    if (hover) hoverEdge = edge;
+                }
+
+                foreach (Vertex v in Graph.Vertices)
+                {
+                    var p = (PointF)v.AlgorithmObjs[_KH_PANE_LOCATION];
+                    var rect = (RectangleF)v.AlgorithmObjs[_KH_PANE_BOUNDS];
+                    var hover = (bool)v.GetAlgorithmObj(Flags.State.Hover.ToString());
+                    var highlight = (bool)v.GetAlgorithmObj(Flags.State.HighLight.ToString());
+                    Render.DrawVertex(e.Graphics, v, Font, p, rect, highlight);
+
+                    if (hover) hoverVertex = v;
+                }
+
+                if (hoverEdge != null) OnPaint_DrawEdgesInfo(e.Graphics, hoverEdge, ghelper.SelectParallelEdges(hoverEdge));
+                if (hoverVertex != null) OnPaint_DrawVertexInfo(e.Graphics, hoverVertex);
+            }
+            catch { }
         }
 
         protected void OnPaint_DrawVertexInfo(Graphics g,IVertex v)
