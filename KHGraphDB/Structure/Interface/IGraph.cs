@@ -51,7 +51,7 @@ namespace KHGraphDB.Structure.Interface
 
         #region Add
 
-        IType AddType(IDictionary<string, object> attributes);
+        IType AddType(string Name, IDictionary<string, object> attributes = null);
 
         bool AddType(IType theType);
 
