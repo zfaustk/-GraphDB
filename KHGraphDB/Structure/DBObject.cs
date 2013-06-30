@@ -10,8 +10,8 @@ namespace KHGraphDB.Structure
     public class DBObject : IDBObject
     {
         #region EventHandler
-        public event ObjectAttributeGhangeEventHandler OnAttributeGhange = new ObjectAttributeGhangeEventHandler(AttributeGhange);
-        private static void AttributeGhange(IDBObject sender) { ; }
+        public event ObjectAttributeGhangeEventHandler OnAttributeChange = new ObjectAttributeGhangeEventHandler(AttributeChange);
+        private static void AttributeChange(IDBObject sender) { ; }
         #endregion
 
 
@@ -48,7 +48,7 @@ namespace KHGraphDB.Structure
             {
                 if (theKey == null) return;
                 _Attributes[theKey] = value;
-                OnAttributeGhange(this);
+                OnAttributeChange(this);
             }
         }
 
@@ -56,7 +56,7 @@ namespace KHGraphDB.Structure
         {
 
             if(_Attributes.ContainsKey(theKey)){
-                OnAttributeGhange(this);
+                OnAttributeChange(this);
                 return _Attributes.Remove(theKey);
             }
             return false;
