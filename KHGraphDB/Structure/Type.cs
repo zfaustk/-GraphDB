@@ -19,6 +19,8 @@ namespace KHGraphDB.Structure
 
         Int64 _VertexCount;
 
+        private string _Name;
+
         #endregion
 
 
@@ -63,6 +65,12 @@ namespace KHGraphDB.Structure
                     yield return v;
                 }
             } 
+        }
+
+        public String Name
+        {
+            get { return _Name; }
+            set { _Name = value; }
         }
 
         #endregion
