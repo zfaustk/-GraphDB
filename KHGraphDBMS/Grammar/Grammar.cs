@@ -64,6 +64,10 @@ namespace KHGraphDBMS.Grammar
             str = str.Replace(".", " . ");
             str = str.Replace("(", " ( ");
             str = str.Replace(")", " ) ");
+            str = str.Replace("-", " - ");
+            str = str.Replace(">", " > ");
+            str = str.Replace("[", " [ ");
+            str = str.Replace("]", " ] ");
             return str;
         }
         //返回单词类型
@@ -133,13 +137,104 @@ namespace KHGraphDBMS.Grammar
             //边的create
             if (settype(strArray[count]) == wordtype.edge)
             {
-                string vsrc, vdest;
+                string keysrc, keydest;
+                object valsrc, valdest;
+                int path;
+                Dictionary<string, object> key_val = new Dictionary<string, object>();
                 count++;
                 if (settype(strArray[count]) == wordtype.vertex)
                 {
                     count++;
                     if (strArray[count] == "(")
                     {
+                        count++;
+                        keysrc = strArray[count];
+                        count++;
+                        if (strArray[count] == ":")
+                        {
+                            count++;
+                            valsrc = valtype();
+                            if (strArray[count - 3] == "\"" && strArray[count - 1] != "\"")
+                                return false;
+                            if(strArray[count]==")")
+                            {
+                                count++;
+                                if (strArray[count] == "-")
+                                {
+                                    count++;
+                                    if (strArray[count] == "[")
+                                    {
+                                        count++;
+                                        if(!edgekandv(key_val))
+                                            return false;
+                                        while (strArray[count] == ",")
+                                        {
+                                            if (!edgekandv(key_val))
+                                                return false;
+                                        }
+                                        if (strArray[count] == "]")
+                                        {
+                                            count++;
+                                            if (strArray[count] == "-")
+                                            {
+                                                count++;
+                                                if (strArray[count] == ">")
+                                                {
+                                                    count++;
+                                                    path = 1;
+                                                }
+                                                else
+                                                    path = 2;
+                                                if (settype(strArray[count])==wordtype.vertex)
+                                                {
+                                                    count++;
+                                                    if (strArray[count] == "(")
+                                                    {
+                                                        count++;
+                                                        keydest = strArray[count];
+                                                        count++;
+                                                        if (strArray[count] == ":")
+                                                        {
+                                                            count++;
+                                                            valdest= valtype();
+                                                            if (strArray[count - 3] == "\"" && strArray[count - 1] != "\"")
+                                                                return false;
+                                                            if (strArray[count] == ")")
+                                                            {
+                                                                count++;
+                                                                makeedge(key_val, keysrc, keydest, valsrc, valdest, path);
+                                                                return true;
+                                                            }
+                                                            else
+                                                                return false;
+                                                        }
+                                                        else
+                                                            return false;
+                                                    }
+                                                    else
+                                                        return false;
+                                                }
+                                                else
+                                                    return false;
+                                            }
+                                            else
+                                                return false;
+                                        }
+                                        else
+                                            return false;
+
+                                    }
+                                    else
+                                        return false;
+                                }
+                                else
+                                    return false;
+                            }
+                            else
+                                return false;
+                        }
+                        else
+                            return false;
                     }
                     else
                         return false;
@@ -147,16 +242,6 @@ namespace KHGraphDBMS.Grammar
                 else
                     return false;
             }
-
-
-
-
-
-
-
-
-
-
             return false;
         }
         //vertex的create
@@ -348,6 +433,49 @@ namespace KHGraphDBMS.Grammar
             return null;
         }
         //edge的create
+        //edge边键值的生成
+        private bool edgekandv(Dictionary<string, object> dic)
+        {
+            string key;
+            object val;
+            key = strArray[count];
+            count++;
+            if (strArray[count] == ":")
+            {
+                count++;
+                val = valtype();
+                if (strArray[count - 3] == "\"" && strArray[count - 1] != "\"")
+                    return false;
+                dic[key] = val;
+                return true;
+            }
+            else
+            {
+                    val = null;
+                    return true;
+            }
+        }
+        //edge边的生成
+        private void makeedge(Dictionary<string, object> dic, string keysrc, string keydest, object valsrc, object valdest, int type)
+        {
+            var vvvv =gHelper.SelectVerteics(keysrc,valsrc);
+            foreach (var v1 in vvvv)
+            {
+                foreach (var v2 in gHelper.SelectVerteics(keydest, valdest))
+                {
+                    if (type == 1)
+                    {
+                        gHelper.AddEdge(v1, v2, dic);
+                    }
+                    else
+                    {
+                        gHelper.AddEdge(v1, v2, dic);
+                        gHelper.AddEdge(v2, v1, dic);
+                    }
+                }
+            }
+        }
+
 
 
 
