@@ -19,6 +19,10 @@ namespace KHGraphDB.Structure.Interface
         /// </summary>
         IEnumerable<IVertex> Vertices { get; }
 
+        /// <summary>
+        /// Get or set type name
+        /// </summary>
+        String Name { get; set; }
         #region Add
 
         bool AddVertex(IVertex theVertex);

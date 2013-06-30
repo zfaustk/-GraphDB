@@ -176,10 +176,10 @@ namespace KHGraphDB.Structure
             if (this.Type == null)
                 s += "Type : null \n";
             else{
-                if (Type["name"] != null)
-                    s += "Type :" + Type["name"].ToString() + " \n";
+                if (Type.Name != null)
+                    s += "Type :" + Type.Name.ToString() + " \n";
                 else
-                    s += "Type :" + Type.KHID + " \n";
+                    s += "Type(ID) :" + Type.KHID + " \n";
             }
             s += "InDegree : " + InDegree + " \n";
             s += "OutDegree : " + OutDegree + " \n";
