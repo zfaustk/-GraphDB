@@ -474,6 +474,7 @@ namespace KHGraphDBMS.Grammar
                     }
                 }
             }
+            object o = keysrc + valsrc;
         }
 
 

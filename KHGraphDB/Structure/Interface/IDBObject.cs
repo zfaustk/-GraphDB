@@ -58,7 +58,7 @@ namespace KHGraphDB.Structure.Interface
         #endregion
 
         #region EventHandler
-        event ObjectAttributeGhangeEventHandler OnAttributeGhange;
+        event ObjectAttributeGhangeEventHandler OnAttributeChange;
         #endregion
     }
 
