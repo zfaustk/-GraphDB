@@ -24,6 +24,7 @@ namespace KHGraphDB.Helper
         public GraphReader(Graph g)
         {
             _graph = g;
+            Path = "Graph_lyf.dbf";
         }
 
         bool Read(bool Create)
@@ -32,7 +33,6 @@ namespace KHGraphDB.Helper
             {
                 using (StreamReader sr = File.OpenText(Path))
                 {
-                    //
                     return true;
                 }
             }
@@ -49,6 +49,7 @@ namespace KHGraphDB.Helper
 
             return false;
         }
+
 
     }
 }
