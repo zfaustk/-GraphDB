@@ -10,7 +10,7 @@ using KHGraphDB.Structure.Interface;
 namespace KHGraphDBMS.Grammar
 {
     public class Grammar
-    {   private enum wordtype { create,vertex,comma,colon,noexist}
+    {   private enum wordtype { create,vertex,edge,noexist}
         private string[] strArray;
         private int count;
 
@@ -62,9 +62,10 @@ namespace KHGraphDBMS.Grammar
             str = str.Replace(",", " , ");
             str = str.Replace("}", " } ");
             str = str.Replace(".", " . ");
+            str = str.Replace("(", " ( ");
+            str = str.Replace(")", " ) ");
             return str;
         }
-        
         //返回单词类型
         private wordtype settype(string str)
         {
@@ -72,47 +73,185 @@ namespace KHGraphDBMS.Grammar
                 return wordtype.create;
             if (str == "vertex")
                 return wordtype.vertex;
-            if (str == ":")
-                return wordtype.colon;
+            if (str == "edge")
+                return wordtype.edge;
 
             return wordtype.noexist;
         }
-
         //语句开始
         private void statement()
         {
             count = 0;
-            if (settype(strArray[count]) == wordtype.create)
+            while (strArray[count] != "end")
             {
-                count++;
-                state_c();
+                if (settype(strArray[count]) == wordtype.create)
+                {
+                    count++;
+                    if (!state_c())
+                    {
+                        /*错误处理函数添加于此*/
+                        count = strArray.Length - 1;
+                    }//错误处理
+                }
             }
         }
 
 
 
-        //create语句
+        /*                        create语句：create                        */
         private bool state_c()
         {
+            //点的Create
             if (settype(strArray[count]) == wordtype.vertex)
             {
                 count++;
-                Dictionary <string,object> key_val = new Dictionary <string,object>();
                 if (strArray[count]=="{")
                 {
                     count++;
-                    if (!pandv(key_val))
-                        return false;
-                    while (strArray[count] == ",")
+                    if (strArray[count] != "type")
                     {
-                        count++;
-                        if (!pandv(key_val))
+                        if (createv1())
+                            return true;
+                        else
                             return false;
                     }
-                    if (strArray[count] == "}")
+                    if (strArray[count] == "type")
                     {
-                        gHelper.AddVertex(key_val);
-                        return true;
+                        if (createv2())
+                            return true;
+                        else
+                            return false;
+                    }
+
+
+                    return false;
+                }
+                else
+                    return false;
+            }
+
+            //边的create
+            if (settype(strArray[count]) == wordtype.edge)
+            {
+                string vsrc, vdest;
+                count++;
+                if (settype(strArray[count]) == wordtype.vertex)
+                {
+                    count++;
+                    if (strArray[count] == "(")
+                    {
+                    }
+                    else
+                        return false;
+                }
+                else
+                    return false;
+            }
+
+
+
+
+
+
+
+
+
+
+            return false;
+        }
+        //vertex的create
+        //create句型一：create vertex {name:"peiming",game:"gal",age:22}
+        private bool createv1()
+        {
+            Dictionary<string, object> key_val = new Dictionary<string, object>();
+            if (!pandv(key_val))
+                return false;
+            while (strArray[count] == ",")
+            {
+                count++;
+                if (!pandv(key_val))
+                    return false;
+            }
+            if (strArray[count] == "}")
+            {
+                gHelper.AddVertex(key_val);
+                count++;
+                return true;
+            }
+            else
+                return false;
+        }
+        //create句型二:create vertex  {type(name:"student"){"10001000","weidong",22}}||	{type(name:"student"){"10001000","yidong",22}, go:"20"}
+        private bool createv2()
+        {
+            Dictionary<string, object> key_val = new Dictionary<string, object>();
+            string typename;
+            count++;
+            if (strArray[count] == "(")
+            {
+                count++;
+                if (strArray[count] == "name")
+                {
+                    count++;
+                    if (strArray[count] == ":")
+                    {
+                        count++;
+                        if (strArray[count] == "\"")
+                        {
+                            count++;
+                            typename = strArray[count];
+                            count++;
+                            if (strArray[count] == "\"" && strArray[count + 1] == ")")
+                            {
+                                count = count + 2;
+                                if (strArray[count] == "{")
+                                {
+                                    count++;
+                                    if (strArray[count + 1] == ":")
+                                    {
+                                        if (!pandv(key_val))
+                                            return false;
+                                        while (strArray[count] == ",")
+                                        {
+                                            count++;
+                                            if (!pandv(key_val))
+                                                return false;
+                                        }
+                                        if (strArray[count] == "}"&& strArray[count+1] == "}")
+                                        {
+                                            count++; count++;
+                                            gHelper.AddVertex(key_val).Type = gHelper.SelectSingleTypeName(typename);
+                                            return true;
+                                        }
+                                        else
+                                            return false;
+                                    }
+                                    else
+                                    {
+                                        if (type_val(typename, key_val))
+                                        {
+                                            count++;
+                                            if (strArray[count] == "}")
+                                            {
+                                                count++;
+                                                gHelper.AddVertex(key_val).Type = gHelper.SelectSingleTypeName(typename);
+                                                return true;
+                                            }
+                                            else
+                                                return false;
+                                        }
+                                        else
+                                            return false;
+                                    }
+                                }
+                                else
+                                    return false;
+                            }
+                            else
+                                return false;
+                        }
+                        else
+                            return false;
                     }
                     else
                         return false;
@@ -122,8 +261,39 @@ namespace KHGraphDBMS.Grammar
             }
             else
                 return false;
+
         }
-        //create语句分支 键值对属性确认
+        //type的连续值的键值对生辰｛val，val，val....} ||  {...}key:val
+        private bool type_val(string typename, Dictionary<string, object> dic)
+        {
+            IType type = gHelper.SelectSingleTypeName(typename);
+            object val;
+            foreach (var t in type.Attributes.Keys)
+            {
+                val = valtype();
+                if (strArray[count - 3] == "\"" && strArray[count - 1] != "\"")
+                    return false;
+                if (strArray[count] == ",")
+                    count++;
+                dic[t] = val;
+            }
+            if (strArray[count] == "}")
+            {
+                if (strArray[count + 1] == ",")
+                {
+                    count = count + 2;
+                    pandv(dic);
+                    count--;
+                }
+                else
+                {
+                    if(strArray[count+1] != "}")
+                    return false;
+                }
+            }
+            return true;
+        }
+        //键值对的生成｛ key：val ｝
         private bool pandv(Dictionary<string,object> dic)
         {
             string key;
@@ -134,13 +304,15 @@ namespace KHGraphDBMS.Grammar
             {
                 count++;
                 val=valtype();
+                if (strArray[count - 3] == "\"" && strArray[count - 1] != "\"")
+                    return false;
                 dic[key] = val;
                 return true;
             }
             else
                 return false;
         }
-        //值的类型判断
+        //值的类型判断｛字符串，整形，浮点型｝
         private object valtype()
         {    
             int inum;
@@ -175,6 +347,7 @@ namespace KHGraphDBMS.Grammar
             }
             return null;
         }
+        //edge的create
 
 
 
@@ -187,7 +360,8 @@ namespace KHGraphDBMS.Grammar
         public void Exert(string str)
         {
             str=setstr(str);
-            strArray = str.Split(new Char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            str = str + " end ";
+            strArray = str.Split(new Char[] { ' ','\n' }, StringSplitOptions.RemoveEmptyEntries);
             statement();
         }
 
