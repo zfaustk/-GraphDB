@@ -23,11 +23,21 @@ namespace KHGraphDB.Structure
         #region Constructors
 
         public Edge(IVertex theSource, IVertex theTarget)
-            : this(theSource, theTarget, null)
+            : this(null,theSource, theTarget, null)
+        {
+        }
+
+        public Edge(string ID,IVertex theSource, IVertex theTarget)
+            : this(ID, theSource, theTarget, null)
         {
         }
 
         public Edge(IVertex theSource, IVertex theTarget, IDictionary<string, object> attributes)
+            : this(null, theSource, theTarget, attributes)
+        {
+        }
+
+        public Edge(string ID,IVertex theSource, IVertex theTarget, IDictionary<string, object> attributes)
         {
             if (theSource == null)
             {
@@ -38,7 +48,7 @@ namespace KHGraphDB.Structure
                 throw new ArgumentException("target-vertex cannot be null");
             }
 
-            InitDBObject(attributes);
+            InitDBObject(ID,attributes);
 
             _Source = theSource;
             _Target = theTarget;

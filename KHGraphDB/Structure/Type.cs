@@ -22,13 +22,17 @@ namespace KHGraphDB.Structure
         #endregion
 
 
-        public Type():
-            this(null){
-        }
+        #region Constructors
 
-        public Type(IDictionary<string, object> theAttributes)
+        public Type():this(null,null){}
+
+        public Type(string ID) :this(ID, null) { }
+
+        public Type(IDictionary<string, object> theAttributes) : this(null, theAttributes) { }
+
+        public Type(string ID,IDictionary<string, object> theAttributes)
         {
-            InitDBObject(theAttributes);
+            InitDBObject(ID,theAttributes);
             InitType();
         }
 
@@ -60,6 +64,8 @@ namespace KHGraphDB.Structure
                 }
             } 
         }
+
+        #endregion
 
         public bool AddVertex(IVertex theVertex)
         {
@@ -122,5 +128,13 @@ namespace KHGraphDB.Structure
 
             return nonRemovedVertices;
         }
+
+        #region override
+        public override string AttributesToString()
+        {
+            string s = base.AttributesToString();
+            return s;
+        }
+        #endregion
     }
 }

@@ -35,11 +35,15 @@ namespace KHGraphDB.Structure
         #region Constructors
 
         public Vertex()
-            : this(null)
-        {
-        }
+            : this(null, null) { }
+
+        public Vertex(string ID)
+            : this(ID, null) { }
 
         public Vertex(IDictionary<string, object> theAttributes)
+            : this(null, theAttributes) { }
+
+        public Vertex(string ID,IDictionary<string, object> theAttributes)
         {
             InitDBObject(theAttributes);
             InitVertex();
@@ -165,8 +169,24 @@ namespace KHGraphDB.Structure
 
         #endregion
 
+        #region override
+        public override string AttributesToString()
+        {
+            string s = base.AttributesToString();
+            if (this.Type == null)
+                s += "Type : null \n";
+            else{
+                if (Type["name"] != null)
+                    s += "Type :" + Type["name"].ToString() + " \n";
+                else
+                    s += "Type :" + Type.KHID + " \n";
+            }
+            s += "InDegree : " + InDegree + " \n";
+            s += "OutDegree : " + OutDegree + " \n";
+            return s;
+        }
 
+        #endregion
 
-        
     }
 }

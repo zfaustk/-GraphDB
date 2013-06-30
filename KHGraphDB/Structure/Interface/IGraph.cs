@@ -45,11 +45,9 @@ namespace KHGraphDB.Structure.Interface
 
         #endregion
 
+        #region Methods
 
-
-#region Methods
-
-    #region Type
+        #region Type
 
         #region Add
 
@@ -74,18 +72,24 @@ namespace KHGraphDB.Structure.Interface
 
         #endregion
 
-    #endregion
+        #endregion
 
-    #region Vertices
+        #region Vertices
 
         #region Add
 
         IVertex AddVertex(IDictionary<string, object> Attributes);
 
+        IVertex AddVertex(IDictionary<string, object> attributes, IType theType);
+
         bool AddVertex(IVertex theVertex);
+
+        bool AddVertex(IVertex theVertex, IType theType);
 
         /// <returns>The vertices which were not added</returns>
         IEnumerable<IVertex> AddVertices(IEnumerable<IVertex> Vertices);
+
+        IEnumerable<IVertex> AddVertices(IEnumerable<IVertex> vertices, IType theType);
 
         #endregion
 
@@ -119,9 +123,9 @@ namespace KHGraphDB.Structure.Interface
 
         #endregion
 
-    #endregion
+        #endregion
 
-    #region Edges
+        #region Edges
 
         #region Add
 
@@ -143,9 +147,9 @@ namespace KHGraphDB.Structure.Interface
 
         #endregion
 
-    #endregion
+        #endregion
 
-#endregion
+        #endregion
 
     }
 }

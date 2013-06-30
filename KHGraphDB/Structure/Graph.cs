@@ -10,6 +10,22 @@ namespace KHGraphDB.Structure
 {
     public class Graph : DBObject, IGraph
     {
+        #region EventHandler
+        public delegate void GraphVertexEventHandler(object sender, IVertex v);
+        public event GraphVertexEventHandler OnAddVertex = new GraphVertexEventHandler(GraphVertexEvent);
+        public event GraphVertexEventHandler OnRemoveVertex = new GraphVertexEventHandler(GraphVertexEvent);
+        public delegate void GraphEdgeEventHandler(object sender, IEdge e);
+        public event GraphEdgeEventHandler OnAddEdge = new GraphEdgeEventHandler(GraphEdgeEvent);
+        public event GraphEdgeEventHandler OnRemoveEdge = new GraphEdgeEventHandler(GraphEdgeEvent);
+        public delegate void GraphTypeEventHandler(object sender, IType t);
+        public event GraphTypeEventHandler OnAddType = new GraphTypeEventHandler(GraphTypeEvent);
+        public event GraphTypeEventHandler OnRemoveType = new GraphTypeEventHandler(GraphTypeEvent);
+        public static void GraphVertexEvent(object sender, IVertex v) { ; }
+        public static void GraphEdgeEvent(object sender, IEdge v) { ; }
+        public static void GraphTypeEvent(object sender, IType v) { ; }
+        #endregion
+        
+
         #region private members
 
         private HashSet<IVertex> _Vertices;
@@ -30,9 +46,23 @@ namespace KHGraphDB.Structure
 
         #region constructors
 
-        public Graph()
+        public Graph() : this(null,null){}
+
+        public Graph(string ID)
         {
-            InitDBObject();
+            InitDBObject(ID);
+            InitGraph();
+        }
+
+        public Graph(IDictionary<string, object> theAttributes)
+        {
+            InitDBObject(theAttributes);
+            InitGraph();
+        }
+
+        public Graph(string ID, IDictionary<string, object> theAttributes)
+        {
+            InitDBObject(ID, theAttributes);
             InitGraph();
         }
 
@@ -45,6 +75,16 @@ namespace KHGraphDB.Structure
             _VertexCount = 0;
             _EdgeCount = 0;
             _TypeCount = 0;
+
+            //Vertex vRoot = new Vertex(new Dictionary<string, object>() {
+            //    {"root",true},{"Name","root"}
+            //});
+            //this.AddVertex(vRoot);
+
+            //KHGraphDB.Structure.Type tUn = new KHGraphDB.Structure.Type(new Dictionary<string, object>() { 
+            //    {"Name","UnTyped"}
+            //});
+            //this.AddType(tUn);
 
             _IsDirected = true;
         }
@@ -114,8 +154,7 @@ namespace KHGraphDB.Structure
 
         public IVertex AddVertex(IDictionary<string, object> attributes)
         {
-            var v = new Vertex( attributes);
-            return (AddVertex(v)) ? v : null;
+            return AddVertex(attributes,null);
         }
 
         public IVertex AddVertex(IDictionary<string, object> attributes, IType theType)
@@ -138,9 +177,17 @@ namespace KHGraphDB.Structure
 
         public bool AddVertex(IVertex theVertex, IType theType)
         {
+            if (theVertex == null) return false;
+
+            IVertex v = Vertices.SingleOrDefault(m => m.KHID == theVertex.KHID);
+            if (v != null && v != theVertex) return false;
+
+
             if (_Vertices.Contains(theVertex))
             {
-                return false;
+                if (theType != null)
+                    theType.AddVertex(theVertex);
+                return true;
             }
 
             if (_Vertices.Add(theVertex))
@@ -149,6 +196,9 @@ namespace KHGraphDB.Structure
                 _VertexCount++;
                 if(theType != null)
                     theType.AddVertex(theVertex);
+
+                OnAddVertex(this, theVertex); //Event
+
                 return true;
             }
 
@@ -167,12 +217,11 @@ namespace KHGraphDB.Structure
 
             foreach (var vertex in vertices)
             {
-                if (!AddVertex(vertex,theType))
+                if (!AddVertex(vertex, theType))
                 {
                     nonAddedVertices.Add(vertex);
                 }
             }
-
             return nonAddedVertices;
         }
 
@@ -182,6 +231,7 @@ namespace KHGraphDB.Structure
 
         public bool RemoveVertex(IVertex theVertex)
         {
+            if (theVertex == null) return false;
             if (_Vertices.Contains(theVertex))
             {
                 List<IEdge> removeEdges = null;
@@ -206,6 +256,8 @@ namespace KHGraphDB.Structure
                 _Vertices.Remove(theVertex);
 
                 _VertexCount--;
+
+                OnRemoveVertex(this, theVertex); //Event
 
                 return true;
             }
@@ -273,10 +325,19 @@ namespace KHGraphDB.Structure
         public bool AddType(IType theType)
         {
             if (theType == null) return false;
-            if (!_Types.Contains(theType))
+
+            IType t = Types.SingleOrDefault(m => m.KHID == theType.KHID);
+            if (t != null && t != theType) return false;
+
+            if(_Types.Contains(theType))return true;
+
+
+            if (_Types.Add(theType))
             {
-                if (_Types.Add(theType))
-                    return true;
+                theType.Graph = this;
+                OnAddType(this, theType);
+                return true;
+
             }
             return false;
         }
@@ -314,6 +375,7 @@ namespace KHGraphDB.Structure
                 }
                 theType.ClearVertex();
                 _Types.Remove(theType);
+                OnRemoveType(this, theType);
                 return true;
             }
             return false;
@@ -329,6 +391,7 @@ namespace KHGraphDB.Structure
                 {
                     nonRemovedTypes.Add(t);
                 }
+
             }
 
             return nonRemovedTypes;
@@ -344,6 +407,11 @@ namespace KHGraphDB.Structure
 
         public bool AddEdge(IEdge theEdge)
         {
+            if (theEdge == null) return false;
+
+            IEdge e = Edges.SingleOrDefault(m => m.KHID == theEdge.KHID);
+            if (e != null && e != theEdge ) return false;
+
             if (!_Edges.Contains(theEdge)
                 && _Vertices.Contains(theEdge.Source)
                 && _Vertices.Contains(theEdge.Target))
@@ -357,22 +425,25 @@ namespace KHGraphDB.Structure
                 {
                     // use the same edge as incoming edge for target vertex
                     added = target.AddIncomingEdge(theEdge);
-                }
-
-                if (added)
-                {
-                    if (_Edges.Add(theEdge))
+                    if (added)
                     {
-                        theEdge.Graph = this;
-                        _EdgeCount++;
-                        return true;
+                        if (_Edges.Add(theEdge))
+                        {
+                            theEdge.Graph = this;
+                            _EdgeCount++;
+                            OnAddEdge(this, theEdge);
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        source.RemoveOutgoingEdge(theEdge);
                     }
                 }
-
                 return false;
             }
 
-            return false;
+            return true;
         }
 
         public IEnumerable<IEdge> AddEdges(IEnumerable<IEdge> theEdges)
@@ -410,6 +481,7 @@ namespace KHGraphDB.Structure
             if (_Edges.Remove(theEdge))
             {
                 _EdgeCount--;
+                OnRemoveEdge(this, theEdge);
                 return true;
             }
             return false;
@@ -435,11 +507,6 @@ namespace KHGraphDB.Structure
         #endregion
 
         #endregion
-
-
-
-        
-
 
 
 
