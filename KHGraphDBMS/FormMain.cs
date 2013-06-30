@@ -56,8 +56,9 @@ namespace KHGraphDBMS
             grammar = new Grammar.Grammar(graph);
 
             KHGraphDB.Structure.Type student = new KHGraphDB.Structure.Type(new Dictionary<string, object>(){
-                {"Name","Student"},
+                {"Name",null},{"Num",null}
             });
+            student.Name = "Student";
 
             Vertex peiming = new Vertex(new Dictionary<string, object>(){
                 {"Name","Peiming"},
