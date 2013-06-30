@@ -36,9 +36,12 @@ namespace KHGraphDB.Helper
 
             using (StreamWriter sr = new StreamWriter(Path + "_Vertex.gdbt"))
             {
-
+                WriteVertexs(sr);
             }
-
+            using (StreamWriter sr = new StreamWriter(Path + "_Edge.gdbt"))
+            {
+                WriteEdges(sr);
+            }
             return true;
         }
 
@@ -61,6 +64,33 @@ namespace KHGraphDB.Helper
             }
             sr.Write(str);
         }
-
+        public void WriteVertexs(StreamWriter sr)
+        {
+            string str = "";
+            foreach (var t in Graph.Vertices)
+            {
+                str = t.KHID + " " + t.Attributes.Count.ToString() + " ";
+                foreach (var key in t.Attributes.Keys)
+                {
+                    str += key + " " + ((t[key] == null) ? "*" : t[key].ToString()) + " ";
+                }
+                str += "\n";
+            }
+            sr.Write(str);
+        }
+        public void WriteEdges(StreamWriter sr)
+        {
+            string str = "";
+            foreach (var t in Graph.Edges)
+            {
+                str = t.KHID + " " + t.Source.KHID + " " + t.Target.KHID + " ";
+                foreach (var key in t.Attributes.Keys)
+                {
+                    str += key + " " + ((t[key] == null) ? "*" : t[key].ToString()) + " ";
+                }
+                str += "\n";
+            }
+            sr.Write(str);
+        }
     }
 }
