@@ -207,18 +207,17 @@ namespace KHGraphDB.Helper
 
         public IType AddType(string ID, string Name, IDictionary<string, object> theAttributes = null)
         {
-            if (SelectSingleType("name", Name) != null) return null;
+            if (SelectSingleTypeName(Name) != null) return null;
             if (theAttributes == null)
             {
-                IType t = new KHGraphDB.Structure.Type(ID, new Dictionary<string, object>(){
-                    {"name",Name}
-                });
+                IType t = new KHGraphDB.Structure.Type(ID);
+                t.Name = Name;
                 return AddType(t);
             }
             else
             {
-                theAttributes["name"] = Name;
                 IType t = new KHGraphDB.Structure.Type(ID, theAttributes);
+                t.Name = Name;
                 return AddType(t);
             }
         }
@@ -229,6 +228,12 @@ namespace KHGraphDB.Helper
         public bool RemoveType(string ID)
         {
             IType t = Graph.Types.SingleOrDefault(m => m.KHID == ID);
+            return RemoveType(t);
+        }
+
+        public bool RemoveTypeByName(string Name)
+        {
+            IType t = Graph.Types.SingleOrDefault(m => m.Name == Name);
             return RemoveType(t);
         }
 
@@ -252,7 +257,7 @@ namespace KHGraphDB.Helper
 
         public IType SelectSingleTypeName(string Name)
         {
-            return Graph.Types.SingleOrDefault(m => Name.Equals(m["name"]));
+            return Graph.Types.SingleOrDefault(m => m.Name == Name);
         }
 
         public IEnumerable<IType> SelectTypes(string key, object value, string orderbyKey = null, IEnumerable<IType> types = null)

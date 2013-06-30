@@ -73,12 +73,13 @@ namespace KHGraphDB.Helper
         #endregion
 
         #region Remove
+        bool RemoveVertex(KHGraphDB.Structure.Interface.IVertex v);
+        bool RemoveVertex(string ID);
         bool RemoveEdge(KHGraphDB.Structure.Interface.IEdge e);
         bool RemoveEdge(string ID);
         bool RemoveType(KHGraphDB.Structure.Interface.IType t);
         bool RemoveType(string ID);
-        bool RemoveVertex(KHGraphDB.Structure.Interface.IVertex v);
-        bool RemoveVertex(string ID);
+        bool RemoveTypeByName(string Name);
         #endregion
 
         #region select
