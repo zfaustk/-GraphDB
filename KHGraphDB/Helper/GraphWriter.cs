@@ -61,9 +61,10 @@ namespace KHGraphDB.Helper
                     str += v.KHID + " ";
                 }
                 str += "\n";
+                sr.WriteLine(str);
             }
-            sr.Write(str);
         }
+
         public void WriteVertexs(StreamWriter sr)
         {
             string str = "";
@@ -72,25 +73,32 @@ namespace KHGraphDB.Helper
                 str = t.KHID + " " + t.Attributes.Count.ToString() + " ";
                 foreach (var key in t.Attributes.Keys)
                 {
-                    str += key + " " + ((t[key] == null) ? "*" : t[key].ToString()) + " ";
+                    if (t[key] == null)
+                        str += key + " " + "*" + " ";
+                    else
+                        str += key + " " + ((t[key].GetType().Equals("".GetType())) ? "'" + t[key].ToString() + "'" : t[key].ToString()) + " ";
                 }
                 str += "\n";
+                sr.WriteLine(str);
             }
-            sr.Write(str);
+            
         }
         public void WriteEdges(StreamWriter sr)
         {
             string str = "";
             foreach (var t in Graph.Edges)
             {
-                str = t.KHID + " " + t.Source.KHID + " " + t.Target.KHID + " ";
+                str = t.KHID + " " + t.Source.KHID + " " + t.Target.KHID + " " + t.Attributes.Count + " ";
                 foreach (var key in t.Attributes.Keys)
                 {
-                    str += key + " " + ((t[key] == null) ? "*" : t[key].ToString()) + " ";
+                    if (t[key] == null)
+                        str += key + " " + "*" + " ";
+                    else
+                        str += key + " " + ((t[key].GetType().Equals("".GetType())) ? "'" + t[key].ToString() +"'" : t[key].ToString()) + " ";
                 }
                 str += "\n";
+                sr.WriteLine(str);
             }
-            sr.Write(str);
         }
     }
 }
