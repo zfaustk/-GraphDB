@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 using KHGraphDB.Helper;
 using KHGraphDB.Structure;
 using KHGraphDB.Structure.Interface;
+using System.Windows.Forms;
 
 namespace KHGraphDBMS.Grammar
 {
     public class Grammar
-    {   private enum wordtype { create,vertex,edge,noexist}
+    {   private enum wordtype { create,vertex,edge,type,noexist}
         private string[] strArray;
         private int count;
 
@@ -53,6 +54,11 @@ namespace KHGraphDBMS.Grammar
 
 
         /*                     lpm                      */
+        //消息处理函数
+        private void fun(string result)
+        {
+            MessageBox.Show(result);
+        }
         //划分词的准备
         private string setstr(string str)
         {
@@ -79,6 +85,8 @@ namespace KHGraphDBMS.Grammar
                 return wordtype.vertex;
             if (str == "edge")
                 return wordtype.edge;
+            if (str == "type")
+                return wordtype.type;
 
             return wordtype.noexist;
         }
@@ -86,17 +94,32 @@ namespace KHGraphDBMS.Grammar
         private void statement()
         {
             count = 0;
+            int line = 0;
+            bool flag=true;
             while (strArray[count] != "end")
             {
                 if (settype(strArray[count]) == wordtype.create)
                 {
+                    line++;
                     count++;
                     if (!state_c())
                     {
                         /*错误处理函数添加于此*/
+                        string error;
+                        error = "错误在语句";
+                        error = error + line.ToString();
+                        error = error + "单词"+strArray[count]+"附近!";
+                        fun(error);
                         count = strArray.Length - 1;
+                        flag = false;
                     }//错误处理
                 }
+            }
+            if (flag == true)
+            {
+                string result;
+                result = "成功执行";
+                fun(result);
             }
         }
 
@@ -169,6 +192,7 @@ namespace KHGraphDBMS.Grammar
                                             return false;
                                         while (strArray[count] == ",")
                                         {
+                                            count++;
                                             if (!edgekandv(key_val))
                                                 return false;
                                         }
@@ -238,6 +262,57 @@ namespace KHGraphDBMS.Grammar
                     }
                     else
                         return false;
+                }
+                else
+                    return false;
+            }
+
+            //type的create
+            if(settype(strArray[count])==wordtype.type)
+            {
+                Dictionary<string, object> key_val = new Dictionary<string, object>();
+                string typename;
+                count++;
+                if(strArray[count]=="{")
+                {
+                    count++;
+                    if(strArray[count]=="name" &&strArray[count+1]==":")
+                    {
+                        count=count+2;
+                        if(strArray[count]=="\"")
+                        {
+                            count++;
+                            typename=strArray[count];
+                            count++;
+                            if(strArray[count]=="\"")
+                            {
+                                count++;
+                                if(strArray[count]==",")
+                                {
+                                    count++;
+                                    typekanv(key_val);
+                                    if (strArray[count] == "}")
+                                    {
+                                        count++;
+                                        gHelper.AddType(null,typename, key_val);
+                                        return true;
+                                    }
+                                    else
+                                        return false;
+
+                                }
+                                else
+                                    return false;
+                            }
+                            else
+                                return false;
+                        }
+                        else
+                            return false;
+                    }
+                    else
+                        return false;
+
                 }
                 else
                     return false;
@@ -356,10 +431,12 @@ namespace KHGraphDBMS.Grammar
             foreach (var t in type.Attributes.Keys)
             {
                 val = valtype();
-                if (strArray[count - 3] == "\"" && strArray[count - 1] != "\"")
-                    return false;
                 if (strArray[count] == ",")
+                {
+                    if (strArray[count - 3] == "\"" && strArray[count - 1] != "\"")
+                        return false;
                     count++;
+                }
                 dic[t] = val;
             }
             if (strArray[count] == "}")
@@ -451,15 +528,14 @@ namespace KHGraphDBMS.Grammar
             }
             else
             {
-                    val = null;
+                dic[key] = null;
                     return true;
             }
         }
         //edge边的生成
         private void makeedge(Dictionary<string, object> dic, string keysrc, string keydest, object valsrc, object valdest, int type)
         {
-            var vvvv =gHelper.SelectVerteics(keysrc,valsrc);
-            foreach (var v1 in vvvv)
+            foreach (var v1 in gHelper.SelectVerteics(keysrc,valsrc))
             {
                 foreach (var v2 in gHelper.SelectVerteics(keydest, valdest))
                 {
@@ -476,7 +552,21 @@ namespace KHGraphDBMS.Grammar
             }
             object o = keysrc + valsrc;
         }
+        //type的create
+        //type类型的键值生成
+        private void typekanv(Dictionary<string, object> dic)
+        {
+            dic[strArray[count]] = null;
+            count++;
+            while (strArray[count] == ",")
+            {
+                count++;
+                dic[strArray[count]] = null;
+                count++;
+            }
+        }
 
+       
 
 
 
