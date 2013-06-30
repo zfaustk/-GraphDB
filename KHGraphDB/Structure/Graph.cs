@@ -432,7 +432,9 @@ namespace KHGraphDB.Structure
                         {
                             theEdge.Graph = this;
                             _EdgeCount++;
+
                             OnAddEdge(this, theEdge);
+
                             return true;
                         }
                     }

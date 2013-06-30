@@ -2,12 +2,8 @@ Create Vertex , Edge , Type
 Delete Vertex , Edge , Type 
 Edit Vertex , Edge , Type 
 
-SELECT *
-FROM TableName1，TableName2
-WHERE Condition
-
 Select v from Collection
-Where v.Name = "peiming"
+match v[Name] = "peiming"
 return v as Vertex
 
 create type{name=student , id , name , age}
@@ -26,25 +22,28 @@ Alter vartex(name:"peiming") merge { name:"Peiming",game:"go",age:23 }
 Alter delete vartex(12323-sdf234-sdfwr4234-wsedr234)
 Alter delete vartex(name:"peiming") 
 
-Alter type(name:"student") instead { "student" name  }
+Alter type(name="student").Name = "student"
+Alter type(name="student")[age] = 25
 
 Select v 
 from vertex(type(name:"student"), name:"peiming")
-match v (<10)-[ friend* ]-> n and n in vertex(type(="course"))
+match v -[ friend *]-> n and n in vertex(type(="student"))
+
+from vertex(name:"peiming").type in type(name:"student")
 
 Select v 
 from vertex(type(name:"student"), name:"peiming")
-match v (<10)-[ friend* ]-> n and n (<10)-[ grade* ]-> m and in vertex(type(="course"))
+match v -[friend]-> -[grade]-> m and in vertex(type(="course"))
 
 Select e
 from v = vertex(type="student", name:"peiming")
 match v -[ e ]-> n and e[contact] > 10 and n.type ="student" and n[age] < 22
 
 Select t
-from type(name:"student")
+from type(name="student")
 
 Select t
-match t[name] ="student"
+match t.name ="student"
 
 return vertex(name="peiming")       		//搜索结果集
 return vertex(name="peiming").Count       	//搜索结果集方法
