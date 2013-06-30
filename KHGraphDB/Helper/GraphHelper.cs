@@ -77,7 +77,7 @@ namespace KHGraphDB.Helper
 
         public IEnumerable<IVertex> SelectVerteics(string key, object value, string orderbyKey = null, IEnumerable<IVertex> vertics = null)
         {
-            return from v in (null == vertics) ? Graph.Vertices : vertics
+            return from v in (null == vertics || vertics.Count() <= 0) ? Graph.Vertices : vertics
                    where v[key] == value
                    orderby (orderbyKey == null) ? null : v[orderbyKey]
                    select v;

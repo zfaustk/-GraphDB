@@ -7,6 +7,8 @@ using KHGraphDB.Structure;
 
 using KHGraphDB.Algorithm;
 using System.Windows.Forms;
+using KHGraphDB.Helper;
+using KHGraphDB.Structure.Interface;
 
 namespace Demo01
 {
@@ -107,8 +109,20 @@ namespace Demo01
             }
 
 
-
-            Console.ReadKey(true);
+            GraphHelper gHelper = new GraphHelper(graph);
+            gHelper.AddVertex(new Dictionary<string, object>()
+            {
+                {"name","text1"} , {"game","gal"}
+            });
+            gHelper.AddVertex(new Dictionary<string, object>()
+            {
+                {"name","text2"} , {"game","gal"}
+            });
+            gHelper.AddVertex(new Dictionary<string, object>()
+            {
+                {"name","text3"} , {"game","gal"}
+            });
+            IEnumerable<IVertex> vv = gHelper.SelectVerteics("Name", "text1");
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

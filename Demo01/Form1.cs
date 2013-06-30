@@ -65,5 +65,10 @@ namespace Demo01
                 panel1.HighLightList = bfs.Search(panel1.Graph, v, vw);
             else panel1.HighLightList = null;
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
 }

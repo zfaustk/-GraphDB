@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Algorithm\Algorithm.cs" />
     <Compile Include="Algorithm\BreadthFirstSearch.cs" />
+    <Compile Include="Algorithm\BreadthFirstSearch_Step.cs" />
     <Compile Include="Algorithm\IAlgorithm.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="Helper\GraphHelper.cs" />
