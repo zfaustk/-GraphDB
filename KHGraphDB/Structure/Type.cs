@@ -77,6 +77,7 @@ namespace KHGraphDB.Structure
 
         public bool AddVertex(IVertex theVertex)
         {
+            if (theVertex == null) return false;
             if (!theVertex.Graph.Equals(_Graph)) return false;
             if (_Vertices.Contains(theVertex))
             {
@@ -107,6 +108,7 @@ namespace KHGraphDB.Structure
 
         public bool RemoveVertex(IVertex theVertex)
         {
+            if (theVertex == null) return false;
             if (_Vertices.Contains(theVertex))
             {
                 if(_Vertices.Remove(theVertex))
