@@ -61,6 +61,11 @@ namespace KHGraphDB.Helper
         {
             return Graph.RemoveVertex(v);
         }
+
+        public IEnumerable<IVertex> RemoveVertices(IEnumerable<IVertex> vs)
+        {
+            return Graph.RemoveVertices(vs);
+        }
         #endregion
 
         #region select
@@ -133,6 +138,11 @@ namespace KHGraphDB.Helper
         {
             return Graph.RemoveEdge(e);
         }
+
+        public IEnumerable<IEdge> RemoveEdges(IEnumerable<IEdge> es)
+        {
+            return Graph.RemoveEdges(es);
+        }
         #endregion
 
         #region select
@@ -158,12 +168,12 @@ namespace KHGraphDB.Helper
         public IEnumerable<IEdge> SelectEdges(string key, object value, IVertex vSource, IVertex vTarget, string orderbyKey = null, IEnumerable<IEdge> edges = null)
         {
             return from e in (edges == null) ? Graph.Edges : edges
-                   where (value == null) ? e.Attributes.Keys.Contains(key) : value.Equals(e[key]) &&
-                            (vSource == null) ? e.Source.Equals(vSource) : true &&
-                            (vSource == null) ? e.Target.Equals(vTarget) : true
-                       orderby (orderbyKey == null) ? null : e[orderbyKey]
-                       select e;
-        }
+                   where ((value == null) ? e.Attributes.Keys.Contains(key) : value.Equals(e[key])) &&
+                         ((vSource == null) ? true : e.Source.Equals(vSource)) &&
+                         ((vTarget == null) ? true : e.Target.Equals(vTarget))
+                   orderby (orderbyKey == null) ? null : e[orderbyKey]
+                   select e;
+        }//三元运算符优先级问题
 
         public IEnumerable<IEdge> SelectParallelEdges(IEdge edge, string orderbyKey = null, IEnumerable<IEdge> edges = null)
         {
@@ -175,12 +185,12 @@ namespace KHGraphDB.Helper
             if (vSource == null || vTarget == null ) return new HashSet<Edge>();
             if ( vSource.OutDegree < vTarget.InDegree)
                 return from e in vSource.OutgoingEdges
-                       where e.Target.Equals(vTarget) && (edges == null) ? true : edges.Contains(e)
+                       where e.Target.Equals(vTarget) && ((edges == null) ? true : edges.Contains(e))
                        orderby (orderbyKey == null) ? null : e[orderbyKey]
                        select e;
             else
                 return from e in vTarget.IncomingEdges
-                       where e.Source.Equals(vSource) && (edges == null) ? true : edges.Contains(e)
+                       where e.Source.Equals(vSource) && ((edges == null) ? true : edges.Contains(e))
                        orderby (orderbyKey == null) ? null : e[orderbyKey]
                        select e;
         }
@@ -241,6 +251,12 @@ namespace KHGraphDB.Helper
         {
             return Graph.RemoveType(t);
         }
+
+        public IEnumerable<IType> RemoveTypes(IEnumerable<IType> ts)
+        {
+            return Graph.RemoveTypes(ts);
+        }
+
         #endregion
 
         #region select
