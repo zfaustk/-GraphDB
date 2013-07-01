@@ -106,6 +106,7 @@ namespace KHGraphDB.Algorithm
                     }
                 }
             }
+            this.EndAlgorithm(theGraph);
             return result;
         }
     }
