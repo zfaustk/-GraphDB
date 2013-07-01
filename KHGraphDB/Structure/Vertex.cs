@@ -45,7 +45,7 @@ namespace KHGraphDB.Structure
 
         public Vertex(string ID,IDictionary<string, object> theAttributes)
         {
-            InitDBObject(theAttributes);
+            InitDBObject(ID,theAttributes);
             InitVertex();
         }
 
