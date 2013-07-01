@@ -46,6 +46,10 @@ namespace KHGraphDB.Helper
             {
                 ReadAllEdges(sr);
             }
+            using (StreamReader sr = File.OpenText("Graph_lyf_Graph.gdbt"))
+            {
+                ReadAllGraphs(sr);
+            }
             return false;
         }
 
@@ -163,6 +167,12 @@ namespace KHGraphDB.Helper
                 }
                 gHelper.AddEdge(e);
             }
+            return null;
+        }
+        public IEnumerable<IGraph> ReadAllGraphs(StreamReader sr)
+        {
+            string str = sr.ReadLine();
+            string[] commands = str.Split(new char[] { ' ' });
             return null;
         }
     }

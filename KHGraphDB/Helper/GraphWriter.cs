@@ -43,6 +43,10 @@ namespace KHGraphDB.Helper
             {
                 WriteEdges(sr);
             }
+            using (StreamWriter sr = new StreamWriter("Graph_lyf_Graph.gdbt"))
+            {
+                WriteGraphs(sr);
+            }
             return true;
         }
 
@@ -107,6 +111,13 @@ namespace KHGraphDB.Helper
                 sr.WriteLine(str);
             }
         }
-       
+        public void WriteGraphs(StreamWriter sr)
+        {
+            string str = "";
+            str += Path + "_Type.gdbt" + "\n";
+            str += "  " + Path + "_Vertex.gdbt" + "\n";
+            str += "  " + Path + "_Edge.gdbt" + "\n";
+            sr.Write(str);
+        }
     }
 }
