@@ -7,6 +7,7 @@ using KHGraphDB.Structure;
 
 using KHGraphDB.Algorithm;
 using System.Windows.Forms;
+using KHGraphDB.Helper;
 
 namespace Demo01
 {
@@ -17,8 +18,9 @@ namespace Demo01
             Graph graph = new Graph();
 
             KHGraphDB.Structure.Type student = new KHGraphDB.Structure.Type(new Dictionary<string, object>(){
-                {"Name","Student"},
+                {"Name",null}, {"Num",null}
             });
+            student.Name = "Student";
 
             Vertex peiming = new Vertex(new Dictionary<string, object>(){
                 {"Name","Peiming"},
@@ -36,9 +38,11 @@ namespace Demo01
                 {"Age","21"}
             });
 
-            graph.AddType(student);
 
-            graph.AddVertex(peiming, student);
+            GraphHelper gHelper = new GraphHelper(graph);
+
+            gHelper.AddType(student);
+            gHelper.AddVertex(peiming, student);
             graph.AddVertex(yidong, student);
             graph.AddVertex(weidong);
 
@@ -53,20 +57,22 @@ namespace Demo01
 
 
             Edge friendPY = new Edge(peiming, yidong, new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase){
-                {"relationship","friend"},
+                {"friend",null},
             });
 
             Edge friendYP = new Edge(yidong, peiming, new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase){
-                {"relationship",null},
+                {"friend",null},
             });
 
             Edge friendYW = new Edge(yidong, weidong, new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase){
-                {"relationship","friend"},
+                {"friend",10},
             });
 
             graph.AddEdge(friendPY);
             graph.AddEdge(friendYP);
             graph.AddEdge(friendYW);
+
+            gHelper.AddEdge(peiming, weidong, new Dictionary<string, object>() { { "friend", null } });
 
             Console.WriteLine(peiming.InDegree);
             Console.WriteLine(peiming.OutDegree);
@@ -81,6 +87,7 @@ namespace Demo01
 
             Console.WriteLine(weidong["Name"]);
             Console.WriteLine("+++");
+
             BreadthFirstSearch bfs01 = new BreadthFirstSearch();
             var path = bfs01.Search(graph, peiming, weidong);
 
@@ -106,7 +113,7 @@ namespace Demo01
                 Console.WriteLine(v["Name"]);
             }
 
-
+            
 
             Console.ReadKey(true);
 
