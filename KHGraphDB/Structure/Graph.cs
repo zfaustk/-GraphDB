@@ -243,7 +243,8 @@ namespace KHGraphDB.Structure
                     return false;
                 }
 
-                theVertex.Type.RemoveVertex(theVertex);
+                if(theVertex.Type!= null)
+                    theVertex.Type.RemoveVertex(theVertex);
                 _Vertices.Remove(theVertex);
 
                 _VertexCount--;
