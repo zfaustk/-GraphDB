@@ -158,12 +158,12 @@ namespace KHGraphDB.Helper
         public IEnumerable<IEdge> SelectEdges(string key, object value, IVertex vSource, IVertex vTarget, string orderbyKey = null, IEnumerable<IEdge> edges = null)
         {
             return from e in (edges == null) ? Graph.Edges : edges
-                   where (value == null) ? e.Attributes.Keys.Contains(key) : value.Equals(e[key]) &&
-                            (vSource == null) ? e.Source.Equals(vSource) : true &&
-                            (vSource == null) ? e.Target.Equals(vTarget) : true
-                       orderby (orderbyKey == null) ? null : e[orderbyKey]
-                       select e;
-        }
+                   where ((value == null) ? e.Attributes.Keys.Contains(key) : value.Equals(e[key])) &&
+                         ((vSource == null) ? true : e.Source.Equals(vSource)) &&
+                         ((vTarget == null) ? true : e.Target.Equals(vTarget))
+                   orderby (orderbyKey == null) ? null : e[orderbyKey]
+                   select e;
+        }//三元运算符优先级问题
 
         public IEnumerable<IEdge> SelectParallelEdges(IEdge edge, string orderbyKey = null, IEnumerable<IEdge> edges = null)
         {
