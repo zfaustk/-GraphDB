@@ -65,5 +65,10 @@ namespace Demo01
                 panel1.HighLightList = bfs.Search(panel1.Graph, v, vw);
             else panel1.HighLightList = null;
         }
+
+        private void btnDeleteVertex_Click(object sender, EventArgs e)
+        {
+            vHelper.RemoveVertex(vHelper.SelectSingleVertex("name","Peiming"));
+        }
     }
 }

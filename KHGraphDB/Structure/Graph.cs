@@ -233,25 +233,18 @@ namespace KHGraphDB.Structure
             if (theVertex == null) return false;
             if (_Vertices.Contains(theVertex))
             {
-                List<IEdge> removeEdges = null;
+                IEnumerable<IEdge> removeEdges = theVertex.IncomingEdges.Concat(theVertex.OutgoingEdges).Distinct();
 
-                foreach (var edge in _Edges)
+                IEnumerable<IEdge> faild = RemoveEdges(removeEdges);
+
+                if (faild.Count() > 0)
                 {
-                    removeEdges = new List<IEdge>();
-
-                    if (edge.Source.Equals(theVertex) || edge.Target.Equals(theVertex))
-                    {
-                        removeEdges.Add(edge);
-                        _EdgeCount--;
-                    }
-
-                    foreach (var remEdge in removeEdges)
-                    {
-                        _Edges.Remove(remEdge);
-                    }
+                    AddEdges(removeEdges.Except(faild)); //回滚
+                    return false;
                 }
 
-                theVertex.Type.RemoveVertex(theVertex);
+                if(theVertex.Type!= null)
+                    theVertex.Type.RemoveVertex(theVertex);
                 _Vertices.Remove(theVertex);
 
                 _VertexCount--;
@@ -481,13 +474,17 @@ namespace KHGraphDB.Structure
 
         public bool RemoveEdge(IEdge theEdge)
         {
+            if (theEdge == null) return false;
             if (_Edges.Remove(theEdge))
             {
                 _EdgeCount--;
+
                 OnRemoveEdge(this, theEdge);
+
                 return true;
             }
             return false;
+
         }
 
         public IEnumerable<IEdge> RemoveEdges(IEnumerable<IEdge> theEdges)
