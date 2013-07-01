@@ -28,13 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            KHGraphDB.Structure.Graph graph3 = new KHGraphDB.Structure.Graph();
+            KHGraphDB.Structure.Graph graph2 = new KHGraphDB.Structure.Graph();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.panel1 = new KH_GraphControls.GraphPanel.GraphPanel();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
+            this.btnDeleteVertex = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // textBox1
@@ -63,7 +64,8 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.AttrFont = new System.Drawing.Font("Microsoft Sans Serif", 8F);
             this.panel1.FocusElement = null;
-            this.panel1.Graph = graph3;
+            this.panel1.Graph = graph2;
+            this.panel1.HighLightList = null;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(680, 465);
@@ -96,11 +98,22 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // btnDeleteVertex
+            // 
+            this.btnDeleteVertex.Location = new System.Drawing.Point(751, 155);
+            this.btnDeleteVertex.Name = "btnDeleteVertex";
+            this.btnDeleteVertex.Size = new System.Drawing.Size(75, 23);
+            this.btnDeleteVertex.TabIndex = 6;
+            this.btnDeleteVertex.Text = "deletePeiming";
+            this.btnDeleteVertex.UseVisualStyleBackColor = true;
+            this.btnDeleteVertex.Click += new System.EventHandler(this.btnDeleteVertex_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(838, 465);
+            this.Controls.Add(this.btnDeleteVertex);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.textBox2);
@@ -122,5 +135,6 @@
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btnDeleteVertex;
     }
 }
