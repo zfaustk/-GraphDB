@@ -27,7 +27,7 @@ namespace KHGraphDB.Helper
         public GraphReader(Graph g)
         {
             _graph = g;
-            Path = "Graph_lyf";
+            Path = "KHGDB";
             gHelper = new GraphHelper(_graph);
         }
 
@@ -46,7 +46,7 @@ namespace KHGraphDB.Helper
             {
                 ReadAllEdges(sr);
             }
-            using (StreamReader sr = File.OpenText("Graph_lyf_Graph.gdbt"))
+            using (StreamReader sr = File.OpenText(Path +".gdbf"))
             {
                 ReadAllGraphs(sr);
             }
@@ -169,6 +169,7 @@ namespace KHGraphDB.Helper
             }
             return null;
         }
+
         public IEnumerable<IGraph> ReadAllGraphs(StreamReader sr)
         {
             string str = sr.ReadLine();

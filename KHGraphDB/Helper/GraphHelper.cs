@@ -70,6 +70,8 @@ namespace KHGraphDB.Helper
 
         #region select
 
+        public IEnumerable<IVertex> Verteics { get { return from v in Graph.Vertices select v; } }
+
         public IVertex SelectSingleVertex(string ID)
         {
             return Graph.Vertices.SingleOrDefault(m => m.KHID == ID);
@@ -88,12 +90,13 @@ namespace KHGraphDB.Helper
                    select v;
         }
 
-        public IEnumerable<IVertex> SelectVerteics(string key, object value, IType type,string orderbyKey = null)
+        public IEnumerable<IVertex> SelectVerteics(string key, object value, IType type,string orderbyKey = null , Func<IVertex,bool> compare = null)
         {
             if (null == type)
                 return new HashSet<Vertex>();
             return from v in type.Vertices
-                   where (value == null) ? v.Attributes.Keys.Contains(key) : value.Equals(v[key])
+                   where ((value == null) ? v.Attributes.Keys.Contains(key) : value.Equals(v[key])) &&
+                         ((compare == null) ? true : compare(v))
                    orderby (orderbyKey == null) ? null : v[orderbyKey]
                    select v;
         }
@@ -147,6 +150,8 @@ namespace KHGraphDB.Helper
 
         #region select
 
+        public IEnumerable<IEdge> Edges { get { return from e in Graph.Edges select e; } }
+
         public IEdge SelectSingleEdge(string ID)
         {
             return Graph.Edges.SingleOrDefault(m => m.KHID == ID);
@@ -157,20 +162,22 @@ namespace KHGraphDB.Helper
             return Graph.Edges.SingleOrDefault(m => m[key] == value);
         }
 
-        public IEnumerable<IEdge> SelectEdges(string key, object value, string orderbyKey = null, IEnumerable<IEdge> edges = null)
+        public IEnumerable<IEdge> SelectEdges(string key, object value, string orderbyKey = null, IEnumerable<IEdge> edges = null, Func<IEdge,object,bool> compare = null)
         {
-            return from e in (edges == null)?Graph.Edges:edges
-                   where (value == null) ? e.Attributes.Keys.Contains(key) : value.Equals(e[key])
+            return from e in (edges == null) ? Graph.Edges : edges
+                   where ((value == null) ? e.Attributes.Keys.Contains(key) : value.Equals(e[key])) &&
+                         ((compare == null) ? true : compare(e,value))
                    orderby (orderbyKey == null) ? null : e[orderbyKey]
                    select e;
         }
 
-        public IEnumerable<IEdge> SelectEdges(string key, object value, IVertex vSource, IVertex vTarget, string orderbyKey = null, IEnumerable<IEdge> edges = null)
+        public IEnumerable<IEdge> SelectEdges(string key, object value, IVertex vSource, IVertex vTarget, string orderbyKey = null, IEnumerable<IEdge> edges = null, Func<IEdge,bool> compare = null)
         {
             return from e in (edges == null) ? Graph.Edges : edges
                    where ((value == null) ? e.Attributes.Keys.Contains(key) : value.Equals(e[key])) &&
                          ((vSource == null) ? true : e.Source.Equals(vSource)) &&
-                         ((vTarget == null) ? true : e.Target.Equals(vTarget))
+                         ((vTarget == null) ? true : e.Target.Equals(vTarget)) &&
+                         ((compare == null) ? true : compare(e))
                    orderby (orderbyKey == null) ? null : e[orderbyKey]
                    select e;
         }//三元运算符优先级问题
@@ -185,12 +192,14 @@ namespace KHGraphDB.Helper
             if (vSource == null || vTarget == null ) return new HashSet<Edge>();
             if ( vSource.OutDegree < vTarget.InDegree)
                 return from e in vSource.OutgoingEdges
-                       where e.Target.Equals(vTarget) && ((edges == null) ? true : edges.Contains(e))
+                       where e.Target.Equals(vTarget) && 
+                            ((edges == null) ? true : edges.Contains(e))
                        orderby (orderbyKey == null) ? null : e[orderbyKey]
                        select e;
             else
                 return from e in vTarget.IncomingEdges
-                       where e.Source.Equals(vSource) && ((edges == null) ? true : edges.Contains(e))
+                       where e.Source.Equals(vSource) && 
+                            ((edges == null) ? true : edges.Contains(e))
                        orderby (orderbyKey == null) ? null : e[orderbyKey]
                        select e;
         }
@@ -261,6 +270,8 @@ namespace KHGraphDB.Helper
 
         #region select
 
+        public IEnumerable<IType> Types { get { return from t in Graph.Types select t; } }
+
         public IType SelectSingleType(string ID)
         {
             return Graph.Types.SingleOrDefault(m => m.KHID == ID);
@@ -276,10 +287,11 @@ namespace KHGraphDB.Helper
             return Graph.Types.SingleOrDefault(m => m.Name == Name);
         }
 
-        public IEnumerable<IType> SelectTypes(string key, object value, string orderbyKey = null, IEnumerable<IType> types = null)
+        public IEnumerable<IType> SelectTypes(string key, object value, string orderbyKey = null, IEnumerable<IType> types = null, Func<IType,bool> compare = null)
         {
             return from t in (types == null) ? Graph.Types : types
-                       where (value == null) ? t.Attributes.Keys.Contains(key) : value.Equals(t[key])
+                       where ((value == null) ? t.Attributes.Keys.Contains(key) : value.Equals(t[key])) &&
+                             ((compare == null) ? true : compare(t) )
                        orderby (orderbyKey == null) ? null : t[orderbyKey]
                        select t;
         }
