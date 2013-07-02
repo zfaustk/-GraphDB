@@ -55,10 +55,7 @@ namespace KHGraphDB.Helper
             string str = "";
             foreach (var t in Graph.Types)
             {
-                //IEnumerable<IVertex> iv = this._graph.Vertices.Except(t.Vertices);
-                //iv = iv.Except(t);
-
-                str = t.KHID + " \'" + t.Name + "\' " + t.Attributes.Count.ToString() + " ";
+                str = t.KHID + " " + t.Name + " " + t.Attributes.Count.ToString() + " ";
                 foreach (var key in t.Attributes.Keys)
                 {
                     if (t[key] == null)

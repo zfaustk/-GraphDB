@@ -118,10 +118,24 @@ namespace KHGraphDBMS
         }
 
         bool console = false;
-        void textArea1_PressControlEnter(object sender)
+        void textArea1_PressControlEnter(object sender)  //执行！！！！！！！！！！！！！！！！！！！！！
         {
             grammar.Exert(textArea1.CodeText);
-            textArea1.CodeText = "";
+            switch(grammar.ReturnsType)
+            {
+                case Grammar.Grammar._ReturnsType.none:
+                    break;
+                case Grammar.Grammar._ReturnsType.Vertex:
+                    IEnumerable<IVertex> VS =( IEnumerable < IVertex > )grammar.Returns;
+                    panelGraph.HighLightList = VS;
+                    break;
+                case Grammar.Grammar._ReturnsType.Edge:
+                    break;
+                case Grammar.Grammar._ReturnsType.Type:
+                    break;
+
+            }
+            //textArea1.CodeText = "";
             if (console)
             {
                 探索模式WToolStripMenuItem_Click(sender, new EventArgs());
@@ -409,7 +423,93 @@ namespace KHGraphDBMS
             this.自动保存ToolStripMenuItem.Checked = !this.自动保存ToolStripMenuItem.Checked;
         }
 
+
+        #region Edit
+
+        private void 添加类型NToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            textArea1.CodeText += "\n" + "create type{name:\"TypeName\" ,Attr1 , Attr2}" + "\n";
+        }
+
+        private void 修改类型DToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            textArea1.CodeText += "\n" + "Alter type(name:\"TypeName\") change { \"NewTypeName\" , AttrOld : AttrNew }" + "\n";
+        }
+
+        private void 删除类型DToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            textArea1.CodeText += "\n" + "Alter delete type(name:\"TypeName\")" + "\n";
+        }
+
+        private void 新建查询SToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            textArea1.CodeText += "\n" + "select t\nfrom type(name:\"TypeName\")" + "\n";
+        }
+
+        private void 添加平凡点NToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            textArea1.CodeText += "\n" + "create vertex{Attr1:Value1,Attr2:Value2}" + "\n";
+        }
+
+        private void 按类型添加YToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            textArea1.CodeText += "\n" + "create vertex{type(name:\"TypeName\"){ value1, value2, value3 } }" + "\n";
+        }
+
+        private void 修改点ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            textArea1.CodeText += "\n" + "Alter vertex(Attr:value) change { Attr1:value1, Attr2:value2 }" + "\n";
+        }
+
+        private void 删除点DToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            textArea1.CodeText += "\n" + "Alter delete vertex(Attr1: value1)" + "\n";
+        }
+
+        private void 新建查询SToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            textArea1.CodeText += "\n" + "select v \nfrom vertex(type(\"TypeName\"), Attr > Value )" + "\n";
+        }
+
+        private void 添加边ToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            textArea1.CodeText += "\n" + "create edge vertex( Attr:value )-[ Attr ]->vertex( Attr:value )" + "\n";
+        }
+
+        private void 添加双向边TToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            textArea1.CodeText += "\n" + "create edge vertex( Attr:value )-[ Attr ]-vertex( Attr:value )" + "\n";
+        }
+
+        private void 修改边AToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            textArea1.CodeText += "\n" + "Alter delete edge(vertex( Attr : value ),vartex( Attr : value ), Attr1, Attr2)" + "\n";
+            textArea1.CodeText += "\n" + "create edge vertex( Attr:value )-[ Attr ]->vertex( Attr:value )" + "\n";
+        }
+
+        private void 删除边DToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            textArea1.CodeText += "\n" + "Alter delete edge(vertex( Attr : value ),vartex( Attr : value ), Attr1, Attr2)" + "\n";
+        }
+
+        private void 新建查询SToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            textArea1.CodeText += "\n" + "select e from edge(vertex(type(name:\"TypeName\"), Attr : value ),vertex(type(name:\"TypeName\"), Attr : value ), Attr > value )" + "\n";
+        }
+
         #endregion
+
+        private void 显示类型ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.显示类型ToolStripMenuItem.Checked = !this.显示类型ToolStripMenuItem.Checked;
+            this.panelGraph.ShowType = this.显示类型ToolStripMenuItem.Checked;
+        }
+
+        
+
+        #endregion
+
+        
 
 
 

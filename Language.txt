@@ -1,49 +1,145 @@
-Create Vertex , Edge , Type 
-Delete Vertex , Edge , Type 
-Edit Vertex , Edge , Type 
+create vertexÓï¾ä²âÊÔ:
+create vertex{name:"peiming",game:"gal",age:22} , 
+create vertex{type(name:"student"){"10001000","weidong",22}}
+create vertex{type(name:"student"){"10001000","yidong",22}, go:"20"}
+create vertex{type(name:"student"){Num:"10001000",Name:"yidong"}}
 
-Select v from Collection
-match v[Name] = "peiming"
-return v as Vertex
+create edgeÓï¾ä²âÊÔ:
+create vertex {name:"test1",game:"gal",age:22}
+create vertex {name:"test2",game:"gal",age:22}
+create vertex {name:"test3",game:"gal",age:22}
+create edge vertex(name:"test1")-[friend]->vertex(name:"test2") 
+create edge vertex(name:"test2")-[friend,contact:20]-vertex(name:"test3")
 
-create type{name=student , id , name , age}
+create typeÓï¾ä²âÊÔ:
+create type{name:"jugg" ,name , age}
+create vertex {type(name:"jugg"){"weidong",22},go:"20"}
 
+alter vertexÓï¾ä²âÊÔ£º
+create type{name:"jugg" ,name , age}
+create vertex {name:"test1",game:"gal",age:22}
+create vertex {name:"test2",game:"gal",age:22}
+create vertex {name:"test3",game:"gal",age:22}
+Alter vertex(name:"test1") change { type(name:"jugg"){"yidong",22} }
+Alter vertex(name:"test2") change { name:"Peiming",game:"go",age:23 }
+Alter vertex(name:"test3") merge { name:"Peiming",game:"go",ntt:23 }
+Alter vertex(name:"test3") merge { name:"Peiming",game:"go",age:23 }
+
+alter delete vertexÓï¾ä²âÊÔ:
+create vertex {name:"test1",game:"gal",age:22}
+create vertex {name:"test2",game:"gal",age:22}
+Alter delete vertex(name:"test1")
+Alter delete vertex(name:"you") 
+Alter delete vertex(name:"test2") change { name ,game } 
+
+alter delete typeÓï¾ä²âÊÔ:
+create type{name:"jugg" ,name , age}
+create vertex{type(name:"jugg"){"weidong",22}}
+Alter delete type(12323-sdf234-sdfwr4234-wsedr234)
+Alter delete type(name:"jugg")
+
+atler delete edgeÓï¾ä²âÊÔ:
+create vertex {name:"test1",game:"gal",age:22}
+create vertex {name:"test2",game:"gal",age:22}
+create vertex {name:"test3",game:"gal",age:22}
+create edge vertex(name:"test1")-[friend]->vertex(name:"test2") 
+create edge vertex(name:"test2")-[friend,contact:20]-vertex(name:"test3")
+Alter delete edge(vertex(name:"test1"),vertex(name:"test2"),friend)
+
+alter typeÓï¾ä²âÊÔ:
+create type{name:"jugg" ,name , age}
+create vertex{type(name:"jugg"){"weidong",22}}
+Alter type(name:"jugg") change { "you" }
+Alter type(name:"you") change { age:bird }
+
+select typeÓï¾ä²âÊÔ:
+create type{name:"jugg" ,name , age}
+create type{name:"okok" ,name , age ,weight}
+create type{name:"you"  ,en}
+select t from type(name:"okok")
+select t from type(name,age)
+
+select edgeÓï¾ä²âÊÔ:
+create vertex {name:"test1",game:"gal",age:22}
+create vertex {name:"test2",game:"gal",age:22}
+create vertex {name:"test3",game:"gal",age:22}
+create edge vertex(name:"test1")-[friend]->vertex(name:"test2") 
+create edge vertex(name:"test2")-[contact:20]-vertex(name:"test3")
+select e from edge(vertex(type(name:"null"),name:"test2"),vertex(type(name:"null"),name:"test3"), contact > 3 )
+
+select vertexÓï¾ä²âÊÔ£º
+create vertex {name:"test1",game:"gal",age:22}
+create vertex {name:"test2",game:"gal",age:23}
+create vertex {name:"test3",game:"gal",age:24}
+select m from vertex(type(name:"null"),game:"gal",age:23).
+
+select vertexÓï¾ä²âÊÔ:
+create vertex {name:"test1",game:"gal",age:22}
+create vertex {name:"test2",game:"gal",age:23}
+create vertex {name:"test3",game:"gal",age:24}
+create vertex {name:"test4",game:"gal",age:25}
+create edge vertex(name:"test1")-[friend]->vertex(name:"test2") 
+create edge vertex(name:"test4")-[friend]->vertex(name:"test2") 
+create edge vertex(name:"test2")-[contact:20]-vertex(name:"test3")
+create edge vertex(name:"test1")-[contact]->vertex(name:"test3") 
+select m from vertex(type(name:"null"),name:"test3") match vertex(type(name:"null"),name:"test1") -[friend]->vertex(type(name:"null"),name:"test2")-[contact]->m. 
+select m from vertex(type(name:"null")) match m-[friend]->vertex(type(name:"null"),name:"test2") -[contact]->vertex(type(name:"null"),name:"test3").
+
+
+
+
+
+create type{name:"student" , id , name , age}
 create vertex 
 	{name:"peiming",game:"gal",age:22} , 
 	{type(name:"student"){"10001000","weidong",22}}
 	{type(name:"student"){"10001000","yidong",22}, go:"20"}
 	{type(name:"student"){Num:"10001000",Name:"yidong"}}
-
-create edge vartex(name:"peiming")-[friend]->vartex(name:"yidong") ,
+create edge vartex(name:"peiming")-[friend]->vartex(name:"yidong") 
 	    vartex(name:"yidong")-[friend, contact:10]->vartex(name:"peiming")
 
-Alter vartex(name:"peiming") change { type(name:"student"){"10001000","yidong",22} }
-Alter vartex(name:"peiming") merge { name:"Peiming",game:"go",age:23 }
-Alter delete vartex(12323-sdf234-sdfwr4234-wsedr234)
-Alter delete vartex(name:"peiming") 
+Alter vertex(name:"peiming") change { type(name:"student"){"10001000","yidong",22} }
+Alter vertex(name:"peiming") change { name:"Peiming",game:"go",age:23 }
+Alter vertex(name:"peiming") merge { name:"Peiming",game:"go",age:23 }
+Alter type(name:"student") change { "student" }
+Alter type(name:"student") change { age:name }
+Alter delete vertex(12323-sdf234-sdfwr4234-wsedr234)
+Alter delete vertex(name:"peiming")
+Alter delete vertex(name:"peiming") change { name ,game ,age } 
+Alter delete type(12323-sdf234-sdfwr4234-wsedr234)
+Alter delete type(name:"student")
+Alter delete edge(vertex(name:"peiming"),vartex(name:"yidong"),friend,....)
 
-Alter type(name="student").Name = "student"
-Alter type(name="student")[age] = 25
 
-Select v 
-from vertex(type(name:"student"), name:"peiming")
-match v -[ friend *]-> n and n in vertex(type(="student"))
 
-from vertex(name:"peiming").type in type(name:"student")
 
-Select v 
-from vertex(type(name:"student"), name:"peiming")
-match v -[friend]-> -[grade]-> m and in vertex(type(="course"))
+select m
+from vertex(type(name:"course"))
+match vertex(type("student")) -[grade]-> m
+select m
+from vertex(type("book"),age>20)
+match vertex(type(name:"student")) -[grade]-> vertex(type(name:"course"),name:"Eco") , -[buy]-> vertex(...) , -[]-> m
+select m
+from vertex(type("bo"))
+match m -[]-> returns
+select m
+from vertex(type(name:"teacher"))
+match vertex(type("student")) -[grade]-> vertex(type("course"),name:"Eco") -[teach]-> m
+select m
+from vertex(type(name:"student"))
+match m -[grade]-> vertex(type(name:"course"),name:"Eco") -[teach]-> vertex(type(name:"teacher"))
 
-Select e
-from v = vertex(type="student", name:"peiming")
-match v -[ e ]-> n and e[contact] > 10 and n.type ="student" and n[age] < 22
 
-Select t
-from type(name="student")
+select e
+from edge(vertex(type(name:"student")),vertex(type(name:"course"),name:"Eco"), grade > 60 )
+select t
+from type(name:"student")
+select t
+from type(grade, ok)
 
-Select t
-match t.name ="student"
+
+
+returns
 
 return vertex(name="peiming")       		//ËÑË÷½á¹û¼¯
 return vertex(name="peiming").Count       	//ËÑË÷½á¹û¼¯·½·¨
