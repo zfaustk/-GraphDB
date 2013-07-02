@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithm\Algorithm.cs" />
+    <Compile Include="Algorithm\BFS.cs" />
     <Compile Include="Algorithm\BreadthFirstSearch.cs" />
     <Compile Include="Algorithm\IAlgorithm.cs" />
     <Compile Include="Class1.cs" />

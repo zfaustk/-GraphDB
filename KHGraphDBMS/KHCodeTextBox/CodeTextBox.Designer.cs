@@ -18,7 +18,10 @@
                 components.Dispose();
             }
             base.Dispose(disposing);
+            
         }
+
+        
 
         #region 组件设计器生成的代码
 
@@ -28,9 +31,17 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
+            this.SuspendLayout();
+            // 
+            // CodeTextBox
+            // 
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CodeTextBox_KeyDown);
+            this.ResumeLayout(false);
+            
         }
 
         #endregion
+
+        
     }
 }
