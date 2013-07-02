@@ -150,19 +150,17 @@
         jc4n8Ywim2RtbJrG5rbBnS29G/2niC9b/DeDbAvFKdi6YAAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="textArea1.CodeText" xml:space="preserve">
-    <value>create vertex {name:"peiming",game:"gal",age:"22"} , {name:"yidong",age:"22"}
-create edge peiming-[friend]-&gt;yidong , yidong-[friend, contact:"10"]-&gt;peiming
-
-Select v = vertex(name="peiming") 
-match v-[friend*]-&gt;n 
-return n As vertex</value>
-  </data>
   <metadata name="backgroundWorker1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>133, 17</value>
   </metadata>
+  <metadata name="openDatabaseDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>307, 17</value>
+  </metadata>
+  <metadata name="saveDatabaseDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>483, 17</value>
+  </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>25</value>
+    <value>49</value>
   </metadata>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
