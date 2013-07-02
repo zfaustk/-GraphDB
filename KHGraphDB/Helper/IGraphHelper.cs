@@ -11,7 +11,7 @@ namespace KHGraphDB.Helper
         /// </summary>
         /// <param name="e">一条边</param>
         /// <returns>添加成功时，返回该边，否则返回null</returns>
-        KHGraphDB.Structure.Interface.IEdge AddEdge(KHGraphDB.Structure.Interface.IEdge e);
+        IEdge AddEdge(IEdge e);
         /// <summary>
         /// 增加一条边
         /// </summary>
@@ -19,7 +19,7 @@ namespace KHGraphDB.Helper
         /// <param name="vTarget">终点</param>
         /// <param name="theAttributes">边的属性</param>
         /// <returns>添加成功时，返回该边，否则返回null</returns>
-        KHGraphDB.Structure.Interface.IEdge AddEdge(KHGraphDB.Structure.Interface.IVertex vSource, KHGraphDB.Structure.Interface.IVertex vTarget, System.Collections.Generic.IDictionary<string, object> theAttributes = null);
+        IEdge AddEdge(IVertex vSource, IVertex vTarget, System.Collections.Generic.IDictionary<string, object> theAttributes = null);
         /// <summary>
         /// 增加一条边
         /// </summary>
@@ -28,13 +28,13 @@ namespace KHGraphDB.Helper
         /// <param name="vTarget">终点</param>
         /// <param name="theAttributes">边的属性</param>
         /// <returns>添加成功时，返回该边，否则返回null</returns>
-        KHGraphDB.Structure.Interface.IEdge AddEdge(string ID, KHGraphDB.Structure.Interface.IVertex vSource, KHGraphDB.Structure.Interface.IVertex vTarget, System.Collections.Generic.IDictionary<string, object> theAttributes = null);
+        IEdge AddEdge(string ID, IVertex vSource, IVertex vTarget, System.Collections.Generic.IDictionary<string, object> theAttributes = null);
         /// <summary>
         /// 增加一个已有类型
         /// </summary>
         /// <param name="t">类型</param>
         /// <returns>添加成功时，返回该类型，否则返回null</returns>
-        KHGraphDB.Structure.Interface.IType AddType(KHGraphDB.Structure.Interface.IType t);
+        IType AddType(IType t);
         /// <summary>
         /// 增加一个类型
         /// </summary>
@@ -42,42 +42,42 @@ namespace KHGraphDB.Helper
         /// <param name="Name">名字</param>
         /// <param name="theAttributes">类型属性</param>
         /// <returns>添加成功时，返回该类型，否则返回null</returns>
-        KHGraphDB.Structure.Interface.IType AddType(string ID, string Name, System.Collections.Generic.IDictionary<string, object> theAttributes = null);
+        IType AddType(string ID, string Name, System.Collections.Generic.IDictionary<string, object> theAttributes = null);
         /// <summary>
         /// 增加一个类型
         /// </summary>
         /// <param name="Name">名字</param>
         /// <returns>添加成功时，返回该类型，否则返回null</returns>
-        KHGraphDB.Structure.Interface.IType AddType(string Name);
+        IType AddType(string Name);
         /// <summary>
         /// 添加一个已有节点(到类型)
         /// </summary>
         /// <param name="v">点</param>
         /// <param name="type">类型，为空时为添加离散节点</param>
         /// <returns>添加成功时，返回该点，否则返回null</returns>
-        KHGraphDB.Structure.Interface.IVertex AddVertex(KHGraphDB.Structure.Interface.IVertex v, KHGraphDB.Structure.Type type = null);
+        IVertex AddVertex(IVertex v, KHGraphDB.Structure.Type type = null);
         /// <summary>
         /// 添加一个节点
         /// </summary>
         /// <param name="theAttributes">属性</param>
         /// <param name="type">类型，为空时为添加离散节点</param>
         /// <returns>添加成功时，返回该点，否则返回null</returns>
-        KHGraphDB.Structure.Interface.IVertex AddVertex(System.Collections.Generic.IDictionary<string, object> theAttributes, KHGraphDB.Structure.Type type = null);
+        IVertex AddVertex(System.Collections.Generic.IDictionary<string, object> theAttributes, KHGraphDB.Structure.Type type = null);
         /// <summary>
         /// 添加一个节点
         /// </summary>
         /// <param name="theAttributes">属性</param>
         /// <param name="type">类型，为空时为添加离散节点</param>
         /// <returns>添加成功时，返回该点，否则返回null</returns>
-        KHGraphDB.Structure.Interface.IVertex AddVertex(string ID, System.Collections.Generic.IDictionary<string, object> theAttributes, KHGraphDB.Structure.Type type = null);
+        IVertex AddVertex(string ID, System.Collections.Generic.IDictionary<string, object> theAttributes, KHGraphDB.Structure.Type type = null);
         #endregion
 
         #region Remove
-        bool RemoveVertex(KHGraphDB.Structure.Interface.IVertex v);
+        bool RemoveVertex(IVertex v);
         bool RemoveVertex(string ID);
-        bool RemoveEdge(KHGraphDB.Structure.Interface.IEdge e);
+        bool RemoveEdge(IEdge e);
         bool RemoveEdge(string ID);
-        bool RemoveType(KHGraphDB.Structure.Interface.IType t);
+        bool RemoveType(IType t);
         bool RemoveType(string ID);
         bool RemoveTypeByName(string Name);
         #endregion
@@ -85,23 +85,28 @@ namespace KHGraphDB.Helper
         #region select
 
         #region Collection
-        System.Collections.Generic.IEnumerable<KHGraphDB.Structure.Interface.IEdge> SelectEdges(string key, object value, KHGraphDB.Structure.Interface.IVertex vSource, KHGraphDB.Structure.Interface.IVertex vTarget, string orderbyKey = null, System.Collections.Generic.IEnumerable<KHGraphDB.Structure.Interface.IEdge> edges = null);
-        System.Collections.Generic.IEnumerable<KHGraphDB.Structure.Interface.IEdge> SelectEdges(string key, object value, string orderbyKey = null, System.Collections.Generic.IEnumerable<KHGraphDB.Structure.Interface.IEdge> edges = null);
-        System.Collections.Generic.IEnumerable<KHGraphDB.Structure.Interface.IEdge> SelectParallelEdges(KHGraphDB.Structure.Interface.IEdge edge, string orderbyKey = null, System.Collections.Generic.IEnumerable<KHGraphDB.Structure.Interface.IEdge> edges = null);
-        System.Collections.Generic.IEnumerable<KHGraphDB.Structure.Interface.IEdge> SelectParallelEdges(KHGraphDB.Structure.Interface.IVertex vSource, KHGraphDB.Structure.Interface.IVertex vTarget, string orderbyKey = null, System.Collections.Generic.IEnumerable<KHGraphDB.Structure.Interface.IEdge> edges = null);
-        System.Collections.Generic.IEnumerable<KHGraphDB.Structure.Interface.IType> SelectTypes(string key, object value, string orderbyKey = null, System.Collections.Generic.IEnumerable<KHGraphDB.Structure.Interface.IType> types = null);
-        System.Collections.Generic.IEnumerable<KHGraphDB.Structure.Interface.IVertex> SelectVerteics(string key, object value, KHGraphDB.Structure.Interface.IType type, string orderbyKey = null);
-        System.Collections.Generic.IEnumerable<KHGraphDB.Structure.Interface.IVertex> SelectVerteics(string key, object value, string orderbyKey = null, System.Collections.Generic.IEnumerable<KHGraphDB.Structure.Interface.IVertex> vertics = null);
+        IEnumerable<IEdge> Edges { get; }
+        IEnumerable<IEdge> SelectEdges(string key, object value, IVertex vSource, IVertex vTarget, string orderbyKey = null, IEnumerable<IEdge> edges = null, Func<IEdge, bool> compare = null);
+        IEnumerable<IEdge> SelectEdges(string key, object value, string orderbyKey = null, IEnumerable<IEdge> edges = null, Func<IEdge, object, bool> compare = null);
+        IEnumerable<IEdge> SelectParallelEdges(IEdge edge, string orderbyKey = null, IEnumerable<IEdge> edges = null);
+        IEnumerable<IEdge> SelectParallelEdges(IVertex vSource, IVertex vTarget, string orderbyKey = null, IEnumerable<IEdge> edges = null);
+
+        IEnumerable<IType> Types { get; }
+        IEnumerable<IType> SelectTypes(string key, object value, string orderbyKey = null, IEnumerable<IType> types = null, Func<IType, bool> compare = null);
+
+        IEnumerable<IVertex> Verteics { get; }
+        IEnumerable<IVertex> SelectVerteics(string key, object value, string orderbyKey = null, IEnumerable<IVertex> vertics = null);
+        IEnumerable<IVertex> SelectVerteics(string key, object value, IType type, string orderbyKey = null, Func<IVertex, bool> compare = null);
         #endregion
 
         #region single
-        KHGraphDB.Structure.Interface.IEdge SelectSingleEdge(string ID);
-        KHGraphDB.Structure.Interface.IEdge SelectSingleEdge(string key, object value);
-        KHGraphDB.Structure.Interface.IType SelectSingleType(string ID);
-        KHGraphDB.Structure.Interface.IType SelectSingleType(string key, object value);
-        KHGraphDB.Structure.Interface.IType SelectSingleTypeName(string Name);
-        KHGraphDB.Structure.Interface.IVertex SelectSingleVertex(string ID);
-        KHGraphDB.Structure.Interface.IVertex SelectSingleVertex(string key, object value);
+        IEdge SelectSingleEdge(string ID);
+        IEdge SelectSingleEdge(string key, object value);
+        IType SelectSingleType(string ID);
+        IType SelectSingleType(string key, object value);
+        IType SelectSingleTypeName(string Name);
+        IVertex SelectSingleVertex(string ID);
+        IVertex SelectSingleVertex(string key, object value);
         #endregion
 
         #endregion

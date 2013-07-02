@@ -84,6 +84,9 @@
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="KHCodeTextBox\CodeTextBox.resx">
+      <DependentUpon>CodeTextBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="KHCodeTextBox\KHCodeTextArea.resx">
       <DependentUpon>KHCodeTextArea.cs</DependentUpon>
     </EmbeddedResource>
@@ -111,7 +114,15 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ICON_KHGRAPHDB_Small_small.png" />
+    <None Include="btn_exit.png" />
+    <None Include="btn_exit_hover.png" />
+    <None Include="btn_Max.png" />
+    <None Include="btn_Max_hover.png" />
+    <None Include="btn_Min.png" />
+    <None Include="btn_Min_hover.png" />
     <Content Include="ICON_KHGRAPHDB_Small.ico" />
+    <None Include="ICON_KHGRAPHDB_Small.png" />
     <Content Include="ICON_KHGRAPHDB_Small_small.ico" />
   </ItemGroup>
   <ItemGroup>

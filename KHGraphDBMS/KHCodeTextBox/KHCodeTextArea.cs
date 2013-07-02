@@ -22,6 +22,10 @@ namespace KHGraphDBMS.KHCodeTextBox
         [DllImport("user32")]
         private static extern int SendMessage(IntPtr hwnd, int wMsg, int wParam, IntPtr lParam);
 
+        public delegate void ControlEnterPress(object sender);
+        public event ControlEnterPress PressControlEnter = new ControlEnterPress(EnterPress);
+        private static void EnterPress(object sender) { ; }
+
         #region ScrollMove
         bool mouseDown = false;
         int mouseDownY = 0;
@@ -162,6 +166,12 @@ namespace KHGraphDBMS.KHCodeTextBox
         private void KHCodeTextArea_Load(object sender, EventArgs e)
         {
             ResetScrollHeight();
+            this.codeTextBox.PressControlEnter += codeTextBox_PressControlEnter;
+        }
+
+        void codeTextBox_PressControlEnter(object sender)
+        {
+            this.PressControlEnter(sender);
         }
 
         private void codeTextBox_Resize(object sender, EventArgs e)
@@ -189,6 +199,17 @@ namespace KHGraphDBMS.KHCodeTextBox
         }
 
         public float LineHeight { get { return codeTextBox.CreateGraphics().MeasureString("test", codeTextBox.Font).Height; } }
+
+        private void codeTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control)
+            switch (e.KeyData)
+            {
+                case Keys.Enter:
+                    PressControlEnter(this);
+                    break;
+            }
+        }
 
         
     }
