@@ -25,7 +25,7 @@ namespace KHGraphDB.Helper
         public GraphWriter(Graph g)
         {
             _graph = g;
-            Path = "Graph_lyf";
+            Path = "KHGDB";
         }
 
         public bool Write()
@@ -43,7 +43,7 @@ namespace KHGraphDB.Helper
             {
                 WriteEdges(sr);
             }
-            using (StreamWriter sr = new StreamWriter("Graph_lyf_Graph.gdbt"))
+            using (StreamWriter sr = new StreamWriter(Path + ".gdbf"))
             {
                 WriteGraphs(sr);
             }
