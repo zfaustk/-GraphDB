@@ -73,35 +73,29 @@ namespace KHGraphDB.Algorithm
 
             while (queue.Count > 0)
             {
-                Console.WriteLine("queue");
                 u = queue.Dequeue();
                 foreach (var outEdge in u.OutgoingEdges)
                 {
                     if (outEdge.Attributes.Keys.Contains(type))//if contains "String type"
                     {
-                        Console.WriteLine("1");
                         var v = outEdge.Target;
-                        var color = (Color)v.AlgorithmObjs[COLOR_ATTRIBUTE_KEY];
-                        if (color == Color.WHITE)
+                        try
                         {
-                            v.AlgorithmObjs[COLOR_ATTRIBUTE_KEY] = Color.RED;
-                            v.AlgorithmObjs[PREDECESSOR_ATTRIBUTE_KEY] = u;
-
-                            try
-                            {
-                                weight = Convert.ToDouble(outEdge[type]);
-                            }
-                            catch
-                            {
+                            if (outEdge[type] == null)
                                 weight = 1;
-                            }
-                            v.AlgorithmObjs[DISTANCE_ATTRIBUTE_KEY] = (Double)(u.AlgorithmObjs[DISTANCE_ATTRIBUTE_KEY]) + weight;
-
-                            if ((Double)(v.AlgorithmObjs[DISTANCE_ATTRIBUTE_KEY]) <= range)//in the range
-                            {
-                                queue.Enqueue(v);
-                                result.Add(v);//add to result list
-                            }
+                            else
+                                weight = Convert.ToDouble(outEdge[type]);
+                        }
+                        catch
+                        {
+                            weight = 1;
+                        }
+                        v.AlgorithmObjs[DISTANCE_ATTRIBUTE_KEY] = (Double)(u.AlgorithmObjs[DISTANCE_ATTRIBUTE_KEY]) + weight;
+                        if ((Double)(v.AlgorithmObjs[DISTANCE_ATTRIBUTE_KEY]) <= range)
+                        {
+                            result.Add(v);
+                            Console.WriteLine(v.AlgorithmObjs[DISTANCE_ATTRIBUTE_KEY]);
+                            queue.Enqueue(v);
                         }
                     }
                 }
