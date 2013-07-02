@@ -121,9 +121,10 @@ namespace KHGraphDBMS.KHCodeTextBox
                 foreach (string key in Colorconfig.PreserveWord.Keys)
                 {
                     ChangeColor(key, Colorconfig.PreserveWordColor, Colorconfig.PreserveWord[key]);              //调用改变文字颜色的方法
-
                 }
+
                 ChangeColorString(Colorconfig.StringColor);
+
                 #region
                 //this.Select(sIndex>=0?sIndex:0, 0);
                 //this.SelectionColor = Colorconfig.NormalWordColor;

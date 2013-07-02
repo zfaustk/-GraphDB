@@ -39,10 +39,10 @@ namespace KHGraphDBMS
             this.pbMin = new System.Windows.Forms.PictureBox();
             this.pbMax = new System.Windows.Forms.PictureBox();
             this.pbExit = new System.Windows.Forms.PictureBox();
+            this.panelGraph = new KH_GraphControls.GraphPanel.GraphPanel();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.openDatabaseDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveDatabaseDialog = new System.Windows.Forms.SaveFileDialog();
-            this.panelGraph = new KH_GraphControls.GraphPanel.GraphPanel();
             this.textArea1 = new KHGraphDBMS.KHCodeTextBox.KHCodeTextArea();
             this.MainMenu = new KHGraphDBMS.KHMenu.KH_Menu(this.components);
             this.文件FToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -70,6 +70,7 @@ namespace KHGraphDBMS
             this.新建查询SToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.添加边EToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.添加边ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.添加双向边TToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.修改边AToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.删除边DToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.新建查询SToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
@@ -81,6 +82,7 @@ namespace KHGraphDBMS
             this.生成自动代码MToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.自动保存ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sQLPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.显示类型ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelMainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
             this.panelMain.SuspendLayout();
@@ -180,16 +182,6 @@ namespace KHGraphDBMS
             this.pbExit.MouseEnter += new System.EventHandler(this.pbExit_MouseEnter);
             this.pbExit.MouseLeave += new System.EventHandler(this.pbExit_MouseLeave);
             // 
-            // openDatabaseDialog
-            // 
-            this.openDatabaseDialog.FileName = "openDatabase";
-            this.openDatabaseDialog.Filter = "图形数据库|*.gdbf|所有文件|*";
-            this.openDatabaseDialog.Title = "选择一个数据库(.gdbf)文件";
-            // 
-            // saveDatabaseDialog
-            // 
-            this.saveDatabaseDialog.Filter = "图形数据库|*.gdbf";
-            // 
             // panelGraph
             // 
             this.panelGraph.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -204,13 +196,23 @@ namespace KHGraphDBMS
             this.panelGraph.Size = new System.Drawing.Size(876, 433);
             this.panelGraph.TabIndex = 7;
             // 
+            // openDatabaseDialog
+            // 
+            this.openDatabaseDialog.FileName = "openDatabase";
+            this.openDatabaseDialog.Filter = "图形数据库|*.gdbf|所有文件|*";
+            this.openDatabaseDialog.Title = "选择一个数据库(.gdbf)文件";
+            // 
+            // saveDatabaseDialog
+            // 
+            this.saveDatabaseDialog.Filter = "图形数据库|*.gdbf";
+            // 
             // textArea1
             // 
             this.textArea1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textArea1.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
             this.textArea1.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(66)))));
-            this.textArea1.CodeText = resources.GetString("textArea1.CodeText");
+            this.textArea1.CodeText = "";
             this.textArea1.KeyWordColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(139)))), ((int)(((byte)(210)))));
             this.textArea1.Location = new System.Drawing.Point(11, 502);
             this.textArea1.Name = "textArea1";
@@ -224,7 +226,7 @@ namespace KHGraphDBMS
             // MainMenu
             // 
             this.MainMenu.BackColor = System.Drawing.Color.Transparent;
-            this.MainMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(241)))), ((int)(((byte)(241)))));
+            this.MainMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(221)))), ((int)(((byte)(251)))));
             this.MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.文件FToolStripMenuItem,
             this.编辑EToolStripMenuItem,
@@ -339,24 +341,28 @@ namespace KHGraphDBMS
             this.添加类型NToolStripMenuItem.Name = "添加类型NToolStripMenuItem";
             this.添加类型NToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.添加类型NToolStripMenuItem.Text = "添加类型(&N)";
+            this.添加类型NToolStripMenuItem.Click += new System.EventHandler(this.添加类型NToolStripMenuItem_Click);
             // 
             // 修改类型DToolStripMenuItem
             // 
             this.修改类型DToolStripMenuItem.Name = "修改类型DToolStripMenuItem";
             this.修改类型DToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.修改类型DToolStripMenuItem.Text = "修改类型(&A)";
+            this.修改类型DToolStripMenuItem.Click += new System.EventHandler(this.修改类型DToolStripMenuItem_Click);
             // 
             // 删除类型DToolStripMenuItem
             // 
             this.删除类型DToolStripMenuItem.Name = "删除类型DToolStripMenuItem";
             this.删除类型DToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.删除类型DToolStripMenuItem.Text = "删除类型(&D)";
+            this.删除类型DToolStripMenuItem.Click += new System.EventHandler(this.删除类型DToolStripMenuItem_Click);
             // 
             // 新建查询SToolStripMenuItem1
             // 
             this.新建查询SToolStripMenuItem1.Name = "新建查询SToolStripMenuItem1";
             this.新建查询SToolStripMenuItem1.Size = new System.Drawing.Size(142, 22);
             this.新建查询SToolStripMenuItem1.Text = "新建查询(&S)";
+            this.新建查询SToolStripMenuItem1.Click += new System.EventHandler(this.新建查询SToolStripMenuItem1_Click);
             // 
             // 添加边ToolStripMenuItem
             // 
@@ -383,35 +389,41 @@ namespace KHGraphDBMS
             this.添加平凡点NToolStripMenuItem.Name = "添加平凡点NToolStripMenuItem";
             this.添加平凡点NToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.添加平凡点NToolStripMenuItem.Text = "添加平凡点(&N)";
+            this.添加平凡点NToolStripMenuItem.Click += new System.EventHandler(this.添加平凡点NToolStripMenuItem_Click);
             // 
             // 按类型添加YToolStripMenuItem
             // 
             this.按类型添加YToolStripMenuItem.Name = "按类型添加YToolStripMenuItem";
             this.按类型添加YToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.按类型添加YToolStripMenuItem.Text = "按类型添加(&Y)";
+            this.按类型添加YToolStripMenuItem.Click += new System.EventHandler(this.按类型添加YToolStripMenuItem_Click);
             // 
             // 修改点ToolStripMenuItem
             // 
             this.修改点ToolStripMenuItem.Name = "修改点ToolStripMenuItem";
             this.修改点ToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.修改点ToolStripMenuItem.Text = "修改点(&A)";
+            this.修改点ToolStripMenuItem.Click += new System.EventHandler(this.修改点ToolStripMenuItem_Click);
             // 
             // 删除点DToolStripMenuItem
             // 
             this.删除点DToolStripMenuItem.Name = "删除点DToolStripMenuItem";
             this.删除点DToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.删除点DToolStripMenuItem.Text = "删除点(&D)";
+            this.删除点DToolStripMenuItem.Click += new System.EventHandler(this.删除点DToolStripMenuItem_Click);
             // 
             // 新建查询SToolStripMenuItem
             // 
             this.新建查询SToolStripMenuItem.Name = "新建查询SToolStripMenuItem";
             this.新建查询SToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.新建查询SToolStripMenuItem.Text = "新建查询(&S)";
+            this.新建查询SToolStripMenuItem.Click += new System.EventHandler(this.新建查询SToolStripMenuItem_Click);
             // 
             // 添加边EToolStripMenuItem
             // 
             this.添加边EToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.添加边ToolStripMenuItem1,
+            this.添加双向边TToolStripMenuItem,
             this.修改边AToolStripMenuItem,
             this.删除边DToolStripMenuItem,
             this.新建查询SToolStripMenuItem2});
@@ -422,26 +434,37 @@ namespace KHGraphDBMS
             // 添加边ToolStripMenuItem1
             // 
             this.添加边ToolStripMenuItem1.Name = "添加边ToolStripMenuItem1";
-            this.添加边ToolStripMenuItem1.Size = new System.Drawing.Size(139, 22);
+            this.添加边ToolStripMenuItem1.Size = new System.Drawing.Size(151, 22);
             this.添加边ToolStripMenuItem1.Text = "添加边(&N)";
+            this.添加边ToolStripMenuItem1.Click += new System.EventHandler(this.添加边ToolStripMenuItem1_Click);
+            // 
+            // 添加双向边TToolStripMenuItem
+            // 
+            this.添加双向边TToolStripMenuItem.Name = "添加双向边TToolStripMenuItem";
+            this.添加双向边TToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.添加双向边TToolStripMenuItem.Text = "添加双向边(&T)";
+            this.添加双向边TToolStripMenuItem.Click += new System.EventHandler(this.添加双向边TToolStripMenuItem_Click);
             // 
             // 修改边AToolStripMenuItem
             // 
             this.修改边AToolStripMenuItem.Name = "修改边AToolStripMenuItem";
-            this.修改边AToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.修改边AToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             this.修改边AToolStripMenuItem.Text = "修改边(&A)";
+            this.修改边AToolStripMenuItem.Click += new System.EventHandler(this.修改边AToolStripMenuItem_Click);
             // 
             // 删除边DToolStripMenuItem
             // 
             this.删除边DToolStripMenuItem.Name = "删除边DToolStripMenuItem";
-            this.删除边DToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.删除边DToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             this.删除边DToolStripMenuItem.Text = "删除边(&D)";
+            this.删除边DToolStripMenuItem.Click += new System.EventHandler(this.删除边DToolStripMenuItem_Click);
             // 
             // 新建查询SToolStripMenuItem2
             // 
             this.新建查询SToolStripMenuItem2.Name = "新建查询SToolStripMenuItem2";
-            this.新建查询SToolStripMenuItem2.Size = new System.Drawing.Size(139, 22);
+            this.新建查询SToolStripMenuItem2.Size = new System.Drawing.Size(151, 22);
             this.新建查询SToolStripMenuItem2.Text = "新建查询(&S)";
+            this.新建查询SToolStripMenuItem2.Click += new System.EventHandler(this.新建查询SToolStripMenuItem2_Click);
             // 
             // 视图VToolStripMenuItem
             // 
@@ -478,7 +501,8 @@ namespace KHGraphDBMS
             // 
             this.项目PToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.生成自动代码MToolStripMenuItem,
-            this.自动保存ToolStripMenuItem});
+            this.自动保存ToolStripMenuItem,
+            this.显示类型ToolStripMenuItem});
             this.项目PToolStripMenuItem.Name = "项目PToolStripMenuItem";
             this.项目PToolStripMenuItem.Size = new System.Drawing.Size(59, 21);
             this.项目PToolStripMenuItem.Text = "项目(&P)";
@@ -503,6 +527,13 @@ namespace KHGraphDBMS
             this.sQLPToolStripMenuItem.Name = "sQLPToolStripMenuItem";
             this.sQLPToolStripMenuItem.Size = new System.Drawing.Size(70, 21);
             this.sQLPToolStripMenuItem.Text = "KHGL(&Q)";
+            // 
+            // 显示类型ToolStripMenuItem
+            // 
+            this.显示类型ToolStripMenuItem.Name = "显示类型ToolStripMenuItem";
+            this.显示类型ToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.显示类型ToolStripMenuItem.Text = "显示类型";
+            this.显示类型ToolStripMenuItem.Click += new System.EventHandler(this.显示类型ToolStripMenuItem_Click);
             // 
             // FormMain
             // 
@@ -586,6 +617,8 @@ namespace KHGraphDBMS
         private System.Windows.Forms.ToolStripMenuItem 修改边AToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 删除边DToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 新建查询SToolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem 添加双向边TToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 显示类型ToolStripMenuItem;
         
         
     }

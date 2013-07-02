@@ -19,7 +19,7 @@ namespace KHGraphDBMS.KHMenu
             set { this._MainBordercolor = value; }
         }
 
-        private Color _fontcolor = Color.FromArgb(241,241,241);
+        private Color _fontcolor = Color.FromArgb(220,221,251);
         /// <summary>  
         /// 菜单字体颜色  
         /// </summary>  
