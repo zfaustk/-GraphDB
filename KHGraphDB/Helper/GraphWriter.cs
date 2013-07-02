@@ -25,7 +25,7 @@ namespace KHGraphDB.Helper
         public GraphWriter(Graph g)
         {
             _graph = g;
-            Path = "Graph_lyf";
+            Path = "KHGDB";
         }
 
         public bool Write()
@@ -43,7 +43,7 @@ namespace KHGraphDB.Helper
             {
                 WriteEdges(sr);
             }
-            using (StreamWriter sr = new StreamWriter("Graph_lyf_Graph.gdbt"))
+            using (StreamWriter sr = new StreamWriter(Path + ".gdbf"))
             {
                 WriteGraphs(sr);
             }
@@ -55,10 +55,7 @@ namespace KHGraphDB.Helper
             string str = "";
             foreach (var t in Graph.Types)
             {
-                //IEnumerable<IVertex> iv = this._graph.Vertices.Except(t.Vertices);
-                //iv = iv.Except(t);
-
-                str = t.KHID + " \'" + t.Name + "\' " + t.Attributes.Count.ToString() + " ";
+                str = t.KHID + " " + t.Name + " " + t.Attributes.Count.ToString() + " ";
                 foreach (var key in t.Attributes.Keys)
                 {
                     if (t[key] == null)

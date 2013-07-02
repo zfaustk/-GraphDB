@@ -11,11 +11,30 @@ using System.Windows.Forms;
 namespace KHGraphDBMS.Grammar
 {
     public class Grammar
-    {   private enum wordtype { create,vertex,edge,type,alter,change,merge,delete,noexist}
+    {
+
+        private IEnumerable<object> _returns = new HashSet<Vertex>();
+        /// <summary>
+        /// 输出值的序列
+        /// </summary>
+        public IEnumerable<object> Returns
+        {
+            set { _returns = value; }
+            get { return _returns; }
+        }
+
+        public enum _ReturnsType {none, Vertex, Type, Edge };
+        /// <summary>
+        /// 输出值的类型
+        /// </summary>
+        public _ReturnsType ReturnsType { get; set; }
+
+        
+        private enum wordtype { create,vertex,edge,type,alter,change,merge,delete,select,from,eql,above,below,aeql,beql,noexist}
         private string[] strArray;
         private int count;
         private int errortype;
-        /// <summary>
+        /// <summary> 
         /// 获取关联的图形数据库
         /// </summary>
         public IGraph Graph { get { return _graph; } }
@@ -53,7 +72,7 @@ namespace KHGraphDBMS.Grammar
         }
 
 
-        /*                     lpm                      */
+      
         //消息处理函数
         private void fun(string result)
         {
@@ -78,6 +97,10 @@ namespace KHGraphDBMS.Grammar
                 case 5: error = error + " type中没有该属性";
                          break;
                 case 6: error = error + " 修改type时点属性已被占用";
+                         break;
+                case 7: error = error + "没找到任何点";
+                         break;
+                case 8: error = error + "没有任何边";
                          break;
                          }
             return error;
@@ -118,12 +141,27 @@ namespace KHGraphDBMS.Grammar
                 return wordtype.merge;
             if (str.ToLower() == "delete")
                 return wordtype.delete;
+            if (str.ToLower() == "select")
+                return wordtype.select;
+            if (str.ToLower() == "from")
+                return wordtype.from;
+            if (str.ToLower() == "=")
+                return wordtype.eql;
+            if (str.ToLower() == ">")
+                return wordtype.above;
+            if (str.ToLower() == "<")
+                return wordtype.below;
+            if (str.ToLower() == ">=")
+                return wordtype.aeql;
+            if (str.ToLower() == "<=")
+                return wordtype.beql;
 
             return wordtype.noexist;
         }
         //语句开始
         private void statement()
         {
+            ReturnsType = _ReturnsType.none;
             count = 0;
             int line = 0;
             bool flag=true;
@@ -153,6 +191,20 @@ namespace KHGraphDBMS.Grammar
                         /*错误处理函数添加于此*/
                         string error;
                         error = derror(line,errortype);
+                        fun(error);
+                        count = strArray.Length - 1;
+                        flag = false;
+                    }//错误处理
+                }
+                if (settype(strArray[count]) == wordtype.select)
+                {
+                    line++;
+                    count++;
+                    if (!state_s())
+                    {
+                        /*错误处理函数添加于此*/
+                        string error;
+                        error = derror(line, errortype);
                         fun(error);
                         count = strArray.Length - 1;
                         flag = false;
@@ -1165,11 +1217,382 @@ namespace KHGraphDBMS.Grammar
         }
 
 
+        /*                       select语句: select                       */
+        private bool state_s()
+        {
+            string varselect;
+            varselect = strArray[count];
+            count++;
+            if (settype(strArray[count]) == wordtype.from)
+            {
+                count++;
+                if (settype(strArray[count]) == wordtype.type)
+                {
+                    if (selecttype())
+                    {
+                        _returns.Distinct();
+                        return true;
+                    }
+                    else
+                        return false;
+                }
+                if (settype(strArray[count]) == wordtype.edge)
+                {
+                    if (selectedge())
+                    {
+                        _returns.Distinct();
+                        return true;
+                    }
+                    else
+                        return false;
+                }
+                if (settype(strArray[count]) == wordtype.vertex || strArray[count] == varselect)
+                {
+                    if (selectvertex(varselect))
+                    {
+                        _returns.Distinct();
+                        return true;
+                    }
+                    else
+                        return false;
+                }
+                return false;
+            }
+            else
+                return false;
+            
 
+        }
+        //select type语句
+        private bool selecttype()
+        {
+            string key="";
+            object val=null;
+            count++;
+            _returns = new HashSet<IType>();
+            ReturnsType = _ReturnsType.Type;
+            if (strArray[count] == "(")
+            {
+                if (strArray[count + 2] == ":")
+                {
+                    if (typekey_val(ref key, ref val))
+                    {
+                        IType t = gHelper.SelectSingleTypeName(val.ToString());
+                        return true;
+                    }
+                    else
+                        return false;
+                }
+                if (strArray[count + 2] == "," || strArray[count + 2] == ")")
+                {
+                    Dictionary<string,object> key_val=new Dictionary<string,object>();
+                    if (tkey_list(key_val))
+                    {
+                        IEnumerable<IType> ts = Graph.Types;
+                        foreach( var v in key_val.Keys)
+                        {
+                            ts = gHelper.SelectTypes(v, null, null , ts);
+                        }
+                        return true;
+                    }
+                    else
+                        return false;
+                }
+                return false;
+            }
+            else
+                return false;
+        }
+        //select edge语句
+        private bool selectedge()
+        {
+            string v1type="",v2type="";
+            object v1typeval=null,v2typeval=null;
+            Dictionary<string, object>  v1 = new Dictionary<string, object>();
+            Dictionary<string, object>  v2 = new Dictionary<string, object>();
+            Dictionary<string, object>  con = new Dictionary<string, object>();
+            wordtype[] lo=new wordtype[5];
+            count++;
 
+            _returns = new HashSet<Edge>();
+            ReturnsType = _ReturnsType.Edge;
+            if (strArray[count] == "(")
+            {
+                count++;
+                if (verter_type_keyval(ref v1type, ref v1typeval, v1))
+                {
+                    if (strArray[count] == ",")
+                    {
+                        count++;
+                        if (verter_type_keyval(ref v2type, ref v2typeval, v2))
+                        {
+                            IEnumerable<IVertex> v1s = new HashSet<IVertex>();
+                            IEnumerable<IVertex> v2s = new HashSet<IVertex>();
+                            if ((v1s=getvertexs(v1s, v1type, v1typeval, v1))!=null && (v2s=getvertexs(v2s, v2type, v2typeval, v2))!=null)
+                            {
+                                if (strArray[count] == ",")
+                                {
+                                    count++;
+                                    if(econdition(con,lo))
+                                    {
+                                        foreach (var vsrc in v1s)
+                                        {
+                                            foreach (var vdest in v2s)
+                                            {
+                                                IEnumerable<IEdge> es = gHelper.SelectParallelEdges(vsrc, vdest);
+                                                getedges(es, vsrc, vdest, con, lo);
+                                                _returns = _returns.Concat(es);
+                                            }
+                                        }
+                                    }
+                                    else
+                                        return false;
+                                }
+                                else
+                                {
+                                    foreach (var vsrc in v1s)
+                                    {
+                                        foreach (var vdest in v2s)
+                                        {
+                                            IEnumerable<IEdge> es = gHelper.SelectEdges(null, null, vsrc, vdest);
+                                            _returns = _returns.Concat(es);
+                                        }
+                                    }
 
+                                }
+                                if (strArray[count] == ")")
+                                {
+                                    count++;
+                                    return true;
+                                }
+                                else
+                                    return false;
+                            }
+                            else
+                                return false;
+                        }
+                        else
+                            return false;
+                    }
+                    else
+                        return false;
+                }
+                else
+                    return false;
+            }
+            else
+                return false;
+        }
+        //select vertex语句
+        private bool selectvertex(string varvertex)
+        {
+            _returns = new HashSet<IVertex>();
+            ReturnsType = _ReturnsType.Vertex;
+            string v1typename="";
+            object v1typeval=null;
+            Dictionary<string,object> v1key_val =new Dictionary<string,object>();
+            if (verter_type_keyval(ref v1typename, ref v1typeval, v1key_val))
+            {
+                if (strArray[count] == "match")
+                {
+                    count++;
+                    IEnumerable<IVertex> vs = null;
+                    if ((vs = getvertexs(vs, v1typename, v1typeval, v1key_val)) == null)
+                        return false;
+                    if (selectmatch(vs,varvertex))
+                        return true;
+                    else
+                        return false;
+                }
+                if (strArray[count] == ".")
+                {
+                    count++;
+                    IEnumerable<IVertex> vs = null;
+                    if ((vs = getvertexs(vs, v1typename, v1typeval, v1key_val)) == null)
+                        return false;
+                    _returns = vs;
+                    return true;
+                }
 
+                return false;
+            }
+            else
+                return false;
 
+        }
+        //select 带match情况下处理
+        private bool selectmatch(IEnumerable<IVertex> vs,string varvertex)
+        {
+            string v1typename = "", v2typename = "";
+            object v1typeval = null, v2typeval = null;
+            Dictionary<string, object> v1key_val = new Dictionary<string, object>();
+            Dictionary<string, object> v2key_val = new Dictionary<string, object>();
+            IEnumerable<IVertex> v1 = new HashSet<IVertex>();
+            IEnumerable<IVertex> v2 = new HashSet<IVertex>();
+            IEnumerable<IVertex> vers = new HashSet<IVertex>();
+            string edgekey = "";
+            //select m    m在条件最后
+            if (settype(strArray[count]) == wordtype.vertex)
+            {
+                if (!verter_type_keyval(ref v1typename, ref v1typeval, v1key_val))
+                    return false;
+                if ((v1 = getvertexs(v1, v1typename, v1typeval, v1key_val)).Count() == 0)
+                    return false;
+                vers = v1;
+                while (strArray[count] != ".")
+                {
+                    if (!edgec(ref edgekey))
+                        return false;
+                    if (settype(strArray[count]) == wordtype.vertex)
+                    {
+                        if (!verter_type_keyval(ref v2typename, ref v2typeval, v2key_val))
+                            return false;
+                        if ((v2 = getvertexs(v2, v2typename, v2typeval, v2key_val)).Count() == 0)
+                            return false;
+                        if (strArray[count] == ",")
+                        {
+                            IEnumerable<IVertex> temp = new HashSet<IVertex>();
+                            foreach (var v1s in vers)
+                            {
+                                foreach (var v2s in v2)
+                                {
+                                    if (gHelper.SelectEdges(edgekey, null, v1s, v2s).Count() != 0)
+                                        temp.Contains(v1s);
+                                }
+                            }
+                            vers = temp;
+                        }
+                        else
+                        {
+                            if (strArray[count] == "-")
+                            {
+                                HashSet<IVertex> temp =new HashSet<IVertex>();
+                                foreach (var v1s in vers)
+                                {
+                                    foreach (var v2s in v2)
+                                    {
+                                        if (gHelper.SelectEdges(edgekey, null, v1s, v2s).Count() != 0)
+                                            temp.Add(v2s);
+                                          
+                                    }
+                                }
+                                vers = temp;
+                            }
+                            else
+                                return false;
+                        }
+                    }
+                    else
+                    {
+
+                        if (strArray[count] == varvertex)
+                        {
+                            v2 = vs;
+                            HashSet<IVertex> temp = new HashSet<IVertex>();
+                            foreach (var v1s in vers)
+                            {
+                                foreach (var v2s in v2)
+                                {
+                                    if (gHelper.SelectEdges(edgekey, null, v1s, v2s).Count() != 0)
+                                        temp.Add(v2s);
+                                }
+                            }
+                            _returns = temp;
+                            count = count + 2;
+                            return true;
+                        }
+                        else
+                            return false;
+                    }
+                }
+            }
+            //select m    m在条件最前
+            if (strArray[count] == varvertex)
+            {
+                vers = vs;
+                count++;
+                while (strArray[count] != ".")
+                {
+                    if (!edgec(ref edgekey))
+                        return false;
+                    if (settype(strArray[count]) == wordtype.vertex)
+                    {
+                        if (!verter_type_keyval(ref v2typename, ref v2typeval, v2key_val))
+                            return false;
+                        if ((v2 = getvertexs(v2, v2typename, v2typeval, v2key_val)).Count() == 0)
+                            return false;
+                        HashSet<IVertex> temp = new HashSet<IVertex>();
+                        foreach (var v1s in vers)
+                        {
+                            foreach (var v2s in v2)
+                               {
+                                  if (gHelper.SelectEdges(edgekey, null, v1s, v2s).Count() != 0)
+                                      temp.Add(v1s);
+
+                                }
+                        }
+                        vers = temp;
+                     if (strArray[count] == ".")
+                       {
+                           count++;
+                           _returns = vers;
+                           return true;
+                       }
+                    }
+                    else
+                        return false;
+                    }
+                }
+            return false;
+        }
+        //根据type属性，vertex的属性键值对得到点集合
+        private IEnumerable<IVertex> getvertexs(IEnumerable<IVertex> vs,string tkey,object val,Dictionary<string,object> ckv)
+        {
+            IType t = null;
+            if (val != null)
+            {
+                t = gHelper.SelectSingleTypeName(val.ToString());
+                vs = t.Vertices;
+            }
+            else
+            {
+                vs = Graph.Vertices;
+            }
+            foreach (var x in ckv.Keys)
+            {
+                vs = gHelper.SelectVerteics(x, ckv[x], null, vs);
+            }
+            if (vs.Count()>0)
+                return vs;
+            else
+                errortype = 7;
+            return null;
+        }
+        //根据v1，v2，edge的属性返回边
+        private bool getedges(IEnumerable<IEdge> es, IVertex v1, IVertex v2, Dictionary<string,object>ckey,wordtype[] logic)
+        {
+            Func<IEdge, bool> aa=null;
+            int i=0;
+            foreach (var k in ckey.Keys)
+            {
+                switch (logic[i])
+                {
+                    case wordtype.eql: aa = a => Convert.ToDouble(a[k]) == Convert.ToDouble(ckey[k]);
+                        break;
+                    case wordtype.above: aa = a => Convert.ToDouble(a[k]) > Convert.ToDouble(ckey[k]);
+                        break;
+                    case wordtype.below: aa = a => Convert.ToDouble(a[k]) < Convert.ToDouble(ckey[k]);
+                        break;
+                    case wordtype.beql: aa = a => Convert.ToDouble(a[k]) <= Convert.ToDouble(ckey[k]);
+                        break;
+                    case wordtype.aeql: aa = a => Convert.ToDouble(a[k]) >= Convert.ToDouble(ckey[k]);
+                        break;
+                }
+                i++;
+                es = gHelper.SelectEdges(k, ckey[k], v1, v2, null, es, aa);
+            }
+            return true;
+        }
 
 
 
@@ -1215,17 +1638,19 @@ namespace KHGraphDBMS.Grammar
         //(name:"test1")     type(name:"test1")
         private bool typekey_val(ref string key, ref object val)
         {
-            count++;
-            key = strArray[count];
-            count=count+2;
-            val = valtype();
-            if (strArray[count] == ")")
-            {
                 count++;
-                return true;
-            }
-            else
-                return false;
+                key = strArray[count];
+                count = count + 2;
+                val = valtype();
+                if (val.ToString() == "null")
+                    val = null;
+                if (strArray[count] == ")")
+                {
+                    count++;
+                    return true;
+                }
+                else
+                    return false;
         }
         //vertex(key:val)
         private bool vertex_key_val(ref string key,ref object val)
@@ -1271,8 +1696,211 @@ namespace KHGraphDBMS.Grammar
             }
             return true;
         }
+        //(key,key,key)
+        private bool tkey_list(Dictionary<string, object> dic)
+        {
+            if (strArray[count] == "(")
+            {
+                count++;
+                dic[strArray[count]] = null;
+                count++;
+                while (strArray[count] == ",")
+                {
+                    count++;
+                    dic[strArray[count]] = null;
+                    count++;
+                }
+                if (strArray[count] == ")")
+                {
+                    count++;
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else
+                return false;
+        }
+        //vertex(type(..),key:val....)
+        private bool verter_type_keyval(ref string typename, ref object typeval,Dictionary<string,object > dic)
+        {
+            if (settype(strArray[count]) == wordtype.vertex)
+            {
+                string key;
+                object val;
+                count++;
+                if (strArray[count] == "(")
+                {
+                    count++;
+                    if (settype(strArray[count]) == wordtype.type)
+                    {
+                        count++;
+                        if (typekey_val(ref typename, ref typeval))
+                        {
+                            while (strArray[count] == ",")
+                            {
+                                count++;
+                                key = strArray[count];
+                                count++;
+                                if (strArray[count] == ":")
+                                {
+                                    count++;
+                                    val = valtype();
+                                    dic[key] = val;
+                                }
+                                else
+                                    return false;
+                            }
+                            if (strArray[count] == ")")
+                            {
+                                count++;
+                                return true;
+                            }
+                            else
+                                return false;
+                        }
+                        else
+                            return false;
+                    }
+                    else
+                        return false;
+                }
+                else
+                    return false;
+            }
+            else
+                return false;
+        }
+        //key = val,.....
+        private bool econdition(Dictionary<string,object>dic,wordtype[] logics)
+        {
+            int i=0;
+            string name;
+            object val=null;
+            name = strArray[count];
+            count++;
+            if (strArray[count] == "=")
+            {
+                count++;
+                val = valtype();
+                logics[i] = wordtype.eql;
+                i++;
+            }
+            if (strArray[count] == ">")
+            {
+                count++;
+                if (strArray[count] == "=")
+                {
+                    count++;
+                    val = valtype();
+                    logics[0] = wordtype.aeql;
+                    i++;
+                }
+                else
+                {
+                    val = valtype();
+                    logics[0] = wordtype.above;
+                    i++;
+                }
+            }
+            if (strArray[count] == "<")
+            {
+                count++;
+                if (strArray[count] == "=")
+                {
+                    count++;
+                    val = valtype();
+                    logics[0] = wordtype.beql;
+                    i++;
+                }
+                else
+                {
+                    val = valtype();
+                    logics[0] = wordtype.below;
+                    i++;
+                }
+            }
 
+            dic[name] = val;
 
+            while (strArray[count] == ",")
+            {
+                count++;
+                name = strArray[count];
+                count++;
+                if (strArray[count] == "=")
+                {
+                    count++;
+                    val = valtype();
+                    logics[i] = wordtype.eql;
+                    i++;
+                }
+                if (strArray[count] == ">")
+                {
+                    count++;
+                    if (strArray[count] == "=")
+                    {
+                        count++;
+                        val = valtype();
+                        logics[0] = wordtype.aeql;
+                        i++;
+                    }
+                    else
+                    {
+                        val = valtype();
+                        logics[0] = wordtype.above;
+                        i++;
+                    }
+                }
+                if (strArray[count] == "<")
+                {
+                    count++;
+                    if (strArray[count] == "=")
+                    {
+                        count++;
+                        val = valtype();
+                        logics[0] = wordtype.beql;
+                        i++;
+                    }
+                    else
+                    {
+                        val = valtype();
+                        logics[0] = wordtype.below;
+                        i++;
+                    }
+                }
+                dic[name] = val;
+            }
+            if (strArray[count] == ")")
+                return true;
 
+            return false;
+        }
+        //-[..]->
+        private bool edgec(ref string name)
+        {
+            if (strArray[count] == "-"&&strArray[count+1]=="[")
+            {
+                count = count+2;
+                if (strArray[count] == "]")
+                {
+                    name = null;
+                }
+                else
+                {
+                    name = strArray[count];
+                    count++;
+                }
+                if (strArray[count] == "]"&&strArray[count+1]=="-"&&strArray[count+2]==">")
+                {
+                    count = count + 3;
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else
+                return false;
+        }
     }
 }
