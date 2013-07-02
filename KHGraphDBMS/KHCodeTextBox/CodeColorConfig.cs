@@ -18,7 +18,7 @@ namespace KHGraphDBMS.KHCodeTextBox
             {"vertex",true},
             {"edge",true},
             {"graph",true},
-            {"type",true}
+            {"type",true},
         };
 
         /// <summary>  
@@ -31,10 +31,14 @@ namespace KHGraphDBMS.KHCodeTextBox
             {"start",true},
             {"create",true},
             {"match",true},
-            {"return",true},
-            {"as",true},
+            {"alter",true},
+            {"delete",true},
+            {"change",true},
+            {"merge",true},
+            {"from",true},
             {"-[",false},
             {"]->",false},
+            {"]-",false}
         };
         
 
@@ -109,6 +113,16 @@ namespace KHGraphDBMS.KHCodeTextBox
         {
             get { return this._PreserveWordColor; }
             set { this._PreserveWordColor = value; }
+        }
+
+        private Color _AttrValueColor = Color.FromArgb(187, 40, 91);
+        /// <summary>  
+        /// 保留字颜色
+        /// </summary>  
+        public Color AttrValueColor
+        {
+            get { return this._AttrValueColor; }
+            set { this._AttrValueColor = value; }
         }
     }
 }

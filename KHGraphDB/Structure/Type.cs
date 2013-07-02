@@ -142,7 +142,7 @@ namespace KHGraphDB.Structure
         #region override
         public override string AttributesToString()
         {
-            string s = "Name :" + this.Name;
+            string s = "Name :" + this.Name + " - \n";
             s += base.AttributesToString();
             return s;
         }
