@@ -118,9 +118,23 @@ namespace KHGraphDBMS
         }
 
         bool console = false;
-        void textArea1_PressControlEnter(object sender)
+        void textArea1_PressControlEnter(object sender)  //执行！！！！！！！！！！！！！！！！！！！！！
         {
             grammar.Exert(textArea1.CodeText);
+            switch(grammar.ReturnsType)
+            {
+                case Grammar.Grammar._ReturnsType.none:
+                    break;
+                case Grammar.Grammar._ReturnsType.Vertex:
+                    IEnumerable<IVertex> VS =( IEnumerable < IVertex > )grammar.Returns;
+                    panelGraph.HighLightList = VS;
+                    break;
+                case Grammar.Grammar._ReturnsType.Edge:
+                    break;
+                case Grammar.Grammar._ReturnsType.Type:
+                    break;
+
+            }
             //textArea1.CodeText = "";
             if (console)
             {
