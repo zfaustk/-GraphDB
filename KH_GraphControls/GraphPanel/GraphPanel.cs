@@ -45,6 +45,16 @@ namespace KH_GraphControls.GraphPanel
             set { _font = value; }
         }
 
+        /// <summary>
+        /// 是否显示Type
+        /// </summary>
+        public bool ShowType
+        {
+            get;
+            set;
+        }
+
+
         public Font AttrFont
         {
             get { return _Attrfont; }
@@ -744,6 +754,10 @@ namespace KH_GraphControls.GraphPanel
 
                     if (hover) hoverVertex = v;
                 }
+
+                if(ShowType){
+                    Render.DrawTypes(e.Graphics, AttrFont, Graph.Types);
+                };
 
                 if (hoverEdge != null) OnPaint_DrawEdgesInfo(e.Graphics, hoverEdge, ghelper.SelectParallelEdges(hoverEdge));
                 if (hoverVertex != null) OnPaint_DrawVertexInfo(e.Graphics, hoverVertex);

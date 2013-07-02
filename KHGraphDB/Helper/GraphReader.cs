@@ -72,7 +72,7 @@ namespace KHGraphDB.Helper
                         o = commands[i + 3].Trim(new char[] { '\'' });
                     else if (commands[i + 3] == "*")
                     {
-                        o = "*";
+                        o = null;
                     }
                     else if (commands[i + 3].Contains('.'))
                     {
@@ -110,7 +110,7 @@ namespace KHGraphDB.Helper
                         o = commands[i + 4].Trim(new char[] { '\'' });
                     else if (commands[i + 4] == "*")
                     {
-                        o = "*";
+                        o = null;
                     }
                     else if (commands[i + 4].Contains('.'))
                     {
@@ -121,7 +121,7 @@ namespace KHGraphDB.Helper
                         o = Convert.ToInt32(commands[i + 4]);
                     }
 
-                    t.Attributes[(string)(commands[i + 3])] = commands[i + 4];
+                    t.Attributes[(string)(commands[i + 3])] = o;
                 }
                 int iVertex = Convert.ToInt32(commands[3 + iAttr * 2]);
                 for (int i = 0; i < iVertex; i++)
@@ -152,7 +152,7 @@ namespace KHGraphDB.Helper
                         o = commands[i + 5].Trim(new char[] { '\'' });
                     else if (commands[i + 5] == "*")
                     {
-                        o = "*";
+                        o = null;
                     }
                     else if (commands[i + 5].Contains('.'))
                     {
