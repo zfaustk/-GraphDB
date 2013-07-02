@@ -27,7 +27,7 @@ namespace KHGraphDB.Helper
         public GraphReader(Graph g)
         {
             _graph = g;
-            Path = "Graph_lyf";
+            Path = "KHGDB";
             gHelper = new GraphHelper(_graph);
         }
 
@@ -46,7 +46,7 @@ namespace KHGraphDB.Helper
             {
                 ReadAllEdges(sr);
             }
-            using (StreamReader sr = File.OpenText("Graph_lyf_Graph.gdbt"))
+            using (StreamReader sr = File.OpenText(Path +".gdbf"))
             {
                 ReadAllGraphs(sr);
             }
@@ -72,7 +72,7 @@ namespace KHGraphDB.Helper
                         o = commands[i + 3].Trim(new char[] { '\'' });
                     else if (commands[i + 3] == "*")
                     {
-                        o = "*";
+                        o = null;
                     }
                     else if (commands[i + 3].Contains('.'))
                     {
@@ -110,7 +110,7 @@ namespace KHGraphDB.Helper
                         o = commands[i + 4].Trim(new char[] { '\'' });
                     else if (commands[i + 4] == "*")
                     {
-                        o = "*";
+                        o = null;
                     }
                     else if (commands[i + 4].Contains('.'))
                     {
@@ -121,7 +121,7 @@ namespace KHGraphDB.Helper
                         o = Convert.ToInt32(commands[i + 4]);
                     }
 
-                    t.Attributes[(string)(commands[i + 3])] = commands[i + 4];
+                    t.Attributes[(string)(commands[i + 3])] = o;
                 }
                 int iVertex = Convert.ToInt32(commands[3 + iAttr * 2]);
                 for (int i = 0; i < iVertex; i++)
@@ -152,7 +152,7 @@ namespace KHGraphDB.Helper
                         o = commands[i + 5].Trim(new char[] { '\'' });
                     else if (commands[i + 5] == "*")
                     {
-                        o = "*";
+                        o = null;
                     }
                     else if (commands[i + 5].Contains('.'))
                     {
@@ -169,6 +169,7 @@ namespace KHGraphDB.Helper
             }
             return null;
         }
+
         public IEnumerable<IGraph> ReadAllGraphs(StreamReader sr)
         {
             string str = sr.ReadLine();

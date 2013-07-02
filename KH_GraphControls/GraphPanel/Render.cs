@@ -131,5 +131,22 @@ namespace KH_GraphControls.GraphPanel
             roundedRect.CloseFigure();
             return roundedRect;
         }
+
+        /// <summary>
+        /// Draw Types
+        /// </summary>
+        public static void DrawTypes(Graphics g, Font f, IEnumerable<IType> types)
+        {
+            string str = "";
+            foreach (var t in types)
+            {
+                str += t.AttributesToString();
+                
+            }
+            SizeF size = g.MeasureString(str, f);
+            g.FillRectangle(brushVertex,new RectangleF(0,0,size.Width,size.Height)) ;
+            g.DrawString(str, f, brushText, new PointF(0,0));
+        }
+
     }
 }
