@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using KHGraphDB.Structure;
 using System.IO;
+using KHGraphDB.Structure.Interface;
 
 namespace KHGraphDB.Helper
 {
@@ -42,6 +43,10 @@ namespace KHGraphDB.Helper
             {
                 WriteEdges(sr);
             }
+            using (StreamWriter sr = new StreamWriter("Graph_lyf_Graph.gdbt"))
+            {
+                WriteGraphs(sr);
+            }
             return true;
         }
 
@@ -50,10 +55,16 @@ namespace KHGraphDB.Helper
             string str = "";
             foreach (var t in Graph.Types)
             {
-                str = t.KHID + " " + t.Attributes.Count.ToString() + " ";
+                //IEnumerable<IVertex> iv = this._graph.Vertices.Except(t.Vertices);
+                //iv = iv.Except(t);
+
+                str = t.KHID + " \'" + t.Name + "\' " + t.Attributes.Count.ToString() + " ";
                 foreach (var key in t.Attributes.Keys)
                 {
-                    str += key + " " + ((t[key] == null) ? "*" : t[key].ToString()) + " ";
+                    if (t[key] == null)
+                        str += key + " " + "*" + " ";
+                    else
+                        str += key + " " + ((t[key].GetType().Equals("".GetType())) ? "'" + t[key].ToString() + "'" : t[key].ToString()) + " ";
                 }
                 str += t.Vertices.Count().ToString() + " ";
                 foreach (var v in t.Vertices)
@@ -99,6 +110,14 @@ namespace KHGraphDB.Helper
                 str += "\n";
                 sr.WriteLine(str);
             }
+        }
+        public void WriteGraphs(StreamWriter sr)
+        {
+            string str = "";
+            str += Path + "_Type.gdbt" + "\n";
+            str += "  " + Path + "_Vertex.gdbt" + "\n";
+            str += "  " + Path + "_Edge.gdbt" + "\n";
+            sr.Write(str);
         }
     }
 }
