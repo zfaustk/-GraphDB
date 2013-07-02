@@ -70,14 +70,17 @@
             this.codeTextBox.TabIndex = 0;
             this.codeTextBox.Text = "";
             this.codeTextBox.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
+            this.codeTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.codeTextBox_KeyDown);
             this.codeTextBox.Resize += new System.EventHandler(this.codeTextBox_Resize);
             // 
             // scroll
             // 
+            this.scroll.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.scroll.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(129)))), ((int)(((byte)(104)))));
             this.scroll.Location = new System.Drawing.Point(0, 5);
             this.scroll.Name = "scroll";
-            this.scroll.Size = new System.Drawing.Size(632, 53);
+            this.scroll.Size = new System.Drawing.Size(10, 53);
             this.scroll.TabIndex = 1;
             this.scroll.MouseDown += new System.Windows.Forms.MouseEventHandler(this.scroll_MouseDown);
             this.scroll.MouseMove += new System.Windows.Forms.MouseEventHandler(this.scroll_MouseMove);
