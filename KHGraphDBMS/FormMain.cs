@@ -120,7 +120,14 @@ namespace KHGraphDBMS
         bool console = false;
         void textArea1_PressControlEnter(object sender)  //执行！！！！！！！！！！！！！！！！！！！！！
         {
-            grammar.Exert(textArea1.CodeText);
+            try
+            {
+                grammar.Exert(textArea1.CodeText);
+            }
+            catch
+            {
+                MessageBox.Show("执行语句过程中发生未知错误，请检查", "未知错误", MessageBoxButtons.OK);
+            }
             switch(grammar.ReturnsType)
             {
                 case Grammar.Grammar._ReturnsType.none:
@@ -260,7 +267,7 @@ namespace KHGraphDBMS
         private void GraphChange(object sender)
         {
             lbTitle.Text = SavePath + "* - KHGraphDBManager";
-            if (this.自动保存ToolStripMenuItem.Checked)
+            if (this.自动保存ToolStripMenuItem.Checked && !string.IsNullOrEmpty(SavePath))
                 SAVE_Click(this, new EventArgs());
         }
         #endregion

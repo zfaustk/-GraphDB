@@ -64,6 +64,12 @@ namespace Demo01
             if (panel1.HighLightList == null)
                 panel1.HighLightList = bfs.Search(panel1.Graph, v, vw);
             else panel1.HighLightList = null;
+            //BFS bfs = new BFS();
+            //IVertex v = panel1.Graph.Vertices.SingleOrDefault(m => "Peiming".Equals(m["name"]));
+            //if (panel1.HighLightList == null)
+            //    panel1.HighLightList = bfs.SearchNearby(panel1.Graph,v,Convert.ToDouble(textBox2.Text),"friend");
+            //else panel1.HighLightList = null;
+
         }
 
         private void btnDeleteVertex_Click(object sender, EventArgs e)

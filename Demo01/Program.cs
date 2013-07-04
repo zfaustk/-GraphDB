@@ -37,6 +37,26 @@ namespace Demo01
                 {"Name","Yidong"},
                 {"Age","21"}
             });
+            Vertex aaa = new Vertex(new Dictionary<string, object>(){
+                {"Name","aaa"},
+                {"Age","21"}
+            });
+            Vertex bbb = new Vertex(new Dictionary<string, object>(){
+                {"Name","bbb"},
+                {"Age","21"}
+            });
+            Vertex ccc = new Vertex(new Dictionary<string, object>(){
+                {"Name","ccc"},
+                {"Age","21"}
+            });
+            Vertex ddd = new Vertex(new Dictionary<string, object>(){
+                {"Name","ddd"},
+                {"Age","21"}
+            });
+            Vertex eee = new Vertex(new Dictionary<string, object>(){
+                {"Name","eee"},
+                {"Age","21"}
+            });
 
 
             GraphHelper gHelper = new GraphHelper(graph);
@@ -45,6 +65,11 @@ namespace Demo01
             gHelper.AddVertex(peiming, student);
             graph.AddVertex(yidong, student);
             graph.AddVertex(weidong);
+            graph.AddVertex(aaa);
+            graph.AddVertex(bbb);
+            graph.AddVertex(ccc);
+            graph.AddVertex(ddd);
+            graph.AddVertex(eee);
 
             Console.WriteLine(peiming.ToString());
             Console.WriteLine(yidong.ToString());
@@ -64,13 +89,29 @@ namespace Demo01
                 {"friend",null},
             });
 
-            Edge friendYW = new Edge(yidong, weidong, new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase){
+            Edge friendPA = new Edge(peiming, aaa, new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase){
+                {"friend",1},
+            });
+            Edge friendAB = new Edge(aaa, bbb, new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase){
+                {"friend",0.1},
+            });
+            Edge friendBC = new Edge(bbb, ccc, new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase){
+                {"friend",2},
+            });
+            Edge friendYD = new Edge(yidong, ddd, new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase){
                 {"friend",10},
             });
+            Edge friendAE = new Edge(aaa, eee, new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase){
+                {"friend",0.5},
+            });
+            graph.AddEdge(friendAE);
 
+            graph.AddEdge(friendPA);
+            graph.AddEdge(friendAB);
+            graph.AddEdge(friendBC);
+            graph.AddEdge(friendYD);
             graph.AddEdge(friendPY);
             graph.AddEdge(friendYP);
-            graph.AddEdge(friendYW);
 
             gHelper.AddEdge(peiming, weidong, new Dictionary<string, object>() { { "friend", null } });
 

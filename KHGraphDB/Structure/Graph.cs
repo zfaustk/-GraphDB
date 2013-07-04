@@ -238,11 +238,11 @@ namespace KHGraphDB.Structure
 
                 IEnumerable<IEdge> faild = RemoveEdges(removeEdges);
 
-                if (faild.Count() > 0)
-                {
-                    AddEdges(removeEdges.Except(faild)); //回滚
-                    return false;
-                }
+                //if (faild.Count() > 0)
+                //{
+                //    AddEdges(removeEdges.Except(faild)); //回滚
+                //    return false;
+                //}
 
                 if(theVertex.Type!= null)
                     theVertex.Type.RemoveVertex(theVertex);
